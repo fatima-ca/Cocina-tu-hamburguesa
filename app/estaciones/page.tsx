@@ -3,7 +3,7 @@ export default function Cocina () {
     return (
         <main>
             <h1>
-                Cocina
+                Estaciones
             </h1>
         </main>
     );
