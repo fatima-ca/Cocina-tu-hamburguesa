@@ -9,7 +9,7 @@ export default function BtnComenzar () {
         >
             <Image
                 src="/general/btn_comenzar.png"
-                alt="Logo del juego"
+                alt="Boton para entrar en el juego"
                 width={500}
                 height={100}
                 priority

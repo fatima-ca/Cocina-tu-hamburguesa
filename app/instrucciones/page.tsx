@@ -1,5 +1,6 @@
 import Image from "next/image";
 import FondoInstrucciones from "@/components/general/FondoInstrucciones";
+import BtnComenzaCocinar from "@/components/general/BtnComenzarCocinar";
 
 export default function (){
     return(
@@ -22,6 +23,7 @@ export default function (){
                             width={900}
                             height={200}
                             priority
+                            className="mx-auto"
                         />
 
                         <p className=" text-amber-800 font-extrabold underline">
@@ -53,11 +55,12 @@ export default function (){
                             5.- Para finalizar tu hamburguesa con papas, da clic en el botón de “Enviar orden”.
                         </p>
                     </div>
-
-                    
-
                 </div>
             </div>
+            </div>
+
+            <div className="absolute bottom-5 right-5 z-20">
+                <BtnComenzaCocinar />
             </div>
         </main>
     );
