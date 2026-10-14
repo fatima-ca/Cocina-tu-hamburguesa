@@ -16,7 +16,5 @@ export default function BtnComenzaCocinar () {
                 className="object-contain drop-shadow-2xl hover:scale-105 active:scale-100 transition-transform duration-200"
             />
         </Link>
-
-        
     );
 };

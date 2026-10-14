@@ -56,7 +56,7 @@ export default function Comenzar() {
         <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 w-full">
           <input
             type="text"
-            placeholder="Tu Nombre"
+            placeholder="Escribe las iniciales de tu nombre (eg. NCA)"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             className="w-full p-3 bg-amber-200 rounded-lg text-black text-center font-bold text-lg focus:outline-none focus:ring-4 focus:ring-yellow-400 transition-all"
@@ -65,7 +65,7 @@ export default function Comenzar() {
           
           <input
             type="number"
-            placeholder="Tu Edad"
+            placeholder="Ingresa tu edad"
             value={edad}
             onChange={(e) => setEdad(e.target.value)}
             className="w-full p-3 bg-amber-200 rounded-lg text-black text-center font-bold text-lg focus:outline-none focus:ring-4 focus:ring-yellow-400 transition-all"
