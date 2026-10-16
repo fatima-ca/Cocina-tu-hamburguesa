@@ -13,7 +13,6 @@ export default function BtnEstacionCarne () {
                 width={180}
                 height={100}
                 priority
-                className="w-full h-auto"
             />
             <Image
                 src="/cocina/estufa.png"
