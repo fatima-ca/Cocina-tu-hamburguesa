@@ -34,7 +34,6 @@ export default function (){
                     <div>
                         <p className="text-2xl text-amber-900 font-extrabold">
                             2.- Si detectas que realizaste un error al seguir las instrucciones, da clic en el botón de “Detecté un error” y elige la estación a la cual deseas regresar para mejorar tu procedimiento. En caso de que el error sea en la misma estación y necesites volver a iniciar da clic en “Reiniciar”.
-
                         </p>
                     </div>
 

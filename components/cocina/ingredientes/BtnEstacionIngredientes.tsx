@@ -13,6 +13,7 @@ export default function BtnEstacionIngredientes () {
                 width={280}
                 height={100}
                 priority
+                className="w-full h-auto"
             />
         </Link>
     );

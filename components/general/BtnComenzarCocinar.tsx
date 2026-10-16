@@ -4,7 +4,7 @@ import Image from 'next/image'
 export default function BtnComenzaCocinar () {
     return (
         <Link
-          href="/estaciones"
+          href="/cocina"
           className="active:scale-95 text-white font-bold py-4 px-12 rounded-xl text-2xl transition-all duration-200"
         >
             <Image
