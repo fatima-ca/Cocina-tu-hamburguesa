@@ -11,16 +11,15 @@ interface RecetaCardProps {
 export default function RecetaCard({
   titulo,
   children,
-  className = '',
 }: RecetaCardProps) {
   const [abierta, setAbierta] = useState<boolean>(false);
 
   return (
     <>
-      <div className={`relative w-full ${className}`}>
+      <div className="relative w-full">
         <button
           onClick={() => setAbierta(true)}
-          className="w-full bg-white shadow-xl rounded-xl px-5 py-4 hover:shadow-2xl transition-shadow duration-300 flex items-center justify-between"
+          className="w-full bg-white shadow-xl rounded-xl px-5 py-4 transition-shadow duration-300 flex items-center justify-between"
         >
           <span className="font-semibold text-gray-800">{titulo}</span>
           <svg 
@@ -38,7 +37,9 @@ export default function RecetaCard({
 
 
       <PantallaReceta isOpen={abierta} onClose={() => setAbierta(false)}>
-        {children}
+        <div className="max-w-4/6 w-full">
+          {children}
+        </div>
       </PantallaReceta>
     </>
   );

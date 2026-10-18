@@ -1,5 +1,5 @@
 'use client';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 interface PantallaRecetaProps {
@@ -9,6 +9,12 @@ interface PantallaRecetaProps {
 }
 
 export default function PantallaReceta({ isOpen, onClose, children }: PantallaRecetaProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -25,27 +31,22 @@ export default function PantallaReceta({ isOpen, onClose, children }: PantallaRe
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
+  if (!mounted || !isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-9999 bg-white/40 backdrop-blur-md overflow-auto">
-      
-
+    <div className="fixed inset-0 z-9999 bg-black/40 backdrop-blur-md overflow-auto">
       <div className="min-h-screen flex flex-col items-center justify-center p-2">
         {children}
 
-
         <button
-        onClick={onClose}
-        className="p-4 bg-gray-100 hover:bg-gray-200 rounded-full shadow-lg transition-colors"
-        aria-label="Cerrar receta"
-      >
-        <strong>Cerrar</strong>
-      </button>
+          onClick={onClose}
+          className="p-4 bg-gray-100 hover:bg-gray-200 rounded-full shadow-lg transition-colors"
+          aria-label="Cerrar receta"
+        >
+          <strong>Cerrar</strong>
+        </button>
       </div>
-      
     </div>,
-    document.body 
+    document.body
   );
 }
