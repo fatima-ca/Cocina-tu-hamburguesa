@@ -2,32 +2,32 @@ import Image from "next/image";
 
 
 export const ingredientes = [
-  { src: "/ingredientes/lechuga.png", nombre: "Lechuga" },
-  { src: "/ingredientes/carne_cruda.png", nombre: "Carne" },
-  { src: "/ingredientes/tomate.png", nombre: "Tomate" },
-  { src: "/ingredientes/mayonesa.png", nombre: "Mayonesa" },
-  { src: "/ingredientes/mostaza.png", nombre: "Mostaza" },
-  { src: "/ingredientes/queso.png", nombre: "Queso" },
-  { src: "/ingredientes/pan.png", nombre: "Pan" },
-  { src: "/ingredientes/papas_crudas.png", nombre: "Papas" },
+  { src: "/ingredientes/lechuga.png", nombre: "Lechuga" }, // 0 - lechuga
+  { src: "/ingredientes/carne_cruda.png", nombre: "Carne" }, // 1 - carne cruda
+  { src: "/ingredientes/tomate.png", nombre: "Tomate" }, // 2 - tomate
+  { src: "/ingredientes/mayonesa.png", nombre: "Mayonesa" }, // 3 - mayonesa
+  { src: "/ingredientes/mostaza.png", nombre: "Mostaza" }, // 4 - mostaza
+  { src: "/ingredientes/queso.png", nombre: "Queso" }, // 5 - queso
+  { src: "/ingredientes/pan.png", nombre: "Pan" }, // 6 - pan
+  { src: "/ingredientes/papas_crudas.png", nombre: "Papas" }, // 7 - papas crudas
 ];
 
 export const pasosPapas = [
     { src: "/ingredientes/papas_lavadas.png", instruccion: "Lavar las papas" },
-    { src: "/ingredientes/papas_cuchillo.png", instruccion: "Cortar las papas" },
+    { src: "/ingredientes/papas_cortadas.png", instruccion: "Cortar las papas" },
     { src: "/ingredientes/papas_freidas.png", instruccion: "Cocción de papas [5min]" },
 ];
 
 export const pasosCarne = [
     { src: "/ingredientes/carne_formada.png", instruccion: "Formar la carne" },
-    { src: "/ingredientes/carne_cruda.png", instruccion: "Colocar en sartén" },
-    { src: "/ingredientes/carne_cruda.png", instruccion: "Cocción por lado 1 [2min]" },
-    { src: "/ingredientes/carne_cruda.png", instruccion: "Cocción por lado 2 [2min]" },
+    { src: "/ingredientes/carne_formada_sarten.png", instruccion: "Colocar en sartén" },
+    { src: "/ingredientes/carne_formada_mitad_sarten.png", instruccion: "Cocción por lado 1 [2min]" },
+    { src: "/ingredientes/carne_lista_sarten.png", instruccion: "Cocción por lado 2 [2min]" },
 ];
 
 export const pasosPan = [
     { src: "/ingredientes/pan_cortado.png", instruccion: "Cortar el pan" },
-    { src: "/ingredientes/icono_tostadora.png", instruccion: "Tostar el pan" },
+    { src: "/ingredientes/pan_cortado_tostado.png", instruccion: "Tostar el pan" },
 ];
 
 export const pasosEnsamblaje = [
@@ -169,7 +169,7 @@ export const contenidoRecetas=[
                             className="object-contain drop-shadow-2xl"
                         />
                         <Image
-                            src="/ingredientes/carne_lista.png"
+                            src="/ingredientes/carne_preparada.png"
                             alt="Hamburguesa con papas terminada"
                             width={500}
                             height={500}
