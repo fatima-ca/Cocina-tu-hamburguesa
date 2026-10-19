@@ -13,32 +13,32 @@ export const ingredientes = [
 ];
 
 export const pasosPapas = [
-    { src: "/ingredientes/papas_lavadas.png", instruccion: "Lavar las papas" },
-    { src: "/ingredientes/papas_cortadas.png", instruccion: "Cortar las papas" },
-    { src: "/ingredientes/papas_freidas.png", instruccion: "Cocción de papas [5min]" },
+    { src: "/ingredientes/papas_lavadas.png", num:"1", instruccion: "Lavar las papas" },
+    { src: "/ingredientes/papas_cortadas.png", num:"2", instruccion: "Cortar las papas" },
+    { src: "/ingredientes/papas_freidas.png", num:"3", instruccion: "Cocción de papas [5min]" },
 ];
 
 export const pasosCarne = [
-    { src: "/ingredientes/carne_formada.png", instruccion: "Formar la carne" },
-    { src: "/ingredientes/carne_formada_sarten.png", instruccion: "Colocar en sartén" },
-    { src: "/ingredientes/carne_formada_mitad_sarten.png", instruccion: "Cocción por lado 1 [2min]" },
-    { src: "/ingredientes/carne_lista_sarten.png", instruccion: "Cocción por lado 2 [2min]" },
+    { src: "/ingredientes/carne_formada.png", num:"1", instruccion: "Formar la carne" },
+    { src: "/ingredientes/carne_formada_sarten.png", num:"2", instruccion: "Colocar en sartén" },
+    { src: "/ingredientes/carne_formada_mitad_sarten.png", num:"3", instruccion: "Cocción por lado 1 [2min]" },
+    { src: "/ingredientes/carne_lista_sarten.png", num:"4", instruccion: "Cocción por lado 2 [2min]" },
 ];
 
 export const pasosPan = [
-    { src: "/ingredientes/pan_cortado.png", instruccion: "Cortar el pan" },
-    { src: "/ingredientes/pan_cortado_tostado.png", instruccion: "Tostar el pan" },
+    { src: "/ingredientes/pan_cortado.png", num:"1", instruccion: "Cortar el pan" },
+    { src: "/ingredientes/pan_cortado_tostado.png", num:"2", instruccion: "Tostar el pan" },
 ];
 
 export const pasosEnsamblaje = [
-    { src: "/ingredientes/pan_base_tostado.png", instruccion: "1.- Colocar la base de pan" },
-    { src: "/ingredientes/carne_lista.png", instruccion: "2.- Colocar la carne preparada" },
-    { src: "/ingredientes/queso.png", instruccion: "3.- Colocar el queso" },
-    { src: "/ingredientes/tomate.png", instruccion: "4.- Colocar el tomato" },
-    { src: "/ingredientes/lechuga.png", instruccion: "5.- olocar la lechuga" },
-    { src: "/ingredientes/mostaza.png", instruccion: "6.- Untar la mostaza" },
-    { src: "/ingredientes/mayonesa.png", instruccion: "7.- Untar la mayonesa" },
-    { src: "/ingredientes/pan_tapa_tostado.png", instruccion: "8.- Colocar la tapa de pan" },
+    { src: "/ingredientes/pan_base_tostado.png", num:"1", instruccion: "Colocar la base de pan" },
+    { src: "/ingredientes/carne_lista.png", num:"2", instruccion: "Colocar la carne preparada" },
+    { src: "/ingredientes/queso.png", num:"3", instruccion: "Colocar el queso" },
+    { src: "/ingredientes/tomate.png", num:"4", instruccion: "Colocar el tomato" },
+    { src: "/ingredientes/lechuga.png", num:"5", instruccion: "Colocar la lechuga" },
+    { src: "/ingredientes/mostaza.png", num:"6", instruccion: "Untar la mostaza" },
+    { src: "/ingredientes/mayonesa.png", num:"7", instruccion: "Untar la mayonesa" },
+    { src: "/ingredientes/pan_tapa_tostado.png", num:"8", instruccion: "Colocar la tapa de pan" },
 ];
 
 
@@ -78,7 +78,7 @@ export const contenidoRecetas=[
                             <div 
                                 key={index} 
                                 className="flex flex-col items-center justify-center p-4 bg-white circular rounded-4xl"
-                            >
+                            >   
                                 <Image
                                     src={ingrediente.src}
                                     alt={ingrediente.nombre}
@@ -111,7 +111,7 @@ export const contenidoRecetas=[
                     <div className="flex flex-col items-center justify-center space-y-10">
                         <Image
                             src="/recetas/Preparar_las_papas.png"
-                            alt="Icono de ingredientes"
+                            alt="Titulo Preparar las papas"
                             width={400}
                             height={400}
                             priority
@@ -119,9 +119,9 @@ export const contenidoRecetas=[
                         />
                         <Image
                             src="/ingredientes/papas_listas.png"
-                            alt="Hamburguesa con papas terminada"
-                            width={500}
-                            height={500}
+                            alt="Imagen de las papas listas"
+                            width={350}
+                            height={350}
                             priority
                             className="object-contain"
                         />
@@ -131,19 +131,29 @@ export const contenidoRecetas=[
                         {pasosPapas.map((paso, index) => (
                             <div 
                                 key={index} 
-                                className="grid flex-col items-center justify-center p-4 bg-white circular rounded-4xl grid-cols-2 gap-3"
-                            >
-                                <Image
-                                    src={paso.src}
-                                    alt={paso.instruccion}
-                                    width={200}
-                                    height={200}
-                                    priority
-                                    className="object-contain"
-                                />
-                                <span className="text-sm text-amber-900 font-semibold text-center">
-                                    {paso.instruccion}
-                                </span>
+                                className="grid flex-col items-center justify-center p-4 bg-white circular rounded-4xl grid-cols-5"
+                            >   
+                                <div className="col-start-1 col-end-2 flex justify-center">
+                                    <p className="text-5xl font-bold text-amber-900">{paso.num}</p>
+                                </div>
+
+                                <div className="col-start-2 col-end-4 flex flex-col items-center"> 
+                                    <Image
+                                        src={paso.src}
+                                        alt={paso.instruccion}
+                                        width={150}
+                                        height={150}
+                                        priority
+                                        className="object-contain"
+                                    />
+                                </div>
+
+                                <div className="col-start-4 col-end-6 flex flex-col items-center"> 
+                                    <span className="text-3xl text-amber-900 font-semibold text-center">
+                                        {paso.instruccion}
+                                    </span>
+                                </div>
+
                             </div>
                         ))}
                     </div>
@@ -162,7 +172,7 @@ export const contenidoRecetas=[
                     <div className="flex flex-col items-center justify-center space-y-10">
                         <Image
                             src="/recetas/Preparar_la_carne.png"
-                            alt="Icono de ingredientes"
+                            alt="Titulo Preprar la carne"
                             width={400}
                             height={400}
                             priority
@@ -170,9 +180,9 @@ export const contenidoRecetas=[
                         />
                         <Image
                             src="/ingredientes/carne_preparada.png"
-                            alt="Hamburguesa con papas terminada"
-                            width={500}
-                            height={500}
+                            alt="Imagen de la carne preparada"
+                            width={390}
+                            height={390}
                             priority
                             className="object-contain"
                         />
@@ -182,19 +192,29 @@ export const contenidoRecetas=[
                         {pasosCarne.map((paso, index) => (
                             <div 
                                 key={index} 
-                                className="grid flex-col items-center justify-center p-4 bg-white circular rounded-4xl grid-cols-2 gap-3"
-                            >
-                                <Image
-                                    src={paso.src}
-                                    alt={paso.instruccion}
-                                    width={200}
-                                    height={200}
-                                    priority
-                                    className="object-contain"
-                                />
-                                <span className="text-sm text-amber-900 font-semibold text-center">
-                                    {paso.instruccion}
-                                </span>
+                                className="grid flex-col items-center justify-center p-4 bg-white circular rounded-4xl grid-cols-5 gap-4"
+                            >   
+                                <div className="col-start-1 col-end-2 flex justify-center">
+                                    <p className="text-5xl font-bold text-amber-900">{paso.num}</p>
+                                </div>
+
+                                <div className="col-start-2 col-end-4 flex flex-col items-center"> 
+                                    <Image
+                                        src={paso.src}
+                                        alt={paso.instruccion}
+                                        width={500}
+                                        height={200}
+                                        priority
+                                        className="object-contain"
+                                    />
+                                </div>
+
+                                <div className="col-start-4 col-end-6 flex flex-col items-center"> 
+                                    <span className="text-2xl text-amber-900 font-semibold text-center">
+                                        {paso.instruccion}
+                                    </span>
+                                </div>
+
                             </div>
                         ))}
                     </div>
@@ -213,7 +233,7 @@ export const contenidoRecetas=[
                     <div className="flex flex-col items-center justify-center space-y-10">
                         <Image
                             src="/recetas/Preparar_el_pan.png"
-                            alt="Icono de ingredientes"
+                            alt="Titulo Preparar el pan"
                             width={400}
                             height={400}
                             priority
@@ -221,9 +241,9 @@ export const contenidoRecetas=[
                         />
                         <Image
                             src="/ingredientes/pan.png"
-                            alt="Hamburguesa con papas terminada"
-                            width={500}
-                            height={500}
+                            alt="Imagen del pan cortado"
+                            width={380}
+                            height={380}
                             priority
                             className="object-contain"
                         />
@@ -233,19 +253,29 @@ export const contenidoRecetas=[
                         {pasosPan.map((paso, index) => (
                             <div 
                                 key={index} 
-                                className="grid flex-col items-center justify-center p-4 bg-white circular rounded-4xl grid-cols-2 gap-3"
-                            >
-                                <Image
-                                    src={paso.src}
-                                    alt={paso.instruccion}
-                                    width={200}
-                                    height={200}
-                                    priority
-                                    className="object-contain"
-                                />
-                                <span className="text-sm text-amber-900 font-semibold text-center">
-                                    {paso.instruccion}
-                                </span>
+                                className="grid flex-col items-center justify-center p-4 bg-white circular rounded-4xl grid-cols-5"
+                            >   
+                                <div className="col-start-1 col-end-2 flex justify-center">
+                                    <p className="text-5xl font-bold text-amber-900">{paso.num}</p>
+                                </div>
+
+                                <div className="col-start-2 col-end-4 flex flex-col items-center"> 
+                                    <Image
+                                        src={paso.src}
+                                        alt={paso.instruccion}
+                                        width={150}
+                                        height={150}
+                                        priority
+                                        className="object-contain"
+                                    />
+                                </div>
+
+                                <div className="col-start-4 col-end-6 flex flex-col items-center"> 
+                                    <span className="text-3xl text-amber-900 font-semibold text-center">
+                                        {paso.instruccion}
+                                    </span>
+                                </div>
+
                             </div>
                         ))}
                     </div>
@@ -264,7 +294,7 @@ export const contenidoRecetas=[
                     <div className="flex flex-col items-center justify-center space-y-10">
                         <Image
                             src="/recetas/Ensamblar_los_ingredientes.png"
-                            alt="Icono de ingredientes"
+                            alt="Titulo Ensamblar los ingredientes"
                             width={400}
                             height={400}
                             priority
@@ -285,19 +315,25 @@ export const contenidoRecetas=[
                     {pasosEnsamblaje.map((paso, index) => (
                         <div 
                             key={index} 
-                            className="flex flex-col items-center justify-center p-4 bg-white circular rounded-4xl gap-2"
+                            className="grid items-center justify-center p-4 bg-white circular rounded-4xl grid-cols-4"
                         >
-                            <Image
-                                src={paso.src}
-                                alt={paso.instruccion}
-                                width={120}
-                                height={100}
-                                priority
-                                className="object-contain"
-                            />
-                            <span className="text-sm text-amber-900 font-semibold text-center">
-                                {paso.instruccion}
-                            </span>
+                            <div className="col-start-1 col-end-2 flex justify-center">
+                                <p className="text-5xl font-bold text-amber-900">{paso.num}</p>
+                            </div>
+
+                            <div className="col-start-2 col-end-5 flex flex-col items-center gap-2"> 
+                                <Image
+                                    src={paso.src}
+                                    alt={paso.instruccion}
+                                    width={120}
+                                    height={100}
+                                    priority
+                                    className="object-contain"
+                                />
+                                <span className="text-sm text-amber-900 font-semibold text-center">
+                                    {paso.instruccion}
+                                </span>
+                            </div>
                         </div>
                     ))}
                     </div>
