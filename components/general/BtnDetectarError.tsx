@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 
 type BtnDetectarErrorProps = {
-  accion: () => void;
+    accion: () => void;
     disabled?: boolean;
 };
 
