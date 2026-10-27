@@ -1,12 +1,12 @@
 import Image from 'next/image'
 
 
-type BtnAccionProps = {
+type BtnDetectarErrorProps = {
   accion: () => void;
     disabled?: boolean;
 };
 
-export default function BtnDetectarError ({ accion, disabled }: BtnAccionProps) {
+export default function BtnDetectarError ({ accion, disabled }: BtnDetectarErrorProps) {
     return (
         <button
             onClick={accion}
