@@ -1,11 +1,9 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-import FondoCocina from '@/components/general/FondoCocina';
+import FondoEstacion from '@/components/general/FondoEstacion';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
-import BtnRegresar from '@/components/general/BtnRegresar';
-import BtnDetectarError from '@/components/general/BtnDetectarError';
 import Btns from '@/components/general/Btns';
 import { contenidoRecetas } from '@/components/cocina/DataText';
 import { ingredientes } from '@/components/cocina/DataText';
@@ -22,7 +20,7 @@ export default function EstacionIngredientes() {
 
     return(
         <main className="grid min-h-screen w-full grid-cols-6">
-            <FondoCocina />
+            <FondoEstacion />
 
             
             <div className="flex relative col-start-2 col-end-6  top-10 justify-center">

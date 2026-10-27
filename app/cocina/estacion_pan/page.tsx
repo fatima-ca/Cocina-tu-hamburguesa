@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-import FondoCocina from '@/components/general/FondoCocina';
+import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
@@ -26,7 +26,7 @@ export default function EstacionPan() {
 
     return(
         <main className="relative min-h-screen w-full overflow-hidden">
-            <FondoCocina />
+            <FondoEstacion />
             <Btns />
             
             <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">

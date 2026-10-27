@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import FondoCocina from '@/components/general/FondoCocina';
+import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import BtnDetenerCoccion from '@/components/cocina/cocinar/BtnDetenerCoccion';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
@@ -57,7 +57,7 @@ export default function EstacionCarne() {
 
     return(
         <main className="relative min-h-screen w-full overflow-hidden">
-            <FondoCocina />
+            <FondoEstacion />
             <Btns />     
 
             <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
