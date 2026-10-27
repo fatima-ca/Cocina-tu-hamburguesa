@@ -4,6 +4,9 @@ import Image from 'next/image';
 import FondoCocina from '@/components/general/FondoCocina';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
+import BtnRegresar from '@/components/general/BtnRegresar';
+import BtnDetectarError from '@/components/general/BtnDetectarError';
+import Btns from '@/components/general/Btns';
 import { contenidoRecetas } from '@/components/cocina/DataText';
 import { ingredientes } from '@/components/cocina/DataText';
 
@@ -22,7 +25,8 @@ export default function EstacionIngredientes() {
             <FondoCocina />
 
             
-            <div className="flex relative col-start-2 col-end-6 bg-amber-100 top-10 justify-center">
+            <div className="flex relative col-start-2 col-end-6  top-10 justify-center">
+                
                 <div className="flex flex-col items-center gap-6 p-6">
 
                     <div className="flex shrink-0">
@@ -117,6 +121,8 @@ export default function EstacionIngredientes() {
                 </div>  
             </div>
 
+            <Btns />
+
             
     
             <MostrarRecetas />
@@ -149,7 +155,7 @@ function IngredienteCard ( {
   src,
   alt,
   nombre
-}: IngredienteCardProps ) {
+} : IngredienteCardProps ) {
 
     const [seleccionado, setSeleccionado] = useState<boolean>(false);
  

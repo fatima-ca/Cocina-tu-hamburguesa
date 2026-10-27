@@ -20,9 +20,8 @@ export const pasosPapas = [
 
 export const pasosCarne = [
     { src: "/ingredientes/carne_formada.png", num:"1", instruccion: "Formar la carne" },
-    { src: "/ingredientes/carne_formada_sarten.png", num:"2", instruccion: "Colocar en sartén" },
-    { src: "/ingredientes/carne_formada_mitad_sarten.png", num:"3", instruccion: "Cocción por lado 1 [2min]" },
-    { src: "/ingredientes/carne_lista_sarten.png", num:"4", instruccion: "Cocción por lado 2 [2min]" },
+    { src: "/ingredientes/carne_formada_mitad_sarten.png", num:"2", instruccion: "Cocción por lado 1 [2min]" },
+    { src: "/ingredientes/carne_lista_sarten.png", num:"3", instruccion: "Cocción por lado 2 [2min]" },
 ];
 
 export const pasosPan = [
