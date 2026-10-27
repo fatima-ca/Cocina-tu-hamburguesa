@@ -6,7 +6,7 @@ import Btns from '@/components/general/Btns';
 import BtnDetenerCoccion from '@/components/cocina/cocinar/BtnDetenerCoccion';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
-import { contenidoRecetas } from '@/components/cocina/DataText';
+import { contenidoRecetas } from '@/components/cocina/ContenidoRecetas';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 
 {/* Datos de las acciones disponibles para la carne */}

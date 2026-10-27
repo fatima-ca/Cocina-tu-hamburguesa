@@ -1,4 +1,4 @@
-import { contenidoRecetas } from './DataText';
+import { contenidoRecetas } from './ContenidoRecetas';
 import RecetaCard from '@/components/cocina/RecetaCard';
 
 
