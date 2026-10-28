@@ -5,3 +5,10 @@ export type IngredienteProps = {
   ensamblaje: string;
   alt: string;
 };
+
+
+export type IngredienteEstatusProps = {
+  estatus: string;
+  src: string;
+  alt: string;
+};

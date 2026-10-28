@@ -9,7 +9,8 @@ import { contenidoRecetas } from '@/components/cocina/ContenidoRecetas';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 import { DataAccionPan } from '@/components/DATA/DataText';
 import { panEstatusData } from '@/components/DATA/DataText';
-
+import IngredienteEstatus from '@/components/cocina/cocinar/IngredienteEstatus';
+import TablaAcciones from '@/components/cocina/cocinar/TablaAcciones';
 
 
 export default function EstacionPan() {
@@ -40,7 +41,7 @@ export default function EstacionPan() {
 
                         <div className="relative">
                             <div className="relative flex items-center justify-center rounded-2xl bg-white p-6">
-                                <PanEstatus
+                                <IngredienteEstatus
                                     estatus={estadoActualData.estatus}
                                     src={estadoActualData.src}
                                     alt={estadoActualData.alt}
@@ -79,22 +80,3 @@ export default function EstacionPan() {
 
 
 
-export type PanEstatusProps = {
-  estatus: string;
-  src: string;
-  alt: string;
-};
-
-function PanEstatus({ estatus, src, alt }: PanEstatusProps) {
-    return(
-        <Image
-            key={estatus}
-            src={src}
-            alt={alt}
-            width={400}
-            height={400}
-            priority
-            className="object-contain drop-shadow-2xl"
-        />
-    );
-}
