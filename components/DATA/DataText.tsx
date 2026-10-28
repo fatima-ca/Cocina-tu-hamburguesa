@@ -50,3 +50,55 @@ export const pasosEnsamblaje = [
     { src: "/ingredientes/pan_tapa_tostado.png", num:"8", instruccion: "Colocar la tapa de pan" },
 ];
 
+
+
+
+{/* Accion ingredientes */}
+
+{/* Datos de las acciones disponibles para las papas*/}
+export const DataAccionPapas = [
+    { id: "lavar",  label: "Lavar",   src: "/ingredientes/icono_lavar_papas.png",   alt: "Boton para lavar las papas" },
+    { id: "cortar", label: "Cortar",  src: "/ingredientes/icono_cuchillo.png",      alt: "Boton para cortar las papas" },
+    { id: "freir",  label: "Cocción", src: "/ingredientes/icono_coccion_papas.png", alt: "Boton para freir las papas" },
+];
+
+{/* Datos de las acciones disponibles para la carne */}
+export const DataAccionCarne = [
+  { id: "formar",  label: "Formar",   src: "/ingredientes/icono_formar_carne.png",   alt: "Boton para formar la carne" },
+  { id: "coccion_1", label: "Cocción lado 1",  src: "/ingredientes/icono_coccion_1.png",      alt: "Boton de coccion por un lado" },
+  { id: "coccion_2",  label: "Cocción lado 2", src: "/ingredientes/icono_coccion_2.png", alt: "Boton de coccion por el otro lado" },
+];
+
+{/* Datos de las acciones disponibles para el pan */}
+export const DataAccionPan = [
+  { id: "cortar",  label: "Cortar",   src: "/ingredientes/icono_cuchillo.png",   alt: "Boton para cortar el pan" },
+  { id: "tostar", label: "Tostar",  src: "/ingredientes/icono_tostadora.png",      alt: "Boton para tostar el pan" },
+];
+
+
+
+
+{/* Estatus ingredientes */}
+
+{/* Estatus papas */}
+export const papasEstatusData = [
+    { estatus: "papas_sucias",      src: "/ingredientes/papas_crudas.png",      alt: "Estado actual de las papas: sucias" },
+    { estatus: "papas_limpias",     src: "/ingredientes/papas_limpias.png",     alt: "Estado actual de las papas: limpias" },
+    { estatus: "papas_cortadas",    src: "/ingredientes/papas_cortadas.png",    alt: "Estado actual de las papas: cortadas" },
+    { estatus: "papas_friendo",      src: "/ingredientes/papas_freidas.png",      alt: "Estado actual de las papas: friendo" },
+]
+
+{/* Estatus carne */}
+export const carneEstatusData = [
+    { estatus: "carne_cruda",      src: "/ingredientes/carne_cruda.png",      alt: "Estado actual de la carne: cruda" },
+    { estatus: "carne_formada",     src: "/ingredientes/carne_formada.png",     alt: "Estado actual de la carne: formada" },
+    { estatus: "coccion_1",    src: "/ingredientes/carne_formada_mitad_sarten.png",    alt: "Estado actual de la carne: coccion por un lado uwu" },
+    { estatus: "coccion_2",    src: "/ingredientes/carne_formada_mitad_sarten.png",    alt: "Estado actual de la carne: coccion por el otro lado" },
+]
+
+{/* Estatus pan */}
+export const panEstatusData = [
+    { estatus: "pan_completo",      src: "/ingredientes/pan.png",      alt: "Estado actual del pan: completo" },
+    { estatus: "pan_cortado",     src: "/ingredientes/pan_cortado.png",     alt: "Estado actual del pan: cortado" },
+    { estatus: "pan_tostado",    src: "/ingredientes/pan_cortado_tostado.png",    alt: "Estado actual del: tostado" },
+]

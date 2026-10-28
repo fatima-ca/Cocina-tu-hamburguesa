@@ -9,19 +9,32 @@ import PantallaReceta from '@/components/cocina/PantallaReceta';
 import { contenidoRecetas } from '@/components/cocina/ContenidoRecetas';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 
-{/* Datos de las acciones disponibles para la carne */}
+
+
+/* Datos de las acciones disponibles para la carne */
 const DataAccionCarne = [
-  { id: "formar",  label: "Formar",   src: "/ingredientes/icono_formar_carne.png",   alt: "Boton para formar la carne" },
-  { id: "coccion_1", label: "Cocción lado 1",  src: "/ingredientes/icono_coccion_1.png",      alt: "Boton de coccion por un lado" },
-  { id: "coccion_2",  label: "Cocción lado 2", src: "/ingredientes/icono_coccion_2.png", alt: "Boton de coccion por el otro lado" },
+  { id: "formar",    label: "Formar",         src: "/ingredientes/icono_formar_carne.png",   alt: "Boton para formar la carne" },
+  { id: "coccion_1", label: "Cocción lado 1", src: "/ingredientes/icono_coccion_1.png",      alt: "Boton de coccion por un lado" },
+  { id: "coccion_2", label: "Cocción lado 2", src: "/ingredientes/icono_coccion_2.png",      alt: "Boton de coccion por el otro lado" },
 ];
 
+/* Estatus carne */
+const carneEstatusData = [
+  { estatus: "carne_cruda",   src: "/ingredientes/carne_cruda.png",         alt: "Estado actual de la carne: cruda" },
+  { estatus: "carne_formada", src: "/ingredientes/carne_formada.png",       alt: "Estado actual de la carne: formada" },
+  { estatus: "coccion_1",     src: "/ingredientes/carne_mitad_sarten.png",  alt: "Estado actual de la carne: coccion por un lado" },
+  { estatus: "coccion_2",     src: "/ingredientes/carne_lista_sarten.png",  alt: "Estado actual de la carne: coccion por los dos lados" },
+];
 
 export default function EstacionCarne() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const [cronometroActivo, setCronometroActivo] = useState<boolean>(false);
     const [tiempoRestante, setTiempoRestante] = useState<number>(50);
 
+
+    const [estatusActual, setEstatusActual] = useState<string>("carne_cruda");
+    
+    const estadoActualData = carneEstatusData.find(p => p.estatus === estatusActual) ?? carneEstatusData[0];
 
     useEffect(() => {
         if (!cronometroActivo || tiempoRestante <= 0) return;
@@ -41,16 +54,21 @@ export default function EstacionCarne() {
 
 
     const acciones = {
-        formar:  () => console.log("Formando la carne..."),
+        formar:  () => {
+            console.log("Formando la carne...");
+            setEstatusActual("carne_formada");
+        },
         coccion_1: () => {
             console.log("Cocción por un lado...");
             setCronometroActivo(true);
             setTiempoRestante(120);
+            setEstatusActual("coccion_1");
         },
         coccion_2:  () => {
             console.log("Cocción por el otro lado...");
             setCronometroActivo(true);
             setTiempoRestante(120);
+            setEstatusActual("coccion_2");
         },
     };
 
@@ -114,7 +132,11 @@ export default function EstacionCarne() {
 
                             <div className="relative">
                                 <div className="relative flex items-center justify-center rounded-2xl bg-white p-6">
-                                    <CarneState />
+                                    <CarneEstatus 
+                                        estatus={estadoActualData.estatus}
+                                        src={estadoActualData.src}
+                                        alt={estadoActualData.alt}
+                                    />
                                 </div>
                             </div>
 
@@ -149,12 +171,20 @@ export default function EstacionCarne() {
 };
 
 
-{/* Manejar estado de las papas */}
-function CarneState() {
+
+export type CarneEstatusProps = {
+  estatus: string;
+  src: string;
+  alt: string;
+};
+
+
+function CarneEstatus( { estatus, src, alt }: CarneEstatusProps) {
     return(
         <Image
-            src="/ingredientes/carne_cruda.png"
-            alt="Estado actual de la carne"
+            key={estatus}
+            src={src}
+            alt={alt}
             width={400}
             height={400}
             priority
