@@ -64,9 +64,9 @@ export const DataAccionPapas = [
 
 {/* Datos de las acciones disponibles para la carne */}
 export const DataAccionCarne = [
-  { id: "formar",  label: "Formar",   src: "/ingredientes/icono_formar_carne.png",   alt: "Boton para formar la carne" },
-  { id: "coccion_1", label: "Cocción lado 1",  src: "/ingredientes/icono_coccion_1.png",      alt: "Boton de coccion por un lado" },
-  { id: "coccion_2",  label: "Cocción lado 2", src: "/ingredientes/icono_coccion_2.png", alt: "Boton de coccion por el otro lado" },
+  { id: "formar",    label: "Formar",         src: "/ingredientes/icono_formar_carne.png",   alt: "Boton para formar la carne" },
+  { id: "coccion_1", label: "Cocción lado 1", src: "/ingredientes/icono_coccion_1.png",      alt: "Boton de coccion por un lado" },
+  { id: "coccion_2", label: "Cocción lado 2", src: "/ingredientes/icono_coccion_2.png",      alt: "Boton de coccion por el otro lado" },
 ];
 
 {/* Datos de las acciones disponibles para el pan */}
@@ -90,11 +90,11 @@ export const papasEstatusData = [
 
 {/* Estatus carne */}
 export const carneEstatusData = [
-    { estatus: "carne_cruda",      src: "/ingredientes/carne_cruda.png",      alt: "Estado actual de la carne: cruda" },
-    { estatus: "carne_formada",     src: "/ingredientes/carne_formada.png",     alt: "Estado actual de la carne: formada" },
-    { estatus: "coccion_1",    src: "/ingredientes/carne_formada_mitad_sarten.png",    alt: "Estado actual de la carne: coccion por un lado uwu" },
-    { estatus: "coccion_2",    src: "/ingredientes/carne_formada_mitad_sarten.png",    alt: "Estado actual de la carne: coccion por el otro lado" },
-]
+  { estatus: "carne_cruda",   src: "/ingredientes/carne_cruda.png",         alt: "Estado actual de la carne: cruda" },
+  { estatus: "carne_formada", src: "/ingredientes/carne_formada.png",       alt: "Estado actual de la carne: formada" },
+  { estatus: "coccion_1",     src: "/ingredientes/carne_formada_mitad_sarten.png",  alt: "Estado actual de la carne: coccion por un lado uwu" },
+  { estatus: "coccion_2",     src: "/ingredientes/carne_lista_sarten.png",  alt: "Estado actual de la carne: coccion por los dos lados" },
+];
 
 {/* Estatus pan */}
 export const panEstatusData = [
