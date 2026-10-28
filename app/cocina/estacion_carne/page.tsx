@@ -10,6 +10,7 @@ import { contenidoRecetas } from '@/components/cocina/ContenidoRecetas';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 import { DataAccionCarne } from '@/components/DATA/DataText';
 import { carneEstatusData } from '@/components/DATA/DataText';
+import IngredienteEstatus from '@/components/cocina/cocinar/IngredienteEstatus';
 
 
 export default function EstacionCarne() {
@@ -17,10 +18,8 @@ export default function EstacionCarne() {
     const [cronometroActivo, setCronometroActivo] = useState<boolean>(false);
     const [tiempoRestante, setTiempoRestante] = useState<number>(50);
 
-
     const [estatusActual, setEstatusActual] = useState<string>("carne_cruda");
-    
-   const estadoActualData = carneEstatusData.find(p => p.estatus === estatusActual)!;
+    const estadoActualData = carneEstatusData.find(p => p.estatus === estatusActual)!;
 
     useEffect(() => {
         if (!cronometroActivo || tiempoRestante <= 0) return;
@@ -64,7 +63,7 @@ export default function EstacionCarne() {
             <FondoEstacion />
             <Btns />     
 
-            <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
+            <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8 gap-5">
 
                 {/* Cronómetro y Botón */}
                 {cronometroActivo && (
@@ -108,7 +107,12 @@ export default function EstacionCarne() {
                         </div>
 
                         {/* Botón de detener cocción */}
-                        <BtnDetenerCoccion accion={() => console.log("Deteniendo cocción...")} />
+                        <BtnDetenerCoccion accion={() => 
+                            {
+                                console.log("Deteniendo cocción...");
+                                setCronometroActivo(false);
+                            }} 
+                        />
                     </div>
                 )}
 
@@ -118,7 +122,7 @@ export default function EstacionCarne() {
 
                             <div className="relative">
                                 <div className="relative flex items-center justify-center rounded-2xl bg-white p-6">
-                                    <CarneEstatus 
+                                    <IngredienteEstatus 
                                         estatus={estadoActualData.estatus}
                                         src={estadoActualData.src}
                                         alt={estadoActualData.alt}
@@ -156,26 +160,3 @@ export default function EstacionCarne() {
         </main>
     );
 };
-
-
-
-export type CarneEstatusProps = {
-  estatus: string;
-  src: string;
-  alt: string;
-};
-
-
-function CarneEstatus( { estatus, src, alt }: CarneEstatusProps) {
-    return(
-        <Image
-            key={estatus}
-            src={src}
-            alt={alt}
-            width={400}
-            height={400}
-            priority
-            className="object-contain drop-shadow-2xl"
-        />
-    );
-}
