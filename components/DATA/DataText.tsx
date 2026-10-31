@@ -23,20 +23,20 @@ export const ingredientes = [
 ];
 
 export const pasosPapas = [
-    { src: "/ingredientes/papas_lavadas.png", num:"1", instruccion: "Lavar las papas" },
-    { src: "/ingredientes/papas_cortadas.png", num:"2", instruccion: "Cortar las papas" },
-    { src: "/ingredientes/papas_freidas.png", num:"3", instruccion: "Cocción de papas [5min]" },
+    { src: "/ingredientes/papas_variantes/papas_lavadas.png", num:"1", instruccion: "Lavar las papas" },
+    { src: "/ingredientes/papas_variantes/papas_limpia_cortada_cruda.png", num:"2", instruccion: "Cortar las papas" },
+    { src: "/ingredientes/papas_variantes/papas_freidas.png", num:"3", instruccion: "Cocción de papas", tiempo: "4:50 - 5:00 min"},
 ];
 
 export const pasosCarne = [
     { src: "/ingredientes/carne_formada.png", num:"1", instruccion: "Formar la carne" },
-    { src: "/ingredientes/carne_formada_mitad_sarten.png", num:"2", instruccion: "Cocción por lado 1 [2min]" },
-    { src: "/ingredientes/carne_lista_sarten.png", num:"3", instruccion: "Cocción por lado 2 [2min]" },
+    { src: "/ingredientes/carne_formada_mitad_sarten.png", num:"2", instruccion: "Cocción por lado 1", tiempo: "1:50 - 2:00 min"  },
+    { src: "/ingredientes/carne_lista_sarten.png", num:"3", instruccion: "Cocción por lado 2", tiempo: "1:50 - 2:00 min" },
 ];
 
 export const pasosPan = [
     { src: "/ingredientes/pan_cortado.png", num:"1", instruccion: "Cortar el pan" },
-    { src: "/ingredientes/pan_cortado_tostado.png", num:"2", instruccion: "Tostar el pan" },
+    { src: "/ingredientes/pan_cortado_tostado.png", num:"2", instruccion: "Tostar el pan", tiempo: "1:50 - 2:00 min" },
 ];
 
 export const pasosEnsamblaje = [
@@ -82,23 +82,109 @@ export const DataAccionPan = [
 
 {/* Estatus papas */}
 export const papasEstatusData = [
-    { estatus: "papas_sucias",      src: "/ingredientes/papas_crudas.png",      alt: "Estado actual de las papas: sucias" },
-    { estatus: "papas_limpias",     src: "/ingredientes/papas_limpias.png",     alt: "Estado actual de las papas: limpias" },
-    { estatus: "papas_cortadas",    src: "/ingredientes/papas_cortadas.png",    alt: "Estado actual de las papas: cortadas" },
-    { estatus: "papas_friendo",      src: "/ingredientes/papas_freidas.png",      alt: "Estado actual de las papas: friendo" },
+    // papas sucias y enteras
+    { estatus: "papas_sucia_entera_cruda",      src: "/ingredientes/papas_variantes/papas_sucia_entera_cruda.png",      alt: "Estado actual de las papas: sucia, entera, cruda" },
+    { estatus: "papas_sucia_entera_cocida",     src: "/ingredientes/papas_variantes/papas_sucia_entera_cocida.png",     alt: "Estado actual de las papas: sucia, entera, cocida" },
+    { estatus: "papas_sucia_entera_quemada",    src: "/ingredientes/papas_variantes/papas_sucia_entera_quemada.png",    alt: "Estado actual de las papas: sucia, entera, quemada" },
+
+    // papas sucias y cortadas
+    { estatus: "papas_sucia_cortada_cruda",     src: "/ingredientes/papas_variantes/papas_sucia_cortada_cruda.png",     alt: "Estado actual de las papas: sucia, cortada, cruda" },
+    { estatus: "papas_sucia_cortada_cocida",    src: "/ingredientes/papas_variantes/papas_sucia_cortada_cocida.png",    alt: "Estado actual de las papas: sucia, cortada, cocida" },
+    { estatus: "papas_sucia_cortada_quemada",   src: "/ingredientes/papas_variantes/papas_sucia_cortada_quemada.png",   alt: "Estado actual de las papas: sucia, cortada, quemada" },
+
+    //papas limpias y enteras
+    { estatus: "papas_limpia_entera_cruda",     src: "/ingredientes/papas_variantes/papas_limpia_entera_cruda.png",     alt: "Estado actual de las papas: limpia, entera, cruda" },
+    { estatus: "papas_limpia_entera_cocida",    src: "/ingredientes/papas_variantes/papas_limpia_entera_cocida.png",    alt: "Estado actual de las papas: limpia, entera, cocida" },
+    { estatus: "papas_limpia_entera_quemada",   src: "/ingredientes/papas_variantes/papas_limpia_entera_quemada.png",   alt: "Estado actual de las papas: limpia, entera, quemada" },
+
+    //papas limpias y cortadas
+    { estatus: "papas_limpia_cortada_cruda",    src: "/ingredientes/papas_variantes/papas_limpia_cortada_cruda.png",    alt: "Estado actual de las papas: limpia, cortada, cruda" },
+    { estatus: "papas_limpia_cortada_cocida",   src: "/ingredientes/papas_variantes/papas_limpia_cortada_cocida.png",   alt: "Estado actual de las papas: limpia, cortada, cocida" },
+    { estatus: "papas_limpia_cortada_quemada",  src: "/ingredientes/papas_variantes/papas_limpia_cortada_quemada.png",  alt: "Estado actual de las papas: limpia, cortada, quemada" },
+
+    { estatus: "papas_friendo",                 src: "/ingredientes/papas_variantes/papas_freidas.png",                 alt: "Estado actual de las papas: friendo" },
+    { estatus: "papas_fritas",                  src: "/ingredientes/papas_variantes/papas_listas.png",                  alt: "Estado actual de las papas: fritas" },
 ]
 
 {/* Estatus carne */}
 export const carneEstatusData = [
-  { estatus: "carne_cruda",   src: "/ingredientes/carne_cruda.png",         alt: "Estado actual de la carne: cruda" },
-  { estatus: "carne_formada", src: "/ingredientes/carne_formada.png",       alt: "Estado actual de la carne: formada" },
-  { estatus: "coccion_1",     src: "/ingredientes/carne_formada_mitad_sarten.png",  alt: "Estado actual de la carne: coccion por un lado uwu" },
-  { estatus: "coccion_2",     src: "/ingredientes/carne_lista_sarten.png",  alt: "Estado actual de la carne: coccion por los dos lados" },
+    // carne no-formada, lado-a-crudo
+    { estatus: "carne_noformada_a-crudo_b-crudo",       src: "/ingredientes/carne_variantes/carne_noformada_a-crudo_b-crudo.png",     alt: "Estado actual de la carne: no formada, dos lados crudos" },
+    { estatus: "carne_noformada_a-crudo_b-cocido",      src: "/ingredientes/carne_variantes/carne_noformada_a-crudo_b-cocido.png",    alt: "Estado actual de la carne: no formada, un lado crudo, un lado cocinado" },
+    { estatus: "carne_noformada_a-crudo_b-quemado",     src: "/ingredientes/carne_variantes/carne_noformada_a-crudo_b-quemado.png",   alt: "Estado actual de la carne: no formada, un lado crudo, un lado quemado" },
+
+    // carne no-formada, lado-a-cocido
+    { estatus: "carne_noformada_a-cocido_b-crudo",      src: "/ingredientes/carne_variantes/carne_noformada_a-cocido_b-crudo.png",    alt: "Estado actual de la carne: no formada, un lado cocido, un lado crudo" },
+    { estatus: "carne_noformada_a-cocido_b-cocido",     src: "/ingredientes/carne_variantes/carne_noformada_a-cocido_b-cocido.png",   alt: "Estado actual de la carne: no formada, un lado cocido, un lado crudo" },
+    { estatus: "carne_noformada_a-cocido_b-quemada",    src: "/ingredientes/carne_variantes/carne_noformada_a-cocido_b-quemado.png",  alt: "Estado actual de la carne: no formada, un lado cocido, un lado crudo" },
+
+    // carne no-formada, lado-a-quemado
+    { estatus: "carne_noformada_a-quemado_b-crudo",     src: "/ingredientes/carne_variantes/carne_noformada_a-quemado_b-crudo.png",   alt: "Estado actual de la carne: no formada, un lado quemado, un lado crudo" },
+    { estatus: "carne_noformada_a-quemado_b-cocido",    src: "/ingredientes/carne_variantes/carne_noformada_a-quemado_b-cocido.png",  alt: "Estado actual de la carne: no formada, un lado quemado, un lado cocido" },
+    { estatus: "carne_noformada_a-quemado_b-quemado",   src: "/ingredientes/carne_variantes/carne_noformada_a-quemado_b-quemado.png", alt: "Estado actual de la carne: no formada, dos lados quemados" },
+
+    // carne formada, lado-a-crudo
+    { estatus: "carne_formada_a-crudo_b-crudo",         src: "/ingredientes/carne_variantes/carne_formada_a-crudo_b-crudo.png",       alt: "Estado actual de la carne: formada, dos lados crudos" },
+    { estatus: "carne_formada_a-crudo_b-cocido",        src: "/ingredientes/carne_variantes/carne_formada_a-crudo_b-cocido.png",      alt: "Estado actual de la carne: formada, un lado crudo, un lado cocido" },
+    { estatus: "carne_formada_a-crudo_b-quemado",       src: "/ingredientes/carne_variantes/carne_formada_a-crudo_b-quemado.png",     alt: "Estado actual de la carne: formada, un lado crudo, un lado quemado" },
+
+    // carne formada, lado-a-cocido
+    { estatus: "carne_formada_a-cocido_b-crudo",       src: "/ingredientes/carne_variantes/carne_formada_a-cocido_b-crudo.png",       alt: "Estado actual de la carne: formada, un lado cocido, un lado crudo" },
+    { estatus: "carne_formada_a-cocido_b-cocido",      src: "/ingredientes/carne_variantes/carne_formada_a-cocido_b-cocido.png",      alt: "Estado actual de la carne: formada, dos lados cocidos" },
+    { estatus: "carne_formada_a-cocido_b-quemado",     src: "/ingredientes/carne_variantes/carne_formada_a-cocido_b-quemado.png",     alt: "Estado actual de la carne: formada, un lado cocido, un lado quemado" },
+
+    // carne formada, lado-a-quemado
+    { estatus: "carne_formada_a-quemado_b-crudo",      src: "/ingredientes/carne_variantes/carne_formada_a-quemado_b-crudo.png",      alt: "Estado actual de la carne: formada, un lado quemado, un lado crudo" },
+    { estatus: "carne_formada_a-quemado_b-cocido",     src: "/ingredientes/carne_variantes/carne_formada_a-quemado_b-cocido.png",     alt: "Estado actual de la carne: formada, un lado quemado, un lado cocido" },
+    { estatus: "carne_formada_a-quemado_b-quemado",    src: "/ingredientes/carne_variantes/carne_formada_a-quemado_b-quemado.png",    alt: "Estado actual de la carne: formada, dos lados quemados" },
+
+
+
+  { estatus: "carne_cruda",   src: "/ingredientes/carne_variantes/carne_cruda.png",         alt: "Estado actual de la carne: cruda" },
+  { estatus: "carne_formada", src: "/ingredientes/carne_variantes/carne_formada.png",       alt: "Estado actual de la carne: formada" },
+  { estatus: "coccion_1",     src: "/ingredientes/carne_variantes/carne_formada_mitad_sarten.png",  alt: "Estado actual de la carne: coccion por un lado uwu" },
+  { estatus: "coccion_2",     src: "/ingredientes/carne_variantes/carne_lista_sarten.png",  alt: "Estado actual de la carne: coccion por los dos lados" },
 ];
 
 {/* Estatus pan */}
 export const panEstatusData = [
-    { estatus: "pan_completo",      src: "/ingredientes/pan.png",      alt: "Estado actual del pan: completo" },
-    { estatus: "pan_cortado",     src: "/ingredientes/pan_cortado.png",     alt: "Estado actual del pan: cortado" },
-    { estatus: "pan_tostado",    src: "/ingredientes/pan_cortado_tostado.png",    alt: "Estado actual del: tostado" },
+    //pan completo
+    { estatus: "pan_completo",         src: "/ingredientes/pan_variantes/pan.png",                   alt: "Estado actual del pan: completo" },
+    { estatus: "pan_tostado",          src: "/ingredientes/pan_variantes/pan_tostado.png",           alt: "Estado actual del: tostado" },
+    
+    //pan cortado
+    { estatus: "pan_cortado",          src: "/ingredientes/pan_variantes/pan_cortado.png",           alt: "Estado actual del pan: cortado" },
+    { estatus: "pan_cortado_tostado",  src: "/ingredientes/pan_variantes/pan_cortado_tostado.png",   alt: "Estado actual del pan: cortado y tostado" },
 ]
+
+
+
+// carne no-formada, lado-a-crudo
+    // carne no-formada, lado-a-crudo, lado-b-crudo
+    // carne no-formada, lado-a-crudo, lado-b-cocido
+    // carne no-formada, lado-a-crudo, lado-b-quemado
+
+    // carne no-formada, lado-a-cocido
+    // carne no-formada, lado-a-cocido, lado-b-crudo
+    // carne no-formada, lado-a-cocido, lado-b-cocido
+    // carne no-formada, lado-a-cocido, lado-b-quemado
+
+    // carne no-formada, lado-a-quemado
+    // carne no-formada, lado-a-quemado, lado-b-crudo
+    // carne no-formada, lado-a-quemado, lado-b-cocido
+    // carne no-formada, lado-a-quemado, lado-b-quemado
+
+    // carne formada, lado-a-crudo
+    // carne formada, lado-a-crudo, lado-b-crudo
+    // carne formada, lado-a-crudo, lado-b-cocido
+    // carne formada, lado-a-crudo, lado-b-quemado
+
+    // carne formada, lado-a-cocido
+    // carne formada, lado-a-cocido, lado-b-crudo
+    // carne formada, lado-a-cocido, lado-b-cocido
+    // carne formada, lado-a-cocido, lado-b-quemado
+
+    // carne formada, lado-a-quemado
+    // carne formada, lado-a-quemado, lado-b-crudo
+    // carne formada, lado-a-quemado, lado-b-cocido
+    // carne formada, lado-a-quemado, lado-b-quemado

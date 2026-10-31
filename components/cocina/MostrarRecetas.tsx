@@ -1,4 +1,4 @@
-import { contenidoRecetas } from './ContenidoRecetas';
+import { contenidoRecetas } from '../../public/ingredientes/papas_variantes/ContenidoRecetas';
 import RecetaCard from '@/components/cocina/RecetaCard';
 
 

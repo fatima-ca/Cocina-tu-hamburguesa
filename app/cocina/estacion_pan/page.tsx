@@ -1,32 +1,40 @@
 'use client';
 import { useState } from 'react';
-import Image from 'next/image';
 import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
-import { contenidoRecetas } from '@/components/cocina/ContenidoRecetas';
+import { contenidoRecetas } from '@/public/ingredientes/papas_variantes/ContenidoRecetas';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 import { DataAccionPan } from '@/components/DATA/DataText';
 import { panEstatusData } from '@/components/DATA/DataText';
 import IngredienteEstatus from '@/components/cocina/cocinar/IngredienteEstatus';
-import TablaAcciones from '@/components/cocina/cocinar/TablaAcciones';
+import Cronometro from '@/components/cocina/cocinar/Cronometro';
+import { useCronometros } from '@/components/cocina/cocinar/CronometroContext';
+
 
 
 export default function EstacionPan() {
     const [abierta, setAbierta] = useState<boolean>(true);
+    const { cronometros, iniciar, detener } = useCronometros();
+    const cronometro = cronometros.pan;
+
     const [estatusActual, setEstatusActual] = useState<string>("pan_completo");
+    const [pasoActual, setPasoActual] = useState(0);
     
     const estadoActualData = panEstatusData.find(p => p.estatus === estatusActual)!;
 
     const acciones = {
         cortar:  () => {
-            console.log("Cortando el pan...")
+            if (cronometro.activo || pasoActual >= 1) return;
+            setPasoActual(1);
             setEstatusActual("pan_cortado");
         },
         tostar: () => {
-            console.log("Tostando el pan...")
-            setEstatusActual("pan_tostado");
+            if (cronometro.activo || pasoActual >= 2) return;
+            setPasoActual(2);
+            setEstatusActual(estatusActual === "pan_completo" ? "pan_tostado" : "pan_cortado_tostado");
+            iniciar('pan');
         },
     };    
 
@@ -36,6 +44,16 @@ export default function EstacionPan() {
             <Btns />
             
             <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
+                <div className='absolute left-32 top-1/2 -translate-y-1/2 z-30'>
+                    <Cronometro
+                        tiempoInicial={cronometro.duracion}
+                        tiempoRestante={cronometro.tiempoRestante}
+                        activo={cronometro.activo}
+                        titulo={"Tostando"}
+                        onDetener={() => detener('pan')}
+                    />  
+                </div>
+                
                 <div className="relative w-full max-w-4xl rounded-3xl bg-amber-800 p-8">
                     <div className="relative z-10 flex flex-col items-center gap-8">
 
@@ -57,6 +75,11 @@ export default function EstacionPan() {
                                     alt={item.alt}
                                     label={item.label}
                                     accion={acciones[item.id as keyof typeof acciones] || (() => {})}
+                                    disabled={
+                                        cronometro.activo ||
+                                        (item.id === "cortar" && pasoActual >= 1) ||
+                                        (item.id === "tostar" && pasoActual >= 2)
+                                    }
                                 />
                             ))}
                         </div>
@@ -77,6 +100,5 @@ export default function EstacionPan() {
         </main>
     );
 };
-
 
 

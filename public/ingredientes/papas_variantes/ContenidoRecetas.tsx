@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { ingredientes, pasosPapas, pasosCarne, pasosPan, pasosEnsamblaje } from "../DATA/DataText";
+import { ingredientes, pasosPapas, pasosCarne, pasosPan, pasosEnsamblaje } from "../../../components/DATA/DataText";
+import CronometroReceta from "../../../components/cocina/cocinar/CronometroReceta";
 
 
 export const contenidoRecetas=[
@@ -63,7 +64,7 @@ export const contenidoRecetas=[
     {
         titulo: "Cómo preparar las papas",
         contenido: (
-            <>
+            <div className="relative">
                 <div className="grid grid-cols-2 gap-8 items-center">
     
                     <div className="flex flex-col items-center justify-center space-y-10">
@@ -106,17 +107,33 @@ export const contenidoRecetas=[
                                     />
                                 </div>
 
-                                <div className="col-start-4 col-end-6 flex flex-col items-center"> 
-                                    <span className="text-3xl text-amber-900 font-semibold text-center">
-                                        {paso.instruccion}
-                                    </span>
-                                </div>
+                                <div className="col-start-4 col-end-6 flex flex-col items-center">
 
+                                    {paso.tiempo!=null ? (
+                                        <div className="grid grid-flow-col grid-rows-2">
+                                            <span className="text-3xl text-amber-900 font-semibold text-center">
+                                                {paso.instruccion}
+                                            </span>
+                                            <span className="text-lg text-amber-900 font-light text-center">
+                                                Retirar entre <br/>{paso.tiempo}
+                                            </span>
+                                        </div> 
+                                    ): (
+                                        <>
+                                            <span className="text-3xl text-amber-900 font-semibold text-center">
+                                                {paso.instruccion}
+                                            </span>
+                                        </> 
+                                    )}
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
-            </>
+                <div className='absolute left-50 top-1/2 z-30'>
+                    <CronometroReceta tipo="papas" />
+                </div>
+            </div>
         )
     },
 
@@ -168,14 +185,30 @@ export const contenidoRecetas=[
                                 </div>
 
                                 <div className="col-start-4 col-end-6 flex flex-col items-center"> 
-                                    <span className="text-2xl text-amber-900 font-semibold text-center">
-                                        {paso.instruccion}
-                                    </span>
+                                    {paso.tiempo!=null ? (
+                                        <div className="grid grid-flow-col grid-rows-2">
+                                            <span className="text-3xl text-amber-900 font-semibold text-center">
+                                                {paso.instruccion}
+                                            </span>
+                                            <span className="text-lg text-amber-900 font-light text-center">
+                                                Retirar entre <br/>{paso.tiempo}
+                                            </span>
+                                        </div> 
+                                    ): (
+                                        <>
+                                            <span className="text-3xl text-amber-900 font-semibold text-center">
+                                                {paso.instruccion}
+                                            </span>
+                                        </> 
+                                    )}
                                 </div>
 
                             </div>
                         ))}
                     </div>
+                </div>
+                <div className='absolute left-120 top-1/2 z-30'>
+                    <CronometroReceta tipo="carne" />
                 </div>
             </>
         )
@@ -229,14 +262,30 @@ export const contenidoRecetas=[
                                 </div>
 
                                 <div className="col-start-4 col-end-6 flex flex-col items-center"> 
-                                    <span className="text-3xl text-amber-900 font-semibold text-center">
-                                        {paso.instruccion}
-                                    </span>
+                                    {paso.tiempo!=null ? (
+                                        <div className="grid grid-flow-col grid-rows-2">
+                                            <span className="text-3xl text-amber-900 font-semibold text-center">
+                                                {paso.instruccion}
+                                            </span>
+                                            <span className="text-lg text-amber-900 font-light text-center">
+                                                Retirar entre <br/>{paso.tiempo}
+                                            </span>
+                                        </div> 
+                                    ): (
+                                        <>
+                                            <span className="text-3xl text-amber-900 font-semibold text-center">
+                                                {paso.instruccion}
+                                            </span>
+                                        </> 
+                                    )}
                                 </div>
 
                             </div>
                         ))}
                     </div>
+                </div>
+                <div className='absolute left-120 top-1/2 z-30'>
+                    <CronometroReceta tipo="pan" />
                 </div>
             </>
         )

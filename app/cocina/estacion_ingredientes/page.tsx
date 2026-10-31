@@ -5,7 +5,7 @@ import FondoEstacion from '@/components/general/FondoEstacion';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
 import Btns from '@/components/general/Btns';
-import { contenidoRecetas } from '@/components/cocina/ContenidoRecetas';
+import { contenidoRecetas } from '@/public/ingredientes/papas_variantes/ContenidoRecetas';
 import { ingredientes } from '@/components/DATA/DataText';
 
 const ingredientesExtendidos = [

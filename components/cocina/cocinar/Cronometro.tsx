@@ -1,53 +1,36 @@
 'use client';
-import { useState, useEffect } from 'react';
 import BtnDetenerCoccion from './BtnDetenerCoccion';
 
 interface CronometroProps {
-  tiempoInicial: number;       // Tiempo con el que inicia (ej: 120)
-  activo: boolean;             // Controla si está corriendo
+  tiempoInicial: number;
+  tiempoRestante: number;
+  activo: boolean;
   titulo: string;
-  onDetener?: () => void;      // Callback cuando el usuario lo detiene
-  onFinalizar?: () => void;    // Callback cuando llega a 0
+  onDetener?: () => void;
+  mostrarBotonDetener?: boolean;
 }
 
-export default function Cronometro( {tiempoInicial, activo, onDetener, titulo, onFinalizar}: CronometroProps) {
-  const [tiempoRestante, setTiempoRestante] = useState<number>(tiempoInicial);
-
-  // Resetear el tiempo cuando se activa el cronómetro
-  useEffect(() => {
-    if (activo) {
-      setTiempoRestante(tiempoInicial);
-    }
-  }, [activo, tiempoInicial]);
-
-  // Lógica del intervalo
-  useEffect(() => {
-    if (!activo || tiempoRestante <= 0) return;
-
-    const interval = setInterval(() => {
-      setTiempoRestante((prev) => {
-        if (prev <= 1) {
-          onFinalizar?.();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [activo, tiempoRestante, onFinalizar]);
-
+export default function Cronometro({
+  tiempoInicial,
+  tiempoRestante,
+  activo,
+  onDetener,
+  titulo,
+  mostrarBotonDetener = true,
+}: CronometroProps) {
   const handleDetener = () => {
     onDetener?.();
   };
 
-  // Progreso del círculo (usamos tiempoInicial como máximo)
-  const progreso = (tiempoRestante / tiempoInicial) * 283;
+  const tiempoTranscurrido = Math.max(0, tiempoInicial - tiempoRestante);
+  const minutos = Math.floor(tiempoTranscurrido / 60).toString().padStart(2, '0');
+  const segundos = (tiempoTranscurrido % 60).toString().padStart(2, '0');
+  const progreso = (tiempoTranscurrido / tiempoInicial) * 283;
 
   if (!activo) return null;
 
   return (
-    <div className="flex flex-col items-center gap-6 animate-in fade-in slide-in-from-right-4 duration-300">
+    <div className="flex flex-col items-center gap-6 animate-in duration-300">
       {/* Cronómetro */}
       <div className="flex flex-col items-center gap-2">
         <div className="relative flex items-center justify-center">
@@ -75,8 +58,8 @@ export default function Cronometro( {tiempoInicial, activo, onDetener, titulo, o
               />
             </svg>
 
-            <span className="relative z-10 text-5xl font-black text-white drop-shadow-lg">
-              {tiempoRestante}
+            <span className="relative z-10 text-5xl font-black tabular-nums text-white drop-shadow-lg">
+              {minutos}:{segundos}
             </span>
           </div>
         </div>
@@ -86,8 +69,7 @@ export default function Cronometro( {tiempoInicial, activo, onDetener, titulo, o
         </span>
       </div>
 
-      {/* Botón de detener cocción */}
-      <BtnDetenerCoccion accion={handleDetener} />
+      {mostrarBotonDetener && <BtnDetenerCoccion accion={handleDetener} />}
     </div>
   );
 }

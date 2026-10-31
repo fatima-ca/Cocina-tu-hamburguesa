@@ -1,36 +1,70 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
-import { contenidoRecetas } from '@/components/cocina/ContenidoRecetas';
+import { contenidoRecetas } from '@/public/ingredientes/papas_variantes/ContenidoRecetas';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 import { DataAccionPapas } from '@/components/DATA/DataText';
 import { papasEstatusData } from '@/components/DATA/DataText';
 import IngredienteEstatus from '@/components/cocina/cocinar/IngredienteEstatus';
 import Cronometro from '@/components/cocina/cocinar/Cronometro';
+import { useCronometros } from '@/components/cocina/cocinar/CronometroContext';
 
 
 
 export default function EstacionPapas() {
     const [abierta, setAbierta] = useState<boolean>(true);
-    const [cronometroActivo, setCronometroActivo] = useState<boolean>(false);
+    const { cronometros, iniciar, detener } = useCronometros();
+    const cronometro = cronometros.papas;
 
-    const [estatusActual, setEstatusActual] = useState<string>("papas_sucias");
-    const estadoActualData = papasEstatusData.find(p => p.estatus === estatusActual)!;
+    const [estatusActual, setEstatusActual] = useState<string>("papas_sucia_entera_cruda");
+    const [estatusBaseCoccion, setEstatusBaseCoccion] = useState("papas_sucia_entera_cruda");
+    const [pasoActual, setPasoActual] = useState(0);
+    const estatusVisible = cronometro.completado
+        ? estatusBaseCoccion.replace(/_cruda$/, "_quemada")
+        : estatusActual;
+    const estadoActualData = papasEstatusData.find(p => p.estatus === estatusVisible)!;
 
+    const detenerCoccion = () => {
+        const tiempoTranscurrido = cronometro.fechaFinalizacion === null
+            ? cronometro.duracion - cronometro.tiempoRestante
+            : cronometro.duracion - Math.max(
+                0,
+                Math.ceil((cronometro.fechaFinalizacion - Date.now()) / 1000),
+            );
+
+        detener('papas');
+        const resultadoCoccion = tiempoTranscurrido <= 290
+            ? "cruda"
+            : tiempoTranscurrido <= 300
+                ? "cocida"
+                : "quemada";
+        setEstatusActual(estatusBaseCoccion.replace(/_cruda$/, `_${resultadoCoccion}`));
+    };
 
     const acciones = {
         lavar:  () => {
-            setEstatusActual("papas_limpias");
+            if (cronometro.activo || pasoActual >= 1) return;
+            setPasoActual(1);
+            const nuevoEstatus = estatusActual.replace("_sucia_", "_limpia_");
+            setEstatusActual(nuevoEstatus);
+            setEstatusBaseCoccion(nuevoEstatus);
         },
         cortar: () => {
-            setEstatusActual("papas_cortadas");
+            if (cronometro.activo || pasoActual >= 2) return;
+            setPasoActual(2);
+            const nuevoEstatus = estatusActual.replace("_entera_cruda", "_cortada_cruda");
+            setEstatusActual(nuevoEstatus);
+            setEstatusBaseCoccion(nuevoEstatus);
         },
         freir:  () => {
-            setCronometroActivo(true);
+            if (cronometro.activo || pasoActual >= 3) return;
+            setPasoActual(3);
+            setEstatusBaseCoccion(estatusActual);
             setEstatusActual("papas_friendo");
+            iniciar('papas');
         },
     };
 
@@ -39,23 +73,18 @@ export default function EstacionPapas() {
             <FondoEstacion />
             <Btns />
 
-            <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8 gap-5">
+            <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
 
-                <Cronometro
-                    tiempoInicial={300}
-                    activo={cronometroActivo}
-                    titulo={"Friendo"}
-                    onDetener={() => {
-                        console.log("Deteniendo cocción...");
-                        setCronometroActivo(false);
-                    }}
-                    onFinalizar={() => {
-                        console.log("¡Cocción terminada!");
-                        setCronometroActivo(false);
-                        setEstatusActual("papas_fritas");
-                    }}
-                />   
-                
+                <div className='absolute left-32 top-1/2 -translate-y-1/2 z-30'>
+                    <Cronometro
+                        tiempoInicial={cronometro.duracion}
+                        tiempoRestante={cronometro.tiempoRestante}
+                        activo={cronometro.activo}
+                        titulo={"Friendo"}
+                        onDetener={detenerCoccion}
+                    />   
+                </div>
+
                 <div className="relative w-full max-w-4xl rounded-3xl bg-amber-800 p-8">
                     <div className="relative z-10 flex flex-col items-center gap-8">
 
@@ -65,6 +94,7 @@ export default function EstacionPapas() {
                                     estatus={estadoActualData.estatus}
                                     src={estadoActualData.src}
                                     alt={estadoActualData.alt}
+                                    blur={cronometro.activo}
                                 />
                             </div>
                         </div>
@@ -77,6 +107,12 @@ export default function EstacionPapas() {
                                     alt={item.alt}
                                     label={item.label}
                                     accion={acciones[item.id as keyof typeof acciones] || (() => {})}
+                                    disabled={
+                                        cronometro.activo ||
+                                        (item.id === "lavar" && pasoActual >= 1) ||
+                                        (item.id === "cortar" && pasoActual >= 2) ||
+                                        (item.id === "freir" && pasoActual >= 3)
+                                    }
                                 />
                             ))}
                         </div>
