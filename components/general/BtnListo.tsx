@@ -9,6 +9,7 @@ type BtnListoProps = {
 export default function BtnListo ({ accion, disabled }: BtnListoProps) {
     return (
         <button
+            type="button"
             onClick={accion}
             disabled={disabled}
             className="group relative transition-transform duration-200 ease-out hover:scale-110 active:scale-95 animate-[pulse-soft_2s_ease-in-out_infinite]"

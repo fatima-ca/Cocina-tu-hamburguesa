@@ -4,7 +4,7 @@ import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
-import { contenidoRecetas } from '@/public/ingredientes/papas_variantes/ContenidoRecetas';
+import { contenidoRecetas } from '@/components/DATA/ContenidoRecetas';
 import TablaEnsamblaje from '@/components/cocina/ensamblaje/TablaEnsamblaje';
 
 

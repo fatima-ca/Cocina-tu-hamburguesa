@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CronometroProvider } from "@/components/cocina/cocinar/CronometroContext";
+import { IngredientesProvider } from "@/components/cocina/ingredientes/IngredientesContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +26,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <CronometroProvider>{children}</CronometroProvider>
+        <IngredientesProvider>
+          <CronometroProvider>{children}</CronometroProvider>
+        </IngredientesProvider>
       </body>
     </html>
   );

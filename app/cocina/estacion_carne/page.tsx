@@ -4,13 +4,14 @@ import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
-import { contenidoRecetas } from '@/public/ingredientes/papas_variantes/ContenidoRecetas';
+import { contenidoRecetas } from '@/components/DATA/ContenidoRecetas';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 import { DataAccionCarne } from '@/components/DATA/DataText';
 import { carneEstatusData } from '@/components/DATA/DataText';
 import IngredienteEstatus from '@/components/cocina/cocinar/IngredienteEstatus';
 import Cronometro from '@/components/cocina/cocinar/Cronometro';
 import { useCronometros } from '@/components/cocina/cocinar/CronometroContext';
+import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesContext';
 
 
 type LadoCarne = 'a' | 'b';
@@ -28,6 +29,8 @@ function actualizarLadoCarne(estatus: string, lado: LadoCarne, resultado: Result
 export default function EstacionCarne() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const { cronometros, iniciar, detener } = useCronometros();
+    const { ingredientesSeleccionados } = useIngredientes();
+    const carneSeleccionada = ingredientesSeleccionados.includes('carne');
     const cronometro = cronometros.carne;
 
     const [estatusActual, setEstatusActual] = useState<string>("carne_noformada_a-crudo_b-crudo");
@@ -104,12 +107,14 @@ export default function EstacionCarne() {
 
                             <div className="relative">
                                 <div className="relative flex items-center justify-center rounded-2xl bg-white p-6">
-                                    <IngredienteEstatus 
-                                        estatus={estadoActualData.estatus}
-                                        src={estadoActualData.src}
-                                        alt={estadoActualData.alt}
-                                        blur={cronometro.activo}
-                                    />
+                                    {carneSeleccionada && (
+                                        <IngredienteEstatus 
+                                            estatus={estadoActualData.estatus}
+                                            src={estadoActualData.src}
+                                            alt={estadoActualData.alt}
+                                            blur={cronometro.activo}
+                                        />
+                                    )}
                                 </div>
                             </div>
 
@@ -122,6 +127,7 @@ export default function EstacionCarne() {
                                         label={item.label}
                                         accion={acciones[item.id as keyof typeof acciones] || (() => {})}
                                         disabled={
+                                            !carneSeleccionada ||
                                             cronometro.activo ||
                                             (item.id === "formar" && pasoActual >= 1) ||
                                             (item.id === "coccion_1" && pasoActual >= 2) ||

@@ -1,23 +1,47 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import FondoEstacion from '@/components/general/FondoEstacion';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
 import Btns from '@/components/general/Btns';
-import { contenidoRecetas } from '@/public/ingredientes/papas_variantes/ContenidoRecetas';
-import { ingredientes } from '@/components/DATA/DataText';
+import { contenidoRecetas } from '@/components/DATA/ContenidoRecetas';
+import { useIngredientes, type IngredienteId } from '@/components/cocina/ingredientes/IngredientesContext';
 
-const ingredientesExtendidos = [
-  ...ingredientes,
-  { src: "/ingredientes/piña.png", nombre: "Piña" }, // 8 - piña
-  { src: "/ingredientes/tocino.png", nombre: "Tocino" }, // 9 - tocino
-  { src: "/ingredientes/huevo.png", nombre: "Huevo" }, // 10 - huevo
-  { src: "/ingredientes/frijoles.png", nombre: "Frijoles" }, // 11 - frijoles
+const ingredientesDisponibles: IngredienteCardProps[] = [
+    { id: 'papas', src: "/ingredientes/papas_crudas.png", nombre: "Papas", alt: "Seleccionar papas" },
+    { id: 'pina', src: "/ingredientes/piña.png", nombre: "Piña", alt: "Seleccionar piña" },
+    { id: 'lechuga', src: "/ingredientes/lechuga.png", nombre: "Lechuga", alt: "Seleccionar lechuga" },
+    { id: 'mostaza', src: "/ingredientes/mostaza.png", nombre: "Mostaza", alt: "Seleccionar mostaza" },
+    { id: 'tomate', src: "/ingredientes/tomate.png", nombre: "Tomate", alt: "Seleccionar tomate" },
+    { id: 'carne', src: "/ingredientes/carne_cruda.png", nombre: "Carne", alt: "Seleccionar carne cruda" },
+    { id: 'tocino', src: "/ingredientes/tocino.png", nombre: "Tocino", alt: "Seleccionar tocino" },
+    { id: 'pan', src: "/ingredientes/pan.png", nombre: "Pan", alt: "Seleccionar pan" },
+    { id: 'mayonesa', src: "/ingredientes/mayonesa.png", nombre: "Mayonesa", alt: "Seleccionar mayonesa" },
+    { id: 'huevo', src: "/ingredientes/huevo.png", nombre: "Huevo", alt: "Seleccionar huevo" },
+    { id: 'queso', src: "/ingredientes/queso.png", nombre: "Queso", alt: "Seleccionar queso" },
+    { id: 'frijoles', src: "/ingredientes/frijoles.png", nombre: "Frijoles", alt: "Seleccionar frijoles" },
 ];
 
 export default function EstacionIngredientes() {
+    const pathname = usePathname();
+
+    return <ContenidoEstacionIngredientes key={pathname} />;
+}
+
+function ContenidoEstacionIngredientes() {
     const [abierta, setAbierta] = useState<boolean>(true);
+    const { ingredientesSeleccionados, guardarIngredientes } = useIngredientes();
+    const [seleccionBorrador, setSeleccionBorrador] = useState<IngredienteId[]>(ingredientesSeleccionados);
+
+    function alternarIngrediente(id: IngredienteId) {
+        setSeleccionBorrador((seleccionActual) =>
+            seleccionActual.includes(id)
+                ? seleccionActual.filter((ingrediente) => ingrediente !== id)
+                : [...seleccionActual, id],
+        );
+    }
 
     return(
         <main className="grid min-h-screen w-full grid-cols-6">
@@ -40,94 +64,19 @@ export default function EstacionIngredientes() {
                     </div>
 
                     <div className='grid grid-cols-4 gap-4'>
-                        {/* papas */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[7].src}
-                            alt="Seleccionar papas"
-                            nombre={ingredientesExtendidos[7].nombre}
-                        />
-
-                        {/* piña */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[8].src}
-                            alt="Seleccionar piña"
-                            nombre={ingredientesExtendidos[8].nombre}
-                        />
-
-                        {/* lechuga */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[0].src}
-                            alt="Seleccionar lechuga"
-                            nombre={ingredientesExtendidos[0].nombre}
-                        />
-
-                        {/* mostaza */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[4].src}
-                            alt="Seleccionar mostaza"
-                            nombre={ingredientesExtendidos[4].nombre}
-                        />
-
-                        {/* tomate */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[2].src}
-                            alt="Seleccionar tomate"
-                            nombre={ingredientesExtendidos[2].nombre}
-                        />
-
-                        {/* carne */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[1].src}
-                            alt="Seleccionar carne cruda"
-                            nombre={ingredientesExtendidos[1].nombre}
-                        />
-
-                        {/* tocino */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[9].src}
-                            alt="Seleccionar tocino"
-                            nombre={ingredientesExtendidos[9].nombre}
-                        />
-
-                        {/* pan */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[6].src}
-                            alt="Seleccionar pan"
-                            nombre={ingredientesExtendidos[6].nombre}
-                        />
-
-                        {/* mayonesa */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[3].src}
-                            alt="Seleccionar mayonesa"
-                            nombre={ingredientesExtendidos[3].nombre}
-                        />
-
-                        {/* huevo */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[10].src}
-                            alt="Seleccionar huevo"
-                            nombre={ingredientesExtendidos[10].nombre}
-                        />
-
-                        {/* queso */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[5].src}
-                            alt="Seleccionar queso"
-                            nombre={ingredientesExtendidos[5].nombre}
-                        />
-
-                        {/* frijoles */}
-                        <IngredienteCard
-                            src={ingredientesExtendidos[11].src}
-                            alt="Seleccionar frijoles"
-                            nombre={ingredientesExtendidos[11].nombre}
-                        />
+                        {ingredientesDisponibles.map((ingrediente) => (
+                            <IngredienteCard
+                                key={ingrediente.id}
+                                {...ingrediente}
+                                seleccionado={seleccionBorrador.includes(ingrediente.id)}
+                                onClick={() => alternarIngrediente(ingrediente.id)}
+                            />
+                        ))}
                     </div>
                 </div>  
             </div>
 
-            <Btns />
+            <Btns accionListo={() => guardarIngredientes(seleccionBorrador)} />
 
             
     
@@ -151,27 +100,27 @@ export default function EstacionIngredientes() {
 
 
 interface IngredienteCardProps {
+  id: IngredienteId;
   src: string;
   alt: string;
   nombre: string;
+  seleccionado?: boolean;
+  onClick?: () => void;
 }
 
 
-function IngredienteCard ( {
+function IngredienteCard({
   src,
   alt,
-  nombre
-} : IngredienteCardProps ) {
-
-    const [seleccionado, setSeleccionado] = useState<boolean>(false);
- 
-    function handleClick() {
-        setSeleccionado((prev) => !prev);
-    }
-    
+  nombre,
+  seleccionado = false,
+  onClick,
+}: IngredienteCardProps) {
     return(
         <button 
-            onClick={handleClick}
+            type="button"
+            onClick={onClick}
+            aria-pressed={seleccionado}
             className={`flex flex-col items-center justify-between w-45 h-40 rounded-2xl p-3 transition-all duration-200 shadow-md hover:shadow-lg bg-amber-300
                         ${seleccionado ? 'ring-4 ring-green-600 scale-102' : ' hover:bg-amber-400 hover:scale-102 active:scale-95'}`}
         >

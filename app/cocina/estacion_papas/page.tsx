@@ -4,19 +4,22 @@ import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
-import { contenidoRecetas } from '@/public/ingredientes/papas_variantes/ContenidoRecetas';
+import { contenidoRecetas } from '@/components/DATA/ContenidoRecetas';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 import { DataAccionPapas } from '@/components/DATA/DataText';
 import { papasEstatusData } from '@/components/DATA/DataText';
 import IngredienteEstatus from '@/components/cocina/cocinar/IngredienteEstatus';
 import Cronometro from '@/components/cocina/cocinar/Cronometro';
 import { useCronometros } from '@/components/cocina/cocinar/CronometroContext';
+import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesContext';
 
 
 
 export default function EstacionPapas() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const { cronometros, iniciar, detener } = useCronometros();
+    const { ingredientesSeleccionados } = useIngredientes();
+    const papasSeleccionadas = ingredientesSeleccionados.includes('papas');
     const cronometro = cronometros.papas;
 
     const [estatusActual, setEstatusActual] = useState<string>("papas_sucia_entera_cruda");
@@ -89,12 +92,14 @@ export default function EstacionPapas() {
 
                         <div className="relative">
                             <div className="relative flex items-center justify-center rounded-2xl bg-white p-6">
-                                <IngredienteEstatus
-                                    estatus={estadoActualData.estatus}
-                                    src={estadoActualData.src}
-                                    alt={estadoActualData.alt}
-                                    blur={cronometro.activo}
-                                />
+                                {papasSeleccionadas && (
+                                    <IngredienteEstatus
+                                        estatus={estadoActualData.estatus}
+                                        src={estadoActualData.src}
+                                        alt={estadoActualData.alt}
+                                        blur={cronometro.activo}
+                                    />
+                                )}
                             </div>
                         </div>
 
@@ -107,6 +112,7 @@ export default function EstacionPapas() {
                                     label={item.label}
                                     accion={acciones[item.id as keyof typeof acciones] || (() => {})}
                                     disabled={
+                                        !papasSeleccionadas ||
                                         cronometro.activo ||
                                         (item.id === "lavar" && pasoActual >= 1) ||
                                         (item.id === "cortar" && pasoActual >= 2) ||

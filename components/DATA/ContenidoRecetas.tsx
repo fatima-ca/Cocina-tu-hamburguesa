@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { ingredientes, pasosPapas, pasosCarne, pasosPan, pasosEnsamblaje } from "../../../components/DATA/DataText";
-import CronometroReceta from "../../../components/cocina/cocinar/CronometroReceta";
+import { ingredientes, pasosPapas, pasosCarne, pasosPan, pasosEnsamblaje } from "./DataText";
+import CronometroReceta from "../cocina/cocinar/CronometroReceta";
 
 
 export const contenidoRecetas=[

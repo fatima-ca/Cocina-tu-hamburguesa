@@ -4,19 +4,22 @@ import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
-import { contenidoRecetas } from '@/public/ingredientes/papas_variantes/ContenidoRecetas';
+import { contenidoRecetas } from '@/components/DATA/ContenidoRecetas';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 import { DataAccionPan } from '@/components/DATA/DataText';
 import { panEstatusData } from '@/components/DATA/DataText';
 import IngredienteEstatus from '@/components/cocina/cocinar/IngredienteEstatus';
 import Cronometro from '@/components/cocina/cocinar/Cronometro';
 import { useCronometros } from '@/components/cocina/cocinar/CronometroContext';
+import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesContext';
 
 
 
 export default function EstacionPan() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const { cronometros, iniciar, detener } = useCronometros();
+    const { ingredientesSeleccionados } = useIngredientes();
+    const panSeleccionado = ingredientesSeleccionados.includes('pan');
     const cronometro = cronometros.pan;
 
     const [estatusActual, setEstatusActual] = useState<string>("pan_completo");
@@ -65,12 +68,14 @@ export default function EstacionPan() {
 
                         <div className="relative">
                             <div className="relative flex items-center justify-center rounded-2xl bg-white p-6">
-                                <IngredienteEstatus
-                                    estatus={estadoActualData.estatus}
-                                    src={estadoActualData.src}
-                                    alt={estadoActualData.alt}
-                                    blur={cronometro.activo}
-                                />
+                                {panSeleccionado && (
+                                    <IngredienteEstatus
+                                        estatus={estadoActualData.estatus}
+                                        src={estadoActualData.src}
+                                        alt={estadoActualData.alt}
+                                        blur={cronometro.activo}
+                                    />
+                                )}
                             </div>
                         </div>
 
@@ -83,6 +88,7 @@ export default function EstacionPan() {
                                     label={item.label}
                                     accion={acciones[item.id as keyof typeof acciones] || (() => {})}
                                     disabled={
+                                        !panSeleccionado ||
                                         cronometro.activo ||
                                         (item.id === "cortar" && pasoActual >= 1) ||
                                         (item.id === "tostar" && pasoActual >= 2)
@@ -107,4 +113,3 @@ export default function EstacionPan() {
         </main>
     );
 };
-

@@ -101,9 +101,6 @@ export const papasEstatusData = [
     { estatus: "papas_limpia_cortada_cruda",    src: "/ingredientes/papas_variantes/papas_limpia_cortada_cruda.png",    alt: "Estado actual de las papas: limpia, cortada, cruda" },
     { estatus: "papas_limpia_cortada_cocida",   src: "/ingredientes/papas_variantes/papas_limpia_cortada_cocida.png",   alt: "Estado actual de las papas: limpia, cortada, cocida" },
     { estatus: "papas_limpia_cortada_quemada",  src: "/ingredientes/papas_variantes/papas_limpia_cortada_quemada.png",  alt: "Estado actual de las papas: limpia, cortada, quemada" },
-
-    { estatus: "papas_friendo",                 src: "/ingredientes/papas_variantes/papas_freidas.png",                 alt: "Estado actual de las papas: friendo" },
-    { estatus: "papas_fritas",                  src: "/ingredientes/papas_variantes/papas_listas.png",                  alt: "Estado actual de las papas: fritas" },
 ]
 
 {/* Estatus carne */}
@@ -140,8 +137,6 @@ export const carneEstatusData = [
 
 
 
-  { estatus: "carne_cruda",   src: "/ingredientes/carne_variantes/carne_cruda.png",         alt: "Estado actual de la carne: cruda" },
-  { estatus: "carne_formada", src: "/ingredientes/carne_variantes/carne_formada.png",       alt: "Estado actual de la carne: formada" },
   { estatus: "coccion_1",     src: "/ingredientes/carne_variantes/carne_formada_mitad_sarten.png",  alt: "Estado actual de la carne: coccion por un lado uwu" },
   { estatus: "coccion_2",     src: "/ingredientes/carne_variantes/carne_lista_sarten.png",  alt: "Estado actual de la carne: coccion por los dos lados" },
 ];
@@ -188,3 +183,29 @@ export const panEstatusData = [
     // carne formada, lado-a-quemado, lado-b-crudo
     // carne formada, lado-a-quemado, lado-b-cocido
     // carne formada, lado-a-quemado, lado-b-quemado
+
+
+
+
+{/* Estatus ensamblaje */}
+export const papasEnsamblaje = [
+    // papas sucias y enteras
+    { estatus: "papas_sucia_entera_cruda",      src: "/ingredientes/papas_variantes/ensamblaje/papas_e_sucia_entera_cruda.png",      alt: "Papas sucias, enteras, crudas" },
+    { estatus: "papas_sucia_entera_cocida",     src: "/ingredientes/papas_variantes/ensamblaje/papas_e_sucia_entera_cocida.png",     alt: "Papas sucias, enteras, cocidas" },
+    { estatus: "papas_sucia_entera_quemada",    src: "/ingredientes/papas_variantes/ensamblaje/papas_e_sucia_entera_quemada.png",    alt: "Papas sucias, enteras, quemadas" },
+
+    // papas sucias y cortadas
+    { estatus: "papas_sucia_cortada_cruda",     src: "/ingredientes/papas_variantes/ensamblaje/papas_e_sucia_cortada_cruda.png",     alt: "Papas sucias, cortadas, crudas" },
+    { estatus: "papas_sucia_cortada_cocida",    src: "/ingredientes/papas_variantes/ensamblaje/papas_e_sucia_cortada_cocida.png",    alt: "Papas sucias, cortadas, cocidas" },
+    { estatus: "papas_sucia_cortada_quemada",   src: "/ingredientes/papas_variantes/ensamblaje/papas_e_sucia_cortada_quemada.png",   alt: "Papas sucias, cortadas, quemadas" },
+
+    //papas limpias y enteras
+    { estatus: "papas_limpia_entera_cruda",     src: "/ingredientes/papas_variantes/ensamblaje/papas_e_limpia_entera_cruda.png",     alt: "Papas limpias, enteraa, crudaa" },
+    { estatus: "papas_limpia_entera_cocida",    src: "/ingredientes/papas_variantes/ensamblaje/papas_e_limpia_entera_cocida.png",    alt: "Papas limpias, enteras, cocidas" },
+    { estatus: "papas_limpia_entera_quemada",   src: "/ingredientes/papas_variantes/ensamblaje/papas_e_limpia_entera_quemada.png",   alt: "Papas limpias, enteras, quemadas" },
+
+    //papas limpias y cortadas
+    { estatus: "papas_limpia_cortada_cruda",    src: "/ingredientes/papas_variantes/ensamblaje/papas_e_limpia_cortada_cruda.png",    alt: "Papas limpias, cortadas, crudas" },
+    { estatus: "papas_limpia_cortada_cocida",   src: "/ingredientes/papas_variantes/ensamblaje/papas_e_limpia_cortada_cocida.png",   alt: "Papas limpias, cortadas, cocidas" },
+    { estatus: "papas_limpia_cortada_quemada",  src: "/ingredientes/papas_variantes/ensamblaje/papas_e_limpia_cortada_quemada.png",  alt: "Papas limpias, cortadas, quemadas" },
+]
