@@ -70,14 +70,12 @@ export default function EstacionCarne() {
             if (cronometro.activo || pasoActual >= 2) return;
             setPasoActual(2);
             setLadoEnCoccion('a');
-            setEstatusActual(actualizarLadoCarne(estatusActual, 'a', "cocido"));
             iniciar('carne');
         },
         coccion_2:  () => {
             if (cronometro.activo || pasoActual >= 3) return;
             setPasoActual(3);
             setLadoEnCoccion('b');
-            setEstatusActual(actualizarLadoCarne(estatusActual, 'b', "cocido"));
             iniciar('carne');
         },
     };

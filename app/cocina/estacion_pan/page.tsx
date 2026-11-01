@@ -21,8 +21,15 @@ export default function EstacionPan() {
 
     const [estatusActual, setEstatusActual] = useState<string>("pan_completo");
     const [pasoActual, setPasoActual] = useState(0);
-    
-    const estadoActualData = panEstatusData.find(p => p.estatus === estatusActual)!;
+    const estatusVisible = cronometro.completado
+        ? estatusActual === "pan_completo" ? "pan_tostado" : "pan_cortado_tostado"
+        : estatusActual;
+    const estadoActualData = panEstatusData.find(p => p.estatus === estatusVisible)!;
+
+    const detenerTostado = () => {
+        detener('pan');
+        setEstatusActual(estatusActual === "pan_completo" ? "pan_tostado" : "pan_cortado_tostado");
+    };
 
     const acciones = {
         cortar:  () => {
@@ -33,7 +40,6 @@ export default function EstacionPan() {
         tostar: () => {
             if (cronometro.activo || pasoActual >= 2) return;
             setPasoActual(2);
-            setEstatusActual(estatusActual === "pan_completo" ? "pan_tostado" : "pan_cortado_tostado");
             iniciar('pan');
         },
     };    
@@ -50,7 +56,7 @@ export default function EstacionPan() {
                         tiempoRestante={cronometro.tiempoRestante}
                         activo={cronometro.activo}
                         titulo={"Tostando"}
-                        onDetener={() => detener('pan')}
+                        onDetener={detenerTostado}
                     />  
                 </div>
                 
@@ -63,6 +69,7 @@ export default function EstacionPan() {
                                     estatus={estadoActualData.estatus}
                                     src={estadoActualData.src}
                                     alt={estadoActualData.alt}
+                                    blur={cronometro.activo}
                                 />
                             </div>
                         </div>
@@ -100,5 +107,4 @@ export default function EstacionPan() {
         </main>
     );
 };
-
 

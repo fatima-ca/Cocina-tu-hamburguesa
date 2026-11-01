@@ -13,6 +13,7 @@ const ingredientesExtendidos = [
   { src: "/ingredientes/piña.png", nombre: "Piña" }, // 8 - piña
   { src: "/ingredientes/tocino.png", nombre: "Tocino" }, // 9 - tocino
   { src: "/ingredientes/huevo.png", nombre: "Huevo" }, // 10 - huevo
+  { src: "/ingredientes/frijoles.png", nombre: "Frijoles" }, // 11 - frijoles
 ];
 
 export default function EstacionIngredientes() {
@@ -114,6 +115,13 @@ export default function EstacionIngredientes() {
                             src={ingredientesExtendidos[5].src}
                             alt="Seleccionar queso"
                             nombre={ingredientesExtendidos[5].nombre}
+                        />
+
+                        {/* frijoles */}
+                        <IngredienteCard
+                            src={ingredientesExtendidos[11].src}
+                            alt="Seleccionar frijoles"
+                            nombre={ingredientesExtendidos[11].nombre}
                         />
                     </div>
                 </div>  

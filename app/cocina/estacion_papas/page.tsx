@@ -63,7 +63,6 @@ export default function EstacionPapas() {
             if (cronometro.activo || pasoActual >= 3) return;
             setPasoActual(3);
             setEstatusBaseCoccion(estatusActual);
-            setEstatusActual("papas_friendo");
             iniciar('papas');
         },
     };
