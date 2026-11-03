@@ -1,38 +1,53 @@
 import Image from 'next/image';
 
-interface AlarmaPapasProps {
+type IngredienteAlarma = 'papas' | 'carne';
+
+interface AlarmaCoccionProps {
+    ingrediente: IngredienteAlarma;
     onRetirar: () => void;
     onContinuar: () => void;
     onVerReceta: () => void;
 }
 
 const opcionesAlarma = [
-    { src: '/general/btn_retirar.png', alt: 'Retirar las papas', accion: 'retirar' },
+    { src: '/general/btn_retirar.png', accion: 'retirar' },
     {
         src: '/general/btn_continuar_cocinando.png',
-        alt: 'Continuar cocinando',
         accion: 'continuar',
     },
-    { src: '/general/btn_ver_receta.png', alt: 'Ver receta de las papas', accion: 'receta' },
+    { src: '/general/btn_ver_receta.png', accion: 'receta' },
 ] as const;
 
-export default function AlarmaPapas({
+const contenidoAlarma: Record<IngredienteAlarma, { imagen: string; mensaje: string }> = {
+    papas: {
+        imagen: '/general/alarma.png',
+        mensaje: '¡Ya están listas las papas!',
+    },
+    carne: {
+        imagen: '/general/alarma_carne.png',
+        mensaje: '¡Ya está lista la carne!',
+    },
+};
+
+export default function AlarmaCoccion({
+    ingrediente,
     onRetirar,
     onContinuar,
     onVerReceta,
-}: AlarmaPapasProps) {
+}: AlarmaCoccionProps) {
     const acciones = {
         retirar: onRetirar,
         continuar: onContinuar,
         receta: onVerReceta,
     };
+    const textoIngrediente = ingrediente === 'papas' ? 'las papas' : 'la carne';
 
     return (
         <div
             className="fixed inset-0 z-10000 flex items-center justify-center bg-black/70 p-4"
             role="dialog"
             aria-modal="true"
-            aria-label="Alarma de las papas"
+            aria-label={`Alarma de ${textoIngrediente}`}
         >
             <div className="relative w-full max-w-5xl">
                 <Image
@@ -45,8 +60,8 @@ export default function AlarmaPapas({
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-8 px-[10%] py-[12%]">
                     <Image
-                        src="/general/alarma.png"
-                        alt="¡Ya están listas las papas!"
+                        src={contenidoAlarma[ingrediente].imagen}
+                        alt={contenidoAlarma[ingrediente].mensaje}
                         width={1390}
                         height={400}
                         priority
@@ -58,12 +73,18 @@ export default function AlarmaPapas({
                                 key={opcion.accion}
                                 type="button"
                                 onClick={acciones[opcion.accion]}
-                                aria-label={opcion.alt}
+                                aria-label={
+                                    opcion.accion === 'retirar'
+                                        ? `Retirar ${textoIngrediente}`
+                                        : opcion.accion === 'continuar'
+                                            ? 'Continuar cocinando'
+                                            : `Ver receta de ${textoIngrediente}`
+                                }
                                 className="transition-transform hover:scale-105 active:scale-95"
                             >
                                 <Image
                                     src={opcion.src}
-                                    alt={opcion.alt}
+                                    alt=""
                                     width={300}
                                     height={110}
                                     priority

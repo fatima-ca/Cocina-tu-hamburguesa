@@ -3,6 +3,7 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 export type TipoCronometro = 'papas' | 'carne' | 'pan';
+export type LadoCarne = 'a' | 'b';
 
 interface EstadoCronometro {
   activo: boolean;
@@ -17,9 +18,13 @@ type Cronometros = Record<TipoCronometro, EstadoCronometro>;
 interface CronometroContextValue {
   cronometros: Cronometros;
   iniciar: (tipo: TipoCronometro) => void;
+  iniciarCarne: (lado: LadoCarne) => void;
   detener: (tipo: TipoCronometro) => void;
   alarmaPapasAtendida: boolean;
   atenderAlarmaPapas: () => void;
+  alarmaCarneAtendida: boolean;
+  atenderAlarmaCarne: () => void;
+  ladoCarneEnCoccion: LadoCarne | null;
 }
 
 const duraciones: Record<TipoCronometro, number> = {
@@ -57,10 +62,15 @@ const CronometroContext = createContext<CronometroContextValue | null>(null);
 export function CronometroProvider({ children }: { children: ReactNode }) {
   const [cronometros, setCronometros] = useState<Cronometros>(estadoInicial);
   const [alarmaPapasAtendida, setAlarmaPapasAtendida] = useState(false);
+  const [alarmaCarneAtendida, setAlarmaCarneAtendida] = useState(false);
+  const [ladoCarneEnCoccion, setLadoCarneEnCoccion] = useState<LadoCarne | null>(null);
 
   const iniciar = useCallback((tipo: TipoCronometro) => {
     if (tipo === 'papas') {
       setAlarmaPapasAtendida(false);
+    }
+    if (tipo === 'carne') {
+      setAlarmaCarneAtendida(false);
     }
 
     setCronometros((actuales) => {
@@ -77,6 +87,11 @@ export function CronometroProvider({ children }: { children: ReactNode }) {
       };
     });
   }, []);
+
+  const iniciarCarne = useCallback((lado: LadoCarne) => {
+    setLadoCarneEnCoccion(lado);
+    iniciar('carne');
+  }, [iniciar]);
 
   const detener = useCallback((tipo: TipoCronometro) => {
     setCronometros((actuales) => {
@@ -100,6 +115,10 @@ export function CronometroProvider({ children }: { children: ReactNode }) {
 
   const atenderAlarmaPapas = useCallback(() => {
     setAlarmaPapasAtendida(true);
+  }, []);
+
+  const atenderAlarmaCarne = useCallback(() => {
+    setAlarmaCarneAtendida(true);
   }, []);
 
   useEffect(() => {
@@ -138,8 +157,28 @@ export function CronometroProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const valor = useMemo(
-    () => ({ cronometros, iniciar, detener, alarmaPapasAtendida, atenderAlarmaPapas }),
-    [cronometros, iniciar, detener, alarmaPapasAtendida, atenderAlarmaPapas],
+    () => ({
+      cronometros,
+      iniciar,
+      iniciarCarne,
+      detener,
+      alarmaPapasAtendida,
+      atenderAlarmaPapas,
+      alarmaCarneAtendida,
+      atenderAlarmaCarne,
+      ladoCarneEnCoccion,
+    }),
+    [
+      cronometros,
+      iniciar,
+      iniciarCarne,
+      detener,
+      alarmaPapasAtendida,
+      atenderAlarmaPapas,
+      alarmaCarneAtendida,
+      atenderAlarmaCarne,
+      ladoCarneEnCoccion,
+    ],
   );
 
   return <CronometroContext.Provider value={valor}>{children}</CronometroContext.Provider>;
