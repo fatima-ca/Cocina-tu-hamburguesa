@@ -18,7 +18,12 @@ import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesCo
 export default function EstacionPapas() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const { cronometros, iniciar, detener } = useCronometros();
-    const { ingredientesSeleccionados, estadosPreparacion, guardarEstadoPreparacion } = useIngredientes();
+    const {
+        ingredientesSeleccionados,
+        estadosPreparacion,
+        guardarEstadoPreparacion,
+        confirmarEstacion,
+    } = useIngredientes();
     const papasSeleccionadas = ingredientesSeleccionados.includes('papas');
     const cronometro = cronometros.papas;
 
@@ -79,7 +84,10 @@ export default function EstacionPapas() {
     return(
         <main className="relative min-h-screen w-full overflow-hidden">
             <FondoEstacion />
-            <Btns />
+            <Btns
+                accionListo={() => confirmarEstacion('papas')}
+                listoDeshabilitado={!papasSeleccionadas || cronometro.activo}
+            />
 
             <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
 

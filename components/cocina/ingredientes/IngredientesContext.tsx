@@ -25,6 +25,8 @@ interface IngredientesContextValue {
   guardarIngredientes: (seleccionados: IngredienteId[]) => void;
   estadosPreparacion: EstadosPreparacion;
   guardarEstadoPreparacion: (tipo: TipoPreparacion, estatus: string) => void;
+  estacionesListas: Record<TipoPreparacion, boolean>;
+  confirmarEstacion: (tipo: TipoPreparacion) => void;
 }
 
 const IngredientesContext = createContext<IngredientesContextValue | null>(null);
@@ -36,15 +38,39 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
     pan: 'pan_completo',
     papas: 'papas_sucia_entera_cruda',
   });
+  const [estacionesListas, setEstacionesListas] = useState<Record<TipoPreparacion, boolean>>({
+    carne: false,
+    pan: false,
+    papas: false,
+  });
 
   const guardarIngredientes = useCallback((seleccionados: IngredienteId[]) => {
-    setIngredientesSeleccionados([...new Set(seleccionados)]);
-  }, []);
+    const ingredientesUnicos = [...new Set(seleccionados)];
+    const cambiaronIngredientes = ingredientesSeleccionados.length !== ingredientesUnicos.length
+      || ingredientesSeleccionados.some((ingrediente) => !ingredientesUnicos.includes(ingrediente));
+
+    if (cambiaronIngredientes) {
+      setEstacionesListas({ carne: false, pan: false, papas: false });
+    }
+
+    setIngredientesSeleccionados(ingredientesUnicos);
+  }, [ingredientesSeleccionados]);
 
   const guardarEstadoPreparacion = useCallback((tipo: TipoPreparacion, estatus: string) => {
     setEstadosPreparacion((estadosActuales) => ({
       ...estadosActuales,
       [tipo]: estatus,
+    }));
+    setEstacionesListas((estacionesActuales) => ({
+      ...estacionesActuales,
+      [tipo]: false,
+    }));
+  }, []);
+
+  const confirmarEstacion = useCallback((tipo: TipoPreparacion) => {
+    setEstacionesListas((estacionesActuales) => ({
+      ...estacionesActuales,
+      [tipo]: true,
     }));
   }, []);
 
@@ -54,8 +80,17 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
       guardarIngredientes,
       estadosPreparacion,
       guardarEstadoPreparacion,
+      estacionesListas,
+      confirmarEstacion,
     }),
-    [ingredientesSeleccionados, guardarIngredientes, estadosPreparacion, guardarEstadoPreparacion],
+    [
+      ingredientesSeleccionados,
+      guardarIngredientes,
+      estadosPreparacion,
+      guardarEstadoPreparacion,
+      estacionesListas,
+      confirmarEstacion,
+    ],
   );
 
   return (

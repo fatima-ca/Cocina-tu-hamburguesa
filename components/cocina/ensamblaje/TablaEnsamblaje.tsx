@@ -28,9 +28,11 @@ const ingredientesFijos: Record<
 function obtenerOpcionesEnsamblaje(
     ingredientesSeleccionados: IngredienteId[],
     estadosPreparacion: { carne: string; pan: string; papas: string },
+    estacionesListas: { carne: boolean; pan: boolean; papas: boolean },
 ): IngredienteProps[] {
     return ingredientesSeleccionados.flatMap<IngredienteProps>((id) => {
         if (id === 'carne') {
+            if (!estacionesListas.carne) return [];
             const variante = carneEnsamblaje.find(({ estatus }) => estatus === estadosPreparacion.carne);
             if (!variante) throw new Error(`No existe una variante de ensamblaje para ${estadosPreparacion.carne}`);
             return [{
@@ -43,6 +45,7 @@ function obtenerOpcionesEnsamblaje(
         }
 
         if (id === 'papas') {
+            if (!estacionesListas.papas) return [];
             const estado = papasEstatusData.find(({ estatus }) => estatus === estadosPreparacion.papas);
             if (!estado) throw new Error(`No existe un estado de papas para ${estadosPreparacion.papas}`);
 
@@ -58,6 +61,7 @@ function obtenerOpcionesEnsamblaje(
         }
 
         if (id === 'pan') {
+            if (!estacionesListas.pan) return [];
             const variantes = panEnsamblaje.filter(({ estatus }) => estatus === estadosPreparacion.pan);
             if (variantes.length === 0) {
                 throw new Error(`No existe una variante de ensamblaje para ${estadosPreparacion.pan}`);
@@ -82,10 +86,21 @@ function obtenerOpcionesEnsamblaje(
 export default function TablaEnsamblaje() {
     const [ingredientesAgregados, setIngredientesAgregados] = useState<IngredienteProps[]>([]);
     const [papasAgregadas, setPapasAgregadas] = useState(false);
-    const { ingredientesSeleccionados, estadosPreparacion } = useIngredientes();
-    const opcionesDisponibles = obtenerOpcionesEnsamblaje(ingredientesSeleccionados, estadosPreparacion);
+    const { ingredientesSeleccionados, estadosPreparacion, estacionesListas } = useIngredientes();
+    const opcionesDisponibles = obtenerOpcionesEnsamblaje(
+        ingredientesSeleccionados,
+        estadosPreparacion,
+        estacionesListas,
+    );
     const opcionesEnsamblaje = opcionesDisponibles.filter(({ id }) => id !== 'papas');
     const opcionPapas = opcionesDisponibles.find(({ id }) => id === 'papas');
+    const ingredientesAgregadosVisibles = ingredientesAgregados.filter((agregado) =>
+        opcionesDisponibles.some(({ id }) => id === agregado.id),
+    );
+    const ingredientesPendientes = ingredientesSeleccionados.filter(
+        (id): id is 'carne' | 'pan' | 'papas' =>
+            (id === 'carne' || id === 'pan' || id === 'papas') && !estacionesListas[id],
+    );
 
     const agregarIngrediente = (ingrediente: IngredienteProps) => {
         setIngredientesAgregados((prev) => [...prev, ingrediente]);
@@ -110,7 +125,7 @@ export default function TablaEnsamblaje() {
                     {/* Ensamblaje de hamburguesa */}
                     <div className="relative flex items-center gap-8">
                         <div className="relative flex flex-col-reverse items-center justify-center min-h-125 w-100 rounded-2xl border-4 border-amber-900/30 bg-amber-200 p-6">
-                            {ingredientesAgregados.map((ingrediente, index) => (
+                            {ingredientesAgregadosVisibles.map((ingrediente, index) => (
                                 <div
                                     key={`${ingrediente.id}-${index}`}
                                     className="relative -mb-7 animate-in fade-in slide-in-from-bottom-2 duration-300"
@@ -126,7 +141,7 @@ export default function TablaEnsamblaje() {
                                 </div>
                             ))}
 
-                            {ingredientesAgregados.length === 0 && (
+                            {ingredientesAgregadosVisibles.length === 0 && (
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <p className="text-center text-amber-900/50 font-semibold">
                                         Agrega ingredientes<br />para comenzar
@@ -142,7 +157,9 @@ export default function TablaEnsamblaje() {
 
                             {opcionesEnsamblaje.length === 0 ? (
                                 <p className="max-w-56 text-center text-sm text-amber-900">
-                                    Selecciona ingredientes en la estación de ingredientes.
+                                    {ingredientesPendientes.length > 0
+                                        ? `Presiona Listo en la estación de ${ingredientesPendientes.join(', ')} para mostrar estos ingredientes.`
+                                        : 'Selecciona ingredientes en la estación de ingredientes.'}
                                 </p>
                             ) : (
                                 <div className="grid grid-cols-2 gap-2">
@@ -187,6 +204,12 @@ export default function TablaEnsamblaje() {
                                         );
                                     })}
                                 </div>
+                            )}
+
+                            {opcionesEnsamblaje.length > 0 && ingredientesPendientes.length > 0 && (
+                                <p className="max-w-56 text-center text-sm text-amber-900">
+                                    Presiona Listo en la estación de {ingredientesPendientes.join(', ')} para mostrar esos ingredientes.
+                                </p>
                             )}
 
                             
@@ -243,7 +266,9 @@ export default function TablaEnsamblaje() {
 
                             {!opcionPapas ? (
                                 <p className="max-w-56 text-center text-sm text-amber-900">
-                                    Selecciona las papas en la estación de ingredientes.
+                                    {ingredientesPendientes.includes('papas')
+                                        ? 'Presiona Listo en la estación de papas para mostrar este ingrediente.'
+                                        : 'Selecciona las papas en la estación de ingredientes.'}
                                 </p>
                             ) : (
                                 <div className="grid grid-cols-2 gap-3">

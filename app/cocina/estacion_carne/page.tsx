@@ -29,7 +29,12 @@ function actualizarLadoCarne(estatus: string, lado: LadoCarne, resultado: Result
 export default function EstacionCarne() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const { cronometros, iniciar, detener } = useCronometros();
-    const { ingredientesSeleccionados, estadosPreparacion, guardarEstadoPreparacion } = useIngredientes();
+    const {
+        ingredientesSeleccionados,
+        estadosPreparacion,
+        guardarEstadoPreparacion,
+        confirmarEstacion,
+    } = useIngredientes();
     const carneSeleccionada = ingredientesSeleccionados.includes('carne');
     const cronometro = cronometros.carne;
 
@@ -93,7 +98,10 @@ export default function EstacionCarne() {
     return(
         <main className="relative min-h-screen w-full overflow-hidden">
             <FondoEstacion />
-            <Btns />     
+            <Btns
+                accionListo={() => confirmarEstacion('carne')}
+                listoDeshabilitado={!carneSeleccionada || cronometro.activo}
+            />
 
             <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8 gap-5">
 

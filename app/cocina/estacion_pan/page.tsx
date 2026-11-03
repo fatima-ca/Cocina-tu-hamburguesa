@@ -18,7 +18,12 @@ import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesCo
 export default function EstacionPan() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const { cronometros, iniciar, detener } = useCronometros();
-    const { ingredientesSeleccionados, estadosPreparacion, guardarEstadoPreparacion } = useIngredientes();
+    const {
+        ingredientesSeleccionados,
+        estadosPreparacion,
+        guardarEstadoPreparacion,
+        confirmarEstacion,
+    } = useIngredientes();
     const panSeleccionado = ingredientesSeleccionados.includes('pan');
     const cronometro = cronometros.pan;
 
@@ -75,7 +80,10 @@ export default function EstacionPan() {
     return(
         <main className="relative min-h-screen w-full overflow-hidden">
             <FondoEstacion />
-            <Btns />
+            <Btns
+                accionListo={() => confirmarEstacion('pan')}
+                listoDeshabilitado={!panSeleccionado || cronometro.activo}
+            />
             
             <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
                 <div className='absolute left-32 top-1/2 -translate-y-1/2 z-30'>
