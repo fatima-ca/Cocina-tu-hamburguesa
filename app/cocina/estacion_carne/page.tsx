@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
@@ -29,17 +29,23 @@ function actualizarLadoCarne(estatus: string, lado: LadoCarne, resultado: Result
 export default function EstacionCarne() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const { cronometros, iniciar, detener } = useCronometros();
-    const { ingredientesSeleccionados } = useIngredientes();
+    const { ingredientesSeleccionados, estadosPreparacion, guardarEstadoPreparacion } = useIngredientes();
     const carneSeleccionada = ingredientesSeleccionados.includes('carne');
     const cronometro = cronometros.carne;
 
-    const [estatusActual, setEstatusActual] = useState<string>("carne_noformada_a-crudo_b-crudo");
+    const estatusActual = estadosPreparacion.carne;
     const [pasoActual, setPasoActual] = useState(0);
     const [ladoEnCoccion, setLadoEnCoccion] = useState<LadoCarne | null>(null);
     const estatusVisible = cronometro.completado && ladoEnCoccion
             ? actualizarLadoCarne(estatusActual, ladoEnCoccion, "quemado")
             : estatusActual;
     const estadoActualData = carneEstatusData.find(p => p.estatus === estatusVisible)!;
+
+    useEffect(() => {
+        if (cronometro.completado && ladoEnCoccion) {
+            guardarEstadoPreparacion('carne', estatusVisible);
+        }
+    }, [cronometro.completado, ladoEnCoccion, estatusVisible, guardarEstadoPreparacion]);
 
 
     const detenerCoccion = () => {
@@ -57,7 +63,7 @@ export default function EstacionCarne() {
                 : "quemado";
 
         if (ladoEnCoccion) {
-            setEstatusActual(actualizarLadoCarne(estatusActual, ladoEnCoccion, resultado));
+            guardarEstadoPreparacion('carne', actualizarLadoCarne(estatusActual, ladoEnCoccion, resultado));
         }
         detener('carne');
     };
@@ -67,7 +73,7 @@ export default function EstacionCarne() {
         formar:  () => {
             if (cronometro.activo || pasoActual >= 1) return;
             setPasoActual(1);
-            setEstatusActual(estatusActual.replace("noformada", "formada"));
+            guardarEstadoPreparacion('carne', estatusActual.replace("noformada", "formada"));
         },
         coccion_1: () => {
             if (cronometro.activo || pasoActual >= 2) return;

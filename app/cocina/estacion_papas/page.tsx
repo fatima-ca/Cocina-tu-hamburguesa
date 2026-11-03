@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
@@ -18,17 +18,23 @@ import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesCo
 export default function EstacionPapas() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const { cronometros, iniciar, detener } = useCronometros();
-    const { ingredientesSeleccionados } = useIngredientes();
+    const { ingredientesSeleccionados, estadosPreparacion, guardarEstadoPreparacion } = useIngredientes();
     const papasSeleccionadas = ingredientesSeleccionados.includes('papas');
     const cronometro = cronometros.papas;
 
-    const [estatusActual, setEstatusActual] = useState<string>("papas_sucia_entera_cruda");
-    const [estatusBaseCoccion, setEstatusBaseCoccion] = useState("papas_sucia_entera_cruda");
+    const estatusActual = estadosPreparacion.papas;
+    const [estatusBaseCoccion, setEstatusBaseCoccion] = useState(estatusActual);
     const [pasoActual, setPasoActual] = useState(0);
     const estatusVisible = cronometro.completado
         ? estatusBaseCoccion.replace(/_cruda$/, "_quemada")
         : estatusActual;
     const estadoActualData = papasEstatusData.find(p => p.estatus === estatusVisible)!;
+
+    useEffect(() => {
+        if (cronometro.completado) {
+            guardarEstadoPreparacion('papas', estatusVisible);
+        }
+    }, [cronometro.completado, estatusVisible, guardarEstadoPreparacion]);
 
     const detenerCoccion = () => {
         const tiempoTranscurrido = cronometro.fechaFinalizacion === null
@@ -44,7 +50,7 @@ export default function EstacionPapas() {
             : tiempoTranscurrido <= 300
                 ? "cocida"
                 : "quemada";
-        setEstatusActual(estatusBaseCoccion.replace(/_cruda$/, `_${resultadoCoccion}`));
+        guardarEstadoPreparacion('papas', estatusBaseCoccion.replace(/_cruda$/, `_${resultadoCoccion}`));
     };
 
     const acciones = {
@@ -52,14 +58,14 @@ export default function EstacionPapas() {
             if (cronometro.activo || pasoActual >= 1) return;
             setPasoActual(1);
             const nuevoEstatus = estatusActual.replace("_sucia_", "_limpia_");
-            setEstatusActual(nuevoEstatus);
+            guardarEstadoPreparacion('papas', nuevoEstatus);
             setEstatusBaseCoccion(nuevoEstatus);
         },
         cortar: () => {
             if (cronometro.activo || pasoActual >= 2) return;
             setPasoActual(2);
             const nuevoEstatus = estatusActual.replace("_entera_cruda", "_cortada_cruda");
-            setEstatusActual(nuevoEstatus);
+            guardarEstadoPreparacion('papas', nuevoEstatus);
             setEstatusBaseCoccion(nuevoEstatus);
         },
         freir:  () => {

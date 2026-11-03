@@ -2,54 +2,118 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { IngredienteProps } from '@/components/DATA/types';
-import { INGREDIENTES_DISPONIBLES } from '@/components/DATA/DataText';
+import {
+    carneEnsamblaje,
+    panEnsamblaje,
+    papasEnsamblaje,
+    papasEstatusData,
+} from '@/components/DATA/DataText';
+import { useIngredientes, type IngredienteId } from '@/components/cocina/ingredientes/IngredientesContext';
 
+const ingredientesFijos: Record<
+    Exclude<IngredienteId, 'carne' | 'pan' | 'papas'>,
+    Omit<IngredienteProps, 'id'>
+> = {
+    pina: { nombre: 'Piña', imagen: '/ingredientes/piña.png', ensamblaje: '/ingredientes/piña_e.png', alt: 'Piña' },
+    lechuga: { nombre: 'Lechuga', imagen: '/ingredientes/lechuga.png', ensamblaje: '/ingredientes/lechuga_e.png', alt: 'Lechuga' },
+    mostaza: { nombre: 'Mostaza', imagen: '/ingredientes/mostaza.png', ensamblaje: '/ingredientes/mostaza_e.png', alt: 'Mostaza' },
+    tomate: { nombre: 'Tomate', imagen: '/ingredientes/tomate.png', ensamblaje: '/ingredientes/tomate_e.png', alt: 'Tomate' },
+    tocino: { nombre: 'Tocino', imagen: '/ingredientes/tocino.png', ensamblaje: '/ingredientes/tocino_e.png', alt: 'Tocino' },
+    mayonesa: { nombre: 'Mayonesa', imagen: '/ingredientes/mayonesa.png', ensamblaje: '/ingredientes/mayonesa_e.png', alt: 'Mayonesa' },
+    huevo: { nombre: 'Huevo', imagen: '/ingredientes/huevo.png', ensamblaje: '/ingredientes/huevo_e.png', alt: 'Huevo' },
+    queso: { nombre: 'Queso', imagen: '/ingredientes/queso.png', ensamblaje: '/ingredientes/queso_e.png', alt: 'Queso' },
+    frijoles: { nombre: 'Frijoles', imagen: '/ingredientes/frijoles.png', ensamblaje: '/ingredientes/frijoles_e.png', alt: 'Frijoles' },
+};
 
+function obtenerOpcionesEnsamblaje(
+    ingredientesSeleccionados: IngredienteId[],
+    estadosPreparacion: { carne: string; pan: string; papas: string },
+): IngredienteProps[] {
+    return ingredientesSeleccionados.flatMap<IngredienteProps>((id) => {
+        if (id === 'carne') {
+            const variante = carneEnsamblaje.find(({ estatus }) => estatus === estadosPreparacion.carne);
+            if (!variante) throw new Error(`No existe una variante de ensamblaje para ${estadosPreparacion.carne}`);
+            return [{
+                id,
+                nombre: 'Carne',
+                imagen: variante.src,
+                ensamblaje: variante.src,
+                alt: variante.alt,
+            }];
+        }
 
-export default function TablaEnsamblaje () {
-    const [ingredientesSeleccionados, setIngredientesSeleccionados] = useState<IngredienteProps[]>([]);
-    
-    // Agregar ingrediente a la pila
+        if (id === 'papas') {
+            const estado = papasEstatusData.find(({ estatus }) => estatus === estadosPreparacion.papas);
+            if (!estado) throw new Error(`No existe un estado de papas para ${estadosPreparacion.papas}`);
+
+            const variante = papasEnsamblaje.find(({ estatus }) => estatus === estadosPreparacion.papas);
+            if (!variante) throw new Error(`No existe una variante de ensamblaje para ${estadosPreparacion.papas}`);
+            return [{
+                id,
+                nombre: 'Papas',
+                imagen: estado.src,
+                ensamblaje: variante.src,
+                alt: estado.alt,
+            }];
+        }
+
+        if (id === 'pan') {
+            const variantes = panEnsamblaje.filter(({ estatus }) => estatus === estadosPreparacion.pan);
+            if (variantes.length === 0) {
+                throw new Error(`No existe una variante de ensamblaje para ${estadosPreparacion.pan}`);
+            }
+
+            return variantes.map((variante, index) => {
+                const panSeparado = variantes.length > 1;
+                return {
+                    id: panSeparado ? (index === 0 ? 'pan_base' : 'pan_tapa') : id,
+                    nombre: panSeparado ? (index === 0 ? 'Pan Base' : 'Pan Tapa') : 'Pan',
+                    imagen: variante.src,
+                    ensamblaje: variante.src,
+                    alt: variante.alt,
+                };
+            });
+        }
+
+        return [{ id, ...ingredientesFijos[id] }];
+    });
+}
+
+export default function TablaEnsamblaje() {
+    const [ingredientesAgregados, setIngredientesAgregados] = useState<IngredienteProps[]>([]);
+    const [papasAgregadas, setPapasAgregadas] = useState(false);
+    const { ingredientesSeleccionados, estadosPreparacion } = useIngredientes();
+    const opcionesDisponibles = obtenerOpcionesEnsamblaje(ingredientesSeleccionados, estadosPreparacion);
+    const opcionesEnsamblaje = opcionesDisponibles.filter(({ id }) => id !== 'papas');
+    const opcionPapas = opcionesDisponibles.find(({ id }) => id === 'papas');
+
     const agregarIngrediente = (ingrediente: IngredienteProps) => {
-        setIngredientesSeleccionados((prev) => [...prev, ingrediente]);
-        console.log(`Agregado: ${ingrediente.nombre}`);
+        setIngredientesAgregados((prev) => [...prev, ingrediente]);
     };
-    
-    // Remover último ingrediente agregado
+
     const removerUltimoIngrediente = () => {
-        setIngredientesSeleccionados((prev) => prev.slice(0, -1));
-        console.log('Removido último ingrediente');
+        setIngredientesAgregados((prev) => prev.slice(0, -1));
     };
-    
-    // Reiniciar todo
+
     const reiniciarEnsamblaje = () => {
-        setIngredientesSeleccionados([]);
-        console.log('Ensamblaje reiniciado');
-    };
-    
-    // Verificar si un ingrediente ya fue usado
-    const estaUsado = (id: string) => {
-        return ingredientesSeleccionados.some((ing) => ing.id === id);
+        setIngredientesAgregados([]);
     };
 
+    const estaUsado = (id: string) => ingredientesAgregados.some((ing) => ing.id === id);
 
-
-    return(
+    return (
         <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
             <div className="relative w-full max-w-6xl rounded-3xl bg-amber-800 p-8">
-                <div className="relative z-10 flex flex-col items-center gap-8">
-                    
-                    {/* Área de ensamblaje */}
+                <div className="relative z-10 flex flex-row items-center gap-8">
+
+
+                    {/* Ensamblaje de hamburguesa */}
                     <div className="relative flex items-center gap-8">
-                      
-                        {/* Plato/Área de apilamiento */}
                         <div className="relative flex flex-col-reverse items-center justify-center min-h-125 w-100 rounded-2xl border-4 border-amber-900/30 bg-amber-200 p-6">
-                        
-                            {/* Ingredientes apilados */}
-                            {ingredientesSeleccionados.map((ingrediente, index) => (
+                            {ingredientesAgregados.map((ingrediente, index) => (
                                 <div
                                     key={`${ingrediente.id}-${index}`}
-                                    className="relative -mb-6 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                                    className="relative -mb-7 animate-in fade-in slide-in-from-bottom-2 duration-300"
                                 >
                                     <Image
                                         src={ingrediente.ensamblaje}
@@ -57,97 +121,186 @@ export default function TablaEnsamblaje () {
                                         width={200}
                                         height={100}
                                         priority
-                                        className="object-contain"
+                                        
                                     />
                                 </div>
                             ))}
-        
-                            {/* Mensaje cuando está vacío */}
-                            {ingredientesSeleccionados.length === 0 && (
+
+                            {ingredientesAgregados.length === 0 && (
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <p className="text-center text-amber-900/50 font-semibold">
                                         Agrega ingredientes<br />para comenzar
                                     </p>
                                 </div>
-                            )}    
+                            )}
                         </div>
-                      
-        
-                        {/* Panel de ingredientes disponibles */}
+
                         <div className="flex flex-col gap-4 rounded-2xl bg-white/90 p-6">
                             <h3 className="text-xl font-bold text-amber-900 text-center">
-                                Ingredientes
+                                Ingredientes seleccionados
                             </h3>
-                        
-                            <div className="grid grid-cols-2 gap-3">
-                                {INGREDIENTES_DISPONIBLES.map((ingrediente) => {
-                                    const usado = estaUsado(ingrediente.id);
-                            
-                                    return (
-                                        <button
-                                            key={ingrediente.id}
-                                            onClick={() => !usado && agregarIngrediente(ingrediente)}
-                                            disabled={usado}
-                                            className={`
-                                                group relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 p-3 transition-all
-                                                ${usado 
-                                                    ? 'border-gray-300 bg-gray-100 opacity-50 cursor-not-allowed' 
-                                                    : 'border-amber-300 bg-amber-50 hover:scale-105 hover:border-amber-500 hover:bg-amber-100 active:scale-95'
-                                                }
-                                            `}
-                                        >
-                                            <Image
-                                                src={ingrediente.imagen}
-                                                alt={ingrediente.alt}
-                                                width={100}
-                                                height={100}
-                                                className="object-contain transition-transform "
-                                            />
 
-                                            <span className={`text-sm font-semibold ${usado ? 'text-gray-500' : 'text-amber-900'}`}>
-                                                {ingrediente.nombre}
-                                            </span>
-                                
-                                            {/* Checkmark cuando está usado */}
-                                            {usado && (
-                                                <div className="absolute inset-0 flex items-center justify-center">
-                                                    <div className="rounded-full bg-green-500 p-2 shadow-lg">
-                                                        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                                        </svg>
+                            {opcionesEnsamblaje.length === 0 ? (
+                                <p className="max-w-56 text-center text-sm text-amber-900">
+                                    Selecciona ingredientes en la estación de ingredientes.
+                                </p>
+                            ) : (
+                                <div className="grid grid-cols-2 gap-2">
+                                    {opcionesEnsamblaje.map((ingrediente) => {
+                                        const usado = estaUsado(ingrediente.id);
+
+                                        return (
+                                            <button
+                                                key={ingrediente.id}
+                                                onClick={() => !usado && agregarIngrediente(ingrediente)}
+                                                disabled={usado}
+                                                className={`
+                                                    group relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 p-3 transition-all
+                                                    ${usado
+                                                        ? 'border-gray-300 bg-gray-100 opacity-50 cursor-not-allowed'
+                                                        : 'border-amber-300 bg-amber-50 hover:scale-105 hover:border-amber-500 hover:bg-amber-100 active:scale-95'
+                                                    }
+                                                `}
+                                            >
+                                                <Image
+                                                    src={ingrediente.imagen}
+                                                    alt={ingrediente.alt}
+                                                    width={100}
+                                                    height={100}
+                                                    className="object-contain transition-transform"
+                                                />
+
+                                                <span className={`text-sm font-semibold ${usado ? 'text-gray-500' : 'text-amber-900'}`}>
+                                                    {ingrediente.nombre}
+                                                </span>
+
+                                                {usado && (
+                                                    <div className="absolute inset-0 flex items-center justify-center">
+                                                        <div className="rounded-full bg-green-500 p-2 shadow-lg">
+                                                            <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                                            </svg>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            )}
-                                        </button>
-                                    );
-                                })}
-                            </div>
+                                                )}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            )}
 
-        
-                            {/* Botones de control */}
-                            <div className="flex flex-col gap-2 mt-4">
-                                <button
-                                    onClick={removerUltimoIngrediente}
-                                    disabled={ingredientesSeleccionados.length === 0}
-                                    className="rounded-lg bg-orange-500 px-4 py-2 font-bold text-white shadow-md transition-all hover:bg-orange-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                            
+                            <button
+                                onClick={removerUltimoIngrediente}
+                                disabled={ingredientesAgregados.length === 0}
+                                className="rounded-lg bg-orange-500 px-4 py-2 font-bold text-white shadow-md transition-all hover:bg-orange-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Quitar último
+                            </button>
+                           
+                        </div>
+                    </div>
+
+
+
+                    {/* Ensamblaje de las papas */}
+                    <div className="relative flex items-center gap-8">
+                        <div className="relative flex flex-col-reverse items-center justify-center min-h-125 w-100 rounded-2xl border-4 border-amber-900/30 bg-amber-200 p-6">
+                            {papasAgregadas && opcionPapas && (
+                                <div
+                                    key={opcionPapas.id}
+                                    className="relative -mb-6 animate-in fade-in slide-in-from-bottom-2 duration-300"
                                 >
-                                    Quitar último
-                                </button>
-                          
-                                <button
-                                    onClick={reiniciarEnsamblaje}
-                                    disabled={ingredientesSeleccionados.length === 0}
-                                    className="rounded-lg bg-red-500 px-4 py-2 font-bold text-white shadow-md transition-all hover:bg-red-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    Reiniciar
-                                </button>
-                            </div>
+                                    <Image
+                                        src={opcionPapas.ensamblaje}
+                                        alt={opcionPapas.alt}
+                                        width={200}
+                                        height={100}
+                                        priority
+                                        
+                                    />
+                                </div>
+                            )}
+
+                            {!papasAgregadas && (
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <Image
+                                        src="/ingredientes/papas_base.png"
+                                        alt="Base de las papas"
+                                        width={200}
+                                        height={100}
+                                        priority
+                                        
+                                    />
+                                </div>
+                            )}
                         </div>
 
+                        <div className="flex flex-col gap-4 rounded-2xl bg-white/90 p-6">
+                            <h3 className="text-xl font-bold text-amber-900 text-center">
+                                Papas seleccionadas
+                            </h3>
 
+                            {!opcionPapas ? (
+                                <p className="max-w-56 text-center text-sm text-amber-900">
+                                    Selecciona las papas en la estación de ingredientes.
+                                </p>
+                            ) : (
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button
+                                        key={opcionPapas.id}
+                                        onClick={() => setPapasAgregadas(true)}
+                                        disabled={papasAgregadas}
+                                        className={`
+                                                    group relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 p-3 transition-all
+                                                    ${papasAgregadas
+                                                        ? 'border-gray-300 bg-gray-100 opacity-50 cursor-not-allowed'
+                                                        : 'border-amber-300 bg-amber-50 hover:scale-105 hover:border-amber-500 hover:bg-amber-100 active:scale-95'
+                                                    }
+                                                `}
+                                    >
+                                        <Image
+                                            src={opcionPapas.imagen}
+                                            alt={opcionPapas.alt}
+                                            width={100}
+                                            height={100}
+                                            className="object-contain transition-transform"
+                                        />
+
+                                        <span className={`text-sm font-semibold ${papasAgregadas ? 'text-gray-500' : 'text-amber-900'}`}>
+                                            {opcionPapas.nombre}
+                                        </span>
+
+                                        {papasAgregadas && (
+                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                <div className="rounded-full bg-green-500 p-2 shadow-lg">
+                                                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </button>
+                                </div>
+                            )}
+
+                           
+                            <button
+                                onClick={() => setPapasAgregadas(false)}
+                                disabled={!papasAgregadas}
+                                className="rounded-lg bg-orange-500 px-4 py-2 font-bold text-white shadow-md transition-all hover:bg-orange-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Quitar último
+                            </button>
+                            
+                        </div>
                     </div>
+
+
+
+
                 </div>
             </div>
         </div>
     );
-};
+}

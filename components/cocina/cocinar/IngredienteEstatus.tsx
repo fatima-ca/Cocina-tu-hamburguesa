@@ -11,7 +11,7 @@ export default function IngredienteEstatus({ estatus, src, alt, blur = false }: 
             width={400}
             height={400}
             priority
-            className={`object-contain drop-shadow-2xl transition-[filter] duration-300${blur ? " blur-sm" : ""}`}
+            className={`object-contain drop-shadow-2xl transition-[filter] duration-300${blur ? " blur-sm" : estatus.includes("quemado") && !estatus.startsWith("pan_") ? " brightness-50 sepia saturate-200" : ""}`}
         />
     );
 }

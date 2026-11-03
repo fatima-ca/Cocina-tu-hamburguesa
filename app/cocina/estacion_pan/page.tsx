@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
@@ -18,27 +18,52 @@ import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesCo
 export default function EstacionPan() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const { cronometros, iniciar, detener } = useCronometros();
-    const { ingredientesSeleccionados } = useIngredientes();
+    const { ingredientesSeleccionados, estadosPreparacion, guardarEstadoPreparacion } = useIngredientes();
     const panSeleccionado = ingredientesSeleccionados.includes('pan');
     const cronometro = cronometros.pan;
 
-    const [estatusActual, setEstatusActual] = useState<string>("pan_completo");
+    const estatusActual = estadosPreparacion.pan;
     const [pasoActual, setPasoActual] = useState(0);
-    const estatusVisible = cronometro.completado
-        ? estatusActual === "pan_completo" ? "pan_tostado" : "pan_cortado_tostado"
+    const tiempoTranscurrido = cronometro.duracion - cronometro.tiempoRestante;
+    const esPanCompleto = estatusActual === "pan_completo"
+        || estatusActual === "pan_tostado"
+        || estatusActual === "pan_quemado";
+    const obtenerEstatusTostado = (segundosTranscurridos: number) => {
+        if (segundosTranscurridos > 120) {
+            return esPanCompleto ? "pan_quemado" : "pan_cortado_quemado";
+        }
+        if (segundosTranscurridos >= 110) {
+            return esPanCompleto ? "pan_tostado" : "pan_cortado_tostado";
+        }
+        return estatusActual;
+    };
+    const estatusVisible = cronometro.activo || cronometro.completado
+        ? obtenerEstatusTostado(tiempoTranscurrido)
         : estatusActual;
     const estadoActualData = panEstatusData.find(p => p.estatus === estatusVisible)!;
 
+    useEffect(() => {
+        if (cronometro.completado) {
+            guardarEstadoPreparacion('pan', estatusVisible);
+        }
+    }, [cronometro.completado, estatusVisible, guardarEstadoPreparacion]);
+
     const detenerTostado = () => {
+        const tiempoExacto = cronometro.fechaFinalizacion === null
+            ? tiempoTranscurrido
+            : cronometro.duracion - Math.max(
+                0,
+                Math.ceil((cronometro.fechaFinalizacion - Date.now()) / 1000),
+            );
         detener('pan');
-        setEstatusActual(estatusActual === "pan_completo" ? "pan_tostado" : "pan_cortado_tostado");
+        guardarEstadoPreparacion('pan', obtenerEstatusTostado(tiempoExacto));
     };
 
     const acciones = {
         cortar:  () => {
             if (cronometro.activo || pasoActual >= 1) return;
             setPasoActual(1);
-            setEstatusActual("pan_cortado");
+            guardarEstadoPreparacion('pan', "pan_cortado");
         },
         tostar: () => {
             if (cronometro.activo || pasoActual >= 2) return;

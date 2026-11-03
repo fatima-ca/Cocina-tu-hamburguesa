@@ -16,23 +16,46 @@ export type IngredienteId =
   | 'queso'
   | 'frijoles';
 
+export type TipoPreparacion = 'carne' | 'pan' | 'papas';
+
+type EstadosPreparacion = Record<TipoPreparacion, string>;
+
 interface IngredientesContextValue {
   ingredientesSeleccionados: IngredienteId[];
   guardarIngredientes: (seleccionados: IngredienteId[]) => void;
+  estadosPreparacion: EstadosPreparacion;
+  guardarEstadoPreparacion: (tipo: TipoPreparacion, estatus: string) => void;
 }
 
 const IngredientesContext = createContext<IngredientesContextValue | null>(null);
 
 export function IngredientesProvider({ children }: { children: ReactNode }) {
   const [ingredientesSeleccionados, setIngredientesSeleccionados] = useState<IngredienteId[]>([]);
+  const [estadosPreparacion, setEstadosPreparacion] = useState<EstadosPreparacion>({
+    carne: 'carne_noformada_a-crudo_b-crudo',
+    pan: 'pan_completo',
+    papas: 'papas_sucia_entera_cruda',
+  });
 
   const guardarIngredientes = useCallback((seleccionados: IngredienteId[]) => {
     setIngredientesSeleccionados([...new Set(seleccionados)]);
   }, []);
 
+  const guardarEstadoPreparacion = useCallback((tipo: TipoPreparacion, estatus: string) => {
+    setEstadosPreparacion((estadosActuales) => ({
+      ...estadosActuales,
+      [tipo]: estatus,
+    }));
+  }, []);
+
   const valor = useMemo(
-    () => ({ ingredientesSeleccionados, guardarIngredientes }),
-    [ingredientesSeleccionados, guardarIngredientes],
+    () => ({
+      ingredientesSeleccionados,
+      guardarIngredientes,
+      estadosPreparacion,
+      guardarEstadoPreparacion,
+    }),
+    [ingredientesSeleccionados, guardarIngredientes, estadosPreparacion, guardarEstadoPreparacion],
   );
 
   return (
