@@ -42,7 +42,7 @@ export default function EstacionPapas() {
     }, [cronometro.completado, estatusVisible, guardarEstadoPreparacion]);
 
     const detenerCoccion = () => {
-        const tiempoTranscurrido = cronometro.fechaFinalizacion === null
+        const tiempoCoccion = cronometro.fechaFinalizacion === null
             ? cronometro.duracion - cronometro.tiempoRestante
             : cronometro.duracion - Math.max(
                 0,
@@ -50,9 +50,9 @@ export default function EstacionPapas() {
             );
 
         detener('papas');
-        const resultadoCoccion = tiempoTranscurrido <= 290
+        const resultadoCoccion = tiempoCoccion <= 290
             ? "cruda"
-            : tiempoTranscurrido <= 300
+            : tiempoCoccion <= 300
                 ? "cocida"
                 : "quemada";
         guardarEstadoPreparacion('papas', estatusBaseCoccion.replace(/_cruda$/, `_${resultadoCoccion}`));
@@ -150,6 +150,7 @@ export default function EstacionPapas() {
                     {contenidoRecetas[1].contenido}
                 </div>
             </PantallaReceta>
+
         </main>
     );
 };

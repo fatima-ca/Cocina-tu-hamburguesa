@@ -18,6 +18,8 @@ interface CronometroContextValue {
   cronometros: Cronometros;
   iniciar: (tipo: TipoCronometro) => void;
   detener: (tipo: TipoCronometro) => void;
+  alarmaPapasAtendida: boolean;
+  atenderAlarmaPapas: () => void;
 }
 
 const duraciones: Record<TipoCronometro, number> = {
@@ -54,8 +56,13 @@ const CronometroContext = createContext<CronometroContextValue | null>(null);
 
 export function CronometroProvider({ children }: { children: ReactNode }) {
   const [cronometros, setCronometros] = useState<Cronometros>(estadoInicial);
+  const [alarmaPapasAtendida, setAlarmaPapasAtendida] = useState(false);
 
   const iniciar = useCallback((tipo: TipoCronometro) => {
+    if (tipo === 'papas') {
+      setAlarmaPapasAtendida(false);
+    }
+
     setCronometros((actuales) => {
       const cronometro = actuales[tipo];
       return {
@@ -89,6 +96,10 @@ export function CronometroProvider({ children }: { children: ReactNode }) {
         },
       };
     });
+  }, []);
+
+  const atenderAlarmaPapas = useCallback(() => {
+    setAlarmaPapasAtendida(true);
   }, []);
 
   useEffect(() => {
@@ -127,8 +138,8 @@ export function CronometroProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const valor = useMemo(
-    () => ({ cronometros, iniciar, detener }),
-    [cronometros, iniciar, detener],
+    () => ({ cronometros, iniciar, detener, alarmaPapasAtendida, atenderAlarmaPapas }),
+    [cronometros, iniciar, detener, alarmaPapasAtendida, atenderAlarmaPapas],
   );
 
   return <CronometroContext.Provider value={valor}>{children}</CronometroContext.Provider>;
