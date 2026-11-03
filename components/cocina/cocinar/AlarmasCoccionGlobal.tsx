@@ -8,7 +8,7 @@ import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesCo
 import AlarmaCoccion from '@/components/general/AlarmaCoccion';
 
 const TIEMPO_ALARMA_PAPAS = 180;
-const TIEMPO_ALARMA_CARNE = 60;
+const TIEMPO_ALARMA_CARNE = 5;
 
 type IngredienteConAlarma = 'papas' | 'carne';
 
@@ -37,6 +37,7 @@ export default function AlarmasCoccionGlobal() {
         && (cronometros.papas.activo || cronometros.papas.completado)
         && tiempoPapas >= TIEMPO_ALARMA_PAPAS;
     const alarmaCarneVisible = !alarmaCarneAtendida
+        && ladoCarneEnCoccion === 'b'
         && (cronometros.carne.activo || cronometros.carne.completado)
         && tiempoCarne >= TIEMPO_ALARMA_CARNE;
     const ingredienteAlarma = alarmaPapasVisible
