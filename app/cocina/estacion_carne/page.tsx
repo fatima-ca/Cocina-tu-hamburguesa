@@ -26,6 +26,11 @@ function actualizarLadoCarne(estatus: string, lado: 'a' | 'b', resultado: Result
 
 
 export default function EstacionCarne() {
+    const { versionesReinicio } = useIngredientes();
+    return <ContenidoEstacionCarne key={versionesReinicio.carne} />;
+}
+
+function ContenidoEstacionCarne() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const { cronometros, iniciarCarne, detener, ladoCarneEnCoccion } = useCronometros();
     const {
@@ -90,6 +95,7 @@ export default function EstacionCarne() {
             <Btns
                 accionListo={() => confirmarEstacion('carne')}
                 listoDeshabilitado={!carneSeleccionada || cronometro.activo}
+                mostrarDetectarError
             />
 
             <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8 gap-5">

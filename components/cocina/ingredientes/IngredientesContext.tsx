@@ -19,6 +19,13 @@ export type IngredienteId =
 export type TipoPreparacion = 'carne' | 'pan' | 'papas';
 
 type EstadosPreparacion = Record<TipoPreparacion, string>;
+type VersionesReinicio = Record<TipoPreparacion, number>;
+
+export const ESTADOS_PREPARACION_INICIALES: EstadosPreparacion = {
+  carne: 'carne_noformada_a-crudo_b-crudo',
+  pan: 'pan_completo',
+  papas: 'papas_sucia_entera_cruda',
+};
 
 interface IngredientesContextValue {
   ingredientesSeleccionados: IngredienteId[];
@@ -27,21 +34,27 @@ interface IngredientesContextValue {
   guardarEstadoPreparacion: (tipo: TipoPreparacion, estatus: string) => void;
   estacionesListas: Record<TipoPreparacion, boolean>;
   confirmarEstacion: (tipo: TipoPreparacion) => void;
+  versionesReinicio: VersionesReinicio;
+  reiniciarEstacion: (tipo: TipoPreparacion) => void;
+  reiniciarSeleccion: () => void;
 }
 
 const IngredientesContext = createContext<IngredientesContextValue | null>(null);
 
 export function IngredientesProvider({ children }: { children: ReactNode }) {
   const [ingredientesSeleccionados, setIngredientesSeleccionados] = useState<IngredienteId[]>([]);
-  const [estadosPreparacion, setEstadosPreparacion] = useState<EstadosPreparacion>({
-    carne: 'carne_noformada_a-crudo_b-crudo',
-    pan: 'pan_completo',
-    papas: 'papas_sucia_entera_cruda',
-  });
+  const [estadosPreparacion, setEstadosPreparacion] = useState<EstadosPreparacion>(
+    ESTADOS_PREPARACION_INICIALES,
+  );
   const [estacionesListas, setEstacionesListas] = useState<Record<TipoPreparacion, boolean>>({
     carne: false,
     pan: false,
     papas: false,
+  });
+  const [versionesReinicio, setVersionesReinicio] = useState<VersionesReinicio>({
+    carne: 0,
+    pan: 0,
+    papas: 0,
   });
 
   const guardarIngredientes = useCallback((seleccionados: IngredienteId[]) => {
@@ -74,6 +87,32 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const reiniciarEstacion = useCallback((tipo: TipoPreparacion) => {
+    setEstadosPreparacion((estadosActuales) => ({
+      ...estadosActuales,
+      [tipo]: ESTADOS_PREPARACION_INICIALES[tipo],
+    }));
+    setEstacionesListas((estacionesActuales) => ({
+      ...estacionesActuales,
+      [tipo]: false,
+    }));
+    setVersionesReinicio((versionesActuales) => ({
+      ...versionesActuales,
+      [tipo]: versionesActuales[tipo] + 1,
+    }));
+  }, []);
+
+  const reiniciarSeleccion = useCallback(() => {
+    setIngredientesSeleccionados([]);
+    setEstadosPreparacion(ESTADOS_PREPARACION_INICIALES);
+    setEstacionesListas({ carne: false, pan: false, papas: false });
+    setVersionesReinicio((versionesActuales) => ({
+      carne: versionesActuales.carne + 1,
+      pan: versionesActuales.pan + 1,
+      papas: versionesActuales.papas + 1,
+    }));
+  }, []);
+
   const valor = useMemo(
     () => ({
       ingredientesSeleccionados,
@@ -82,6 +121,9 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
       guardarEstadoPreparacion,
       estacionesListas,
       confirmarEstacion,
+      versionesReinicio,
+      reiniciarEstacion,
+      reiniciarSeleccion,
     }),
     [
       ingredientesSeleccionados,
@@ -90,6 +132,9 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
       guardarEstadoPreparacion,
       estacionesListas,
       confirmarEstacion,
+      versionesReinicio,
+      reiniciarEstacion,
+      reiniciarSeleccion,
     ],
   );
 

@@ -8,7 +8,7 @@ import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesCo
 import AlarmaCoccion from '@/components/general/AlarmaCoccion';
 
 const TIEMPO_ALARMA_PAPAS = 180;
-const TIEMPO_ALARMA_CARNE = 5;
+const TIEMPO_ALARMA_CARNE = 60;
 
 type IngredienteConAlarma = 'papas' | 'carne';
 

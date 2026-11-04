@@ -16,6 +16,11 @@ import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesCo
 
 
 export default function EstacionPapas() {
+    const { versionesReinicio } = useIngredientes();
+    return <ContenidoEstacionPapas key={versionesReinicio.papas} />;
+}
+
+function ContenidoEstacionPapas() {
     const [abierta, setAbierta] = useState<boolean>(true);
     const { cronometros, iniciar, detener } = useCronometros();
     const {
@@ -87,6 +92,7 @@ export default function EstacionPapas() {
             <Btns
                 accionListo={() => confirmarEstacion('papas')}
                 listoDeshabilitado={!papasSeleccionadas || cronometro.activo}
+                mostrarDetectarError
             />
 
             <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">

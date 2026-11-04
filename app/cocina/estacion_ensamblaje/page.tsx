@@ -16,7 +16,7 @@ export default function EstacionEnsamblaje() {
   return (
     <main className="relative min-h-screen w-full overflow-hidden">
       <FondoEstacion />
-      <Btns />  
+      <Btns mostrarDetectarError />
 
 
       <TablaEnsamblaje />

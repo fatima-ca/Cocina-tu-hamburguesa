@@ -20,6 +20,8 @@ interface CronometroContextValue {
   iniciar: (tipo: TipoCronometro) => void;
   iniciarCarne: (lado: LadoCarne) => void;
   detener: (tipo: TipoCronometro) => void;
+  reiniciar: (tipo: TipoCronometro) => void;
+  reiniciarTodos: () => void;
   alarmaPapasAtendida: boolean;
   atenderAlarmaPapas: () => void;
   alarmaCarneAtendida: boolean;
@@ -113,6 +115,28 @@ export function CronometroProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const reiniciar = useCallback((tipo: TipoCronometro) => {
+    setCronometros((actuales) => ({
+      ...actuales,
+      [tipo]: { ...estadoInicial[tipo] },
+    }));
+
+    if (tipo === 'papas') {
+      setAlarmaPapasAtendida(false);
+    }
+    if (tipo === 'carne') {
+      setAlarmaCarneAtendida(false);
+      setLadoCarneEnCoccion(null);
+    }
+  }, []);
+
+  const reiniciarTodos = useCallback(() => {
+    setCronometros(estadoInicial);
+    setAlarmaPapasAtendida(false);
+    setAlarmaCarneAtendida(false);
+    setLadoCarneEnCoccion(null);
+  }, []);
+
   const atenderAlarmaPapas = useCallback(() => {
     setAlarmaPapasAtendida(true);
   }, []);
@@ -162,6 +186,8 @@ export function CronometroProvider({ children }: { children: ReactNode }) {
       iniciar,
       iniciarCarne,
       detener,
+      reiniciar,
+      reiniciarTodos,
       alarmaPapasAtendida,
       atenderAlarmaPapas,
       alarmaCarneAtendida,
@@ -173,6 +199,8 @@ export function CronometroProvider({ children }: { children: ReactNode }) {
       iniciar,
       iniciarCarne,
       detener,
+      reiniciar,
+      reiniciarTodos,
       alarmaPapasAtendida,
       atenderAlarmaPapas,
       alarmaCarneAtendida,
