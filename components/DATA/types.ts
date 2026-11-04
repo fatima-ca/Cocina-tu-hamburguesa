@@ -11,4 +11,5 @@ export type IngredienteEstatusProps = {
   estatus: string;
   src: string;
   alt: string;
+  blur?: boolean;
 };

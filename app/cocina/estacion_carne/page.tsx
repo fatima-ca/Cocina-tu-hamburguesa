@@ -1,59 +1,90 @@
 'use client';
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
+import { useState } from 'react';
 import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
-import BtnDetenerCoccion from '@/components/cocina/cocinar/BtnDetenerCoccion';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
-import { contenidoRecetas } from '@/components/cocina/ContenidoRecetas';
+import { contenidoRecetas } from '@/components/DATA/ContenidoRecetas';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 import { DataAccionCarne } from '@/components/DATA/DataText';
 import { carneEstatusData } from '@/components/DATA/DataText';
 import IngredienteEstatus from '@/components/cocina/cocinar/IngredienteEstatus';
+import Cronometro from '@/components/cocina/cocinar/Cronometro';
+import { useCronometros } from '@/components/cocina/cocinar/CronometroContext';
+import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesContext';
+
+
+type ResultadoCoccion = 'crudo' | 'cocido' | 'quemado';
+
+function actualizarLadoCarne(estatus: string, lado: 'a' | 'b', resultado: ResultadoCoccion) {
+    return estatus.replace(
+        new RegExp(`${lado}-(crudo|cocido|quemado)`),
+        `${lado}-${resultado}`,
+    );
+}
+
 
 
 export default function EstacionCarne() {
+    const { versionesReinicio } = useIngredientes();
+    return <ContenidoEstacionCarne key={versionesReinicio.carne} />;
+}
+
+function ContenidoEstacionCarne() {
     const [abierta, setAbierta] = useState<boolean>(true);
-    const [cronometroActivo, setCronometroActivo] = useState<boolean>(false);
-    const [tiempoRestante, setTiempoRestante] = useState<number>(50);
+    const { cronometros, iniciarCarne, detener, ladoCarneEnCoccion } = useCronometros();
+    const {
+        ingredientesSeleccionados,
+        estadosPreparacion,
+        guardarEstadoPreparacion,
+        confirmarEstacion,
+    } = useIngredientes();
+    const carneSeleccionada = ingredientesSeleccionados.includes('carne');
+    const cronometro = cronometros.carne;
 
-    const [estatusActual, setEstatusActual] = useState<string>("carne_cruda");
-    const estadoActualData = carneEstatusData.find(p => p.estatus === estatusActual)!;
+    const estatusActual = estadosPreparacion.carne;
+    const [pasoActual, setPasoActual] = useState(0);
+    const estatusVisible = cronometro.completado && ladoCarneEnCoccion
+            ? actualizarLadoCarne(estatusActual, ladoCarneEnCoccion, "quemado")
+            : estatusActual;
+    const estadoActualData = carneEstatusData.find(p => p.estatus === estatusVisible)!;
 
-    useEffect(() => {
-        if (!cronometroActivo || tiempoRestante <= 0) return;
+    const detenerCoccion = () => {
+        const tiempoTranscurrido = cronometro.fechaFinalizacion === null
+            ? cronometro.duracion - cronometro.tiempoRestante
+            : cronometro.duracion - Math.max(
+                0,
+                Math.ceil((cronometro.fechaFinalizacion - Date.now()) / 1000),
+            );
 
-        const interval = setInterval(() => {
-            setTiempoRestante((prev) => {
-                if (prev <= 1) {
-                    setCronometroActivo(false);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
+        const resultado: ResultadoCoccion = tiempoTranscurrido <= 110
+            ? "crudo"
+            : tiempoTranscurrido <= 120
+                ? "cocido"
+                : "quemado";
 
-        return () => clearInterval(interval);
-    }, [cronometroActivo, tiempoRestante]);
+        if (ladoCarneEnCoccion) {
+            guardarEstadoPreparacion('carne', actualizarLadoCarne(estatusActual, ladoCarneEnCoccion, resultado));
+        }
+        detener('carne');
+    };
 
 
     const acciones = {
         formar:  () => {
-            console.log("Formando la carne...");
-            setEstatusActual("carne_formada");
+            if (cronometro.activo || pasoActual >= 1) return;
+            setPasoActual(1);
+            guardarEstadoPreparacion('carne', estatusActual.replace("noformada", "formada"));
         },
         coccion_1: () => {
-            console.log("Cocción por un lado...");
-            setCronometroActivo(true);
-            setTiempoRestante(120);
-            setEstatusActual("coccion_1");
+            if (cronometro.activo || pasoActual >= 2) return;
+            setPasoActual(2);
+            iniciarCarne('a');
         },
         coccion_2:  () => {
-            console.log("Cocción por el otro lado...");
-            setCronometroActivo(true);
-            setTiempoRestante(120);
-            setEstatusActual("coccion_2");
+            if (cronometro.activo || pasoActual >= 3) return;
+            setPasoActual(3);
+            iniciarCarne('b');
         },
     };
 
@@ -61,60 +92,23 @@ export default function EstacionCarne() {
     return(
         <main className="relative min-h-screen w-full overflow-hidden">
             <FondoEstacion />
-            <Btns />     
+            <Btns
+                accionListo={() => confirmarEstacion('carne')}
+                listoDeshabilitado={!carneSeleccionada || cronometro.activo}
+                mostrarDetectarError
+            />
 
             <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8 gap-5">
 
-                {/* Cronómetro y Botón */}
-                {cronometroActivo && (
-                    <div className="flex flex-col items-center gap-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                        {/* Cronómetro */}
-                        <div className="flex flex-col items-center gap-2">
-                            <div className="relative flex items-center justify-center">
-                                <div className="absolute inset-0 rounded-full bg-linear-to-br from-orange-500 to-red-600 opacity-20 blur-xl" />
-                                <div className="relative flex h-40 w-40 items-center justify-center rounded-full border-8 border-orange-500 bg-linear-to-br from-orange-400 to-red-500 shadow-2xl">
-                                    <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100">
-                                        <circle
-                                            cx="50"
-                                            cy="50"
-                                            r="45"
-                                            fill="none"
-                                            stroke="rgba(255,255,255,0.3)"
-                                            strokeWidth="8"
-                                        />
-                                        <circle
-                                            cx="50"
-                                            cy="50"
-                                            r="45"
-                                            fill="none"
-                                            stroke="white"
-                                            strokeWidth="8"
-                                            strokeDasharray={`${(tiempoRestante / 120) * 283} 283`}
-                                            strokeLinecap="round"
-                                            className="transition-all duration-1000 ease-linear"
-                                        />
-                                    </svg>
-
-                                    <span className="relative z-10 text-5xl font-black text-white drop-shadow-lg">
-                                        {tiempoRestante}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <span className="rounded-full bg-white/90 px-4 py-1 text-sm font-bold uppercase tracking-wide text-orange-700 shadow-lg">
-                                Cocinando...
-                            </span>
-                        </div>
-
-                        {/* Botón de detener cocción */}
-                        <BtnDetenerCoccion accion={() => 
-                            {
-                                console.log("Deteniendo cocción...");
-                                setCronometroActivo(false);
-                            }} 
-                        />
-                    </div>
-                )}
+                <div className='absolute left-32 top-1/2 -translate-y-1/2 z-30'>
+                <Cronometro
+                    tiempoInicial={cronometro.duracion}
+                    tiempoRestante={cronometro.tiempoRestante}
+                    activo={cronometro.activo}
+                    titulo={"Cocinando"}
+                    onDetener={detenerCoccion}
+                />   
+                </div>
 
                 <div className="relative flex items-center gap-8">
                     <div className="relative w-full max-w-4xl rounded-3xl bg-amber-800 p-8">
@@ -122,11 +116,14 @@ export default function EstacionCarne() {
 
                             <div className="relative">
                                 <div className="relative flex items-center justify-center rounded-2xl bg-white p-6">
-                                    <IngredienteEstatus 
-                                        estatus={estadoActualData.estatus}
-                                        src={estadoActualData.src}
-                                        alt={estadoActualData.alt}
-                                    />
+                                    {carneSeleccionada && (
+                                        <IngredienteEstatus 
+                                            estatus={estadoActualData.estatus}
+                                            src={estadoActualData.src}
+                                            alt={estadoActualData.alt}
+                                            blur={cronometro.activo}
+                                        />
+                                    )}
                                 </div>
                             </div>
 
@@ -138,6 +135,13 @@ export default function EstacionCarne() {
                                         alt={item.alt}
                                         label={item.label}
                                         accion={acciones[item.id as keyof typeof acciones] || (() => {})}
+                                        disabled={
+                                            !carneSeleccionada ||
+                                            cronometro.activo ||
+                                            (item.id === "formar" && pasoActual >= 1) ||
+                                            (item.id === "coccion_1" && pasoActual >= 2) ||
+                                            (item.id === "coccion_2" && pasoActual >= 3)
+                                        }
                                     />
                                 ))}
                             </div>

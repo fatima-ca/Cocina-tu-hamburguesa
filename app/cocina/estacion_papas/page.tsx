@@ -1,132 +1,125 @@
 'use client';
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
-import { contenidoRecetas } from '@/components/cocina/ContenidoRecetas';
+import { contenidoRecetas } from '@/components/DATA/ContenidoRecetas';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 import { DataAccionPapas } from '@/components/DATA/DataText';
 import { papasEstatusData } from '@/components/DATA/DataText';
 import IngredienteEstatus from '@/components/cocina/cocinar/IngredienteEstatus';
-import BtnDetenerCoccion from '@/components/cocina/cocinar/BtnDetenerCoccion';
-
+import Cronometro from '@/components/cocina/cocinar/Cronometro';
+import { useCronometros } from '@/components/cocina/cocinar/CronometroContext';
+import { useIngredientes } from '@/components/cocina/ingredientes/IngredientesContext';
 
 
 
 export default function EstacionPapas() {
-    const [abierta, setAbierta] = useState<boolean>(true);
-    const [cronometroActivo, setCronometroActivo] = useState<boolean>(false);
-    const [tiempoRestante, setTiempoRestante] = useState<number>(50);
+    const { versionesReinicio } = useIngredientes();
+    return <ContenidoEstacionPapas key={versionesReinicio.papas} />;
+}
 
-    const [estatusActual, setEstatusActual] = useState<string>("papas_sucias");
-    const estadoActualData = papasEstatusData.find(p => p.estatus === estatusActual)!;
+function ContenidoEstacionPapas() {
+    const [abierta, setAbierta] = useState<boolean>(true);
+    const { cronometros, iniciar, detener } = useCronometros();
+    const {
+        ingredientesSeleccionados,
+        estadosPreparacion,
+        guardarEstadoPreparacion,
+        confirmarEstacion,
+    } = useIngredientes();
+    const papasSeleccionadas = ingredientesSeleccionados.includes('papas');
+    const cronometro = cronometros.papas;
+
+    const estatusActual = estadosPreparacion.papas;
+    const [estatusBaseCoccion, setEstatusBaseCoccion] = useState(estatusActual);
+    const [pasoActual, setPasoActual] = useState(0);
+    const estatusVisible = cronometro.completado
+        ? estatusBaseCoccion.replace(/_cruda$/, "_quemada")
+        : estatusActual;
+    const estadoActualData = papasEstatusData.find(p => p.estatus === estatusVisible)!;
 
     useEffect(() => {
-        if (!cronometroActivo || tiempoRestante <= 0) return;
+        if (cronometro.completado) {
+            guardarEstadoPreparacion('papas', estatusVisible);
+        }
+    }, [cronometro.completado, estatusVisible, guardarEstadoPreparacion]);
 
-        const interval = setInterval(() => {
-            setTiempoRestante((prev) => {
-                if (prev <= 1) {
-                    setCronometroActivo(false);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
+    const detenerCoccion = () => {
+        const tiempoCoccion = cronometro.fechaFinalizacion === null
+            ? cronometro.duracion - cronometro.tiempoRestante
+            : cronometro.duracion - Math.max(
+                0,
+                Math.ceil((cronometro.fechaFinalizacion - Date.now()) / 1000),
+            );
 
-        return () => clearInterval(interval);
-    }, [cronometroActivo, tiempoRestante]);
-
+        detener('papas');
+        const resultadoCoccion = tiempoCoccion <= 290
+            ? "cruda"
+            : tiempoCoccion <= 300
+                ? "cocida"
+                : "quemada";
+        guardarEstadoPreparacion('papas', estatusBaseCoccion.replace(/_cruda$/, `_${resultadoCoccion}`));
+    };
 
     const acciones = {
         lavar:  () => {
-            console.log("Lavando papas...");
-            setEstatusActual("papas_limpias");
+            if (cronometro.activo || pasoActual >= 1) return;
+            setPasoActual(1);
+            const nuevoEstatus = estatusActual.replace("_sucia_", "_limpia_");
+            guardarEstadoPreparacion('papas', nuevoEstatus);
+            setEstatusBaseCoccion(nuevoEstatus);
         },
         cortar: () => {
-            console.log("Cortando papas...");
-            setEstatusActual("papas_cortadas");
+            if (cronometro.activo || pasoActual >= 2) return;
+            setPasoActual(2);
+            const nuevoEstatus = estatusActual.replace("_entera_cruda", "_cortada_cruda");
+            guardarEstadoPreparacion('papas', nuevoEstatus);
+            setEstatusBaseCoccion(nuevoEstatus);
         },
         freir:  () => {
-            console.log("Friendo papas...");
-            setCronometroActivo(true);
-            setTiempoRestante(120);
-            setEstatusActual("papas_friendo");
+            if (cronometro.activo || pasoActual >= 3) return;
+            setPasoActual(3);
+            setEstatusBaseCoccion(estatusActual);
+            iniciar('papas');
         },
     };
 
     return(
         <main className="relative min-h-screen w-full overflow-hidden">
             <FondoEstacion />
-            <Btns />
+            <Btns
+                accionListo={() => confirmarEstacion('papas')}
+                listoDeshabilitado={!papasSeleccionadas || cronometro.activo}
+                mostrarDetectarError
+            />
 
-            <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8 gap-5">
+            <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
 
-                {/* Cronómetro y Botón */}
-                {cronometroActivo && (
-                    <div className="flex flex-col items-center gap-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                        {/* Cronómetro */}
-                        <div className="flex flex-col items-center gap-2">
-                            <div className="relative flex items-center justify-center">
-                                <div className="absolute inset-0 rounded-full bg-linear-to-br from-orange-500 to-red-600 opacity-20 blur-xl" />
-                                <div className="relative flex h-40 w-40 items-center justify-center rounded-full border-8 border-orange-500 bg-linear-to-br from-orange-400 to-red-500 shadow-2xl">
-                                    <svg className="absolute inset-0 -rotate-90" viewBox="0 0 100 100">
-                                        <circle
-                                            cx="50"
-                                            cy="50"
-                                            r="45"
-                                            fill="none"
-                                            stroke="rgba(255,255,255,0.3)"
-                                            strokeWidth="8"
-                                        />
-                                        <circle
-                                            cx="50"
-                                            cy="50"
-                                            r="45"
-                                            fill="none"
-                                            stroke="white"
-                                            strokeWidth="8"
-                                            strokeDasharray={`${(tiempoRestante / 120) * 283} 283`}
-                                            strokeLinecap="round"
-                                            className="transition-all duration-1000 ease-linear"
-                                        />
-                                    </svg>
+                <div className='absolute left-32 top-1/2 -translate-y-1/2 z-30'>
+                    <Cronometro
+                        tiempoInicial={cronometro.duracion}
+                        tiempoRestante={cronometro.tiempoRestante}
+                        activo={cronometro.activo}
+                        titulo={"Friendo"}
+                        onDetener={detenerCoccion}
+                    />   
+                </div>
 
-                                    <span className="relative z-10 text-5xl font-black text-white drop-shadow-lg">
-                                        {tiempoRestante}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <span className="rounded-full bg-white/90 px-4 py-1 text-sm font-bold uppercase tracking-wide text-orange-700 shadow-lg">
-                                Cocinando...
-                            </span>
-                        </div>
-
-                        {/* Botón de detener cocción */}
-                        <BtnDetenerCoccion accion={() => 
-                            {
-                                console.log("Deteniendo cocción...");
-                                setCronometroActivo(false);
-                            }}  
-                        />
-                    </div>
-                )}  
-                
-                
-                
                 <div className="relative w-full max-w-4xl rounded-3xl bg-amber-800 p-8">
                     <div className="relative z-10 flex flex-col items-center gap-8">
 
                         <div className="relative">
                             <div className="relative flex items-center justify-center rounded-2xl bg-white p-6">
-                                <IngredienteEstatus
-                                    estatus={estadoActualData.estatus}
-                                    src={estadoActualData.src}
-                                    alt={estadoActualData.alt}
-                                />
+                                {papasSeleccionadas && (
+                                    <IngredienteEstatus
+                                        estatus={estadoActualData.estatus}
+                                        src={estadoActualData.src}
+                                        alt={estadoActualData.alt}
+                                        blur={cronometro.activo}
+                                    />
+                                )}
                             </div>
                         </div>
 
@@ -138,6 +131,13 @@ export default function EstacionPapas() {
                                     alt={item.alt}
                                     label={item.label}
                                     accion={acciones[item.id as keyof typeof acciones] || (() => {})}
+                                    disabled={
+                                        !papasSeleccionadas ||
+                                        cronometro.activo ||
+                                        (item.id === "lavar" && pasoActual >= 1) ||
+                                        (item.id === "cortar" && pasoActual >= 2) ||
+                                        (item.id === "freir" && pasoActual >= 3)
+                                    }
                                 />
                             ))}
                         </div>
@@ -147,9 +147,6 @@ export default function EstacionPapas() {
             </div>
 
 
-
-
-  
             <div className="absolute right-4 top-4 z-20">
                 <MostrarRecetas />
             </div>
@@ -159,6 +156,7 @@ export default function EstacionPapas() {
                     {contenidoRecetas[1].contenido}
                 </div>
             </PantallaReceta>
+
         </main>
     );
 };

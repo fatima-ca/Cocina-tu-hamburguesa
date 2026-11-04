@@ -9,13 +9,14 @@ type BtnListoProps = {
 export default function BtnListo ({ accion, disabled }: BtnListoProps) {
     return (
         <button
+            type="button"
             onClick={accion}
             disabled={disabled}
             className="group relative transition-transform duration-200 ease-out hover:scale-110 active:scale-95 animate-[pulse-soft_2s_ease-in-out_infinite]"
         >
             <Image
                 src="/general/btn_listo.png"
-                alt="Boton para detectar error"
+                alt="Botón Listo"
                 width={200}
                 height={100}
                 priority
