@@ -10,6 +10,12 @@ import {
 } from '@/components/DATA/DataText';
 import { useIngredientes, type IngredienteId } from '@/components/cocina/ingredientes/IngredientesContext';
 
+type TablaEnsamblajeProps = {
+    vistaResultado?: boolean;
+    onRegresar: () => void;
+    onTerminar: () => void;
+};
+
 const ingredientesFijos: Record<
     Exclude<IngredienteId, 'carne' | 'pan' | 'papas'>,
     Omit<IngredienteProps, 'id'>
@@ -83,7 +89,11 @@ function obtenerOpcionesEnsamblaje(
     });
 }
 
-export default function TablaEnsamblaje() {
+export default function TablaEnsamblaje({
+    vistaResultado = false,
+    onRegresar,
+    onTerminar,
+}: TablaEnsamblajeProps) {
     const [ingredientesAgregados, setIngredientesAgregados] = useState<IngredienteProps[]>([]);
     const [papasAgregadas, setPapasAgregadas] = useState(false);
     const { ingredientesSeleccionados, estadosPreparacion, estacionesListas } = useIngredientes();
@@ -101,6 +111,112 @@ export default function TablaEnsamblaje() {
         (id): id is 'carne' | 'pan' | 'papas' =>
             (id === 'carne' || id === 'pan' || id === 'papas') && !estacionesListas[id],
     );
+
+    if (vistaResultado) {
+        return (
+            <section className="relative flex min-h-screen w-full flex-col items-center justify-center gap-2 overflow-y-auto p-4">
+                <div className="relative aspect-1392/912 w-full max-w-6xl">
+                    <Image
+                        src="/general/letrero.png"
+                        alt=""
+                        fill
+                        priority
+                        sizes="(max-width: 1200px) 100vw, 1152px"
+                        className="object-contain"
+                    />
+
+                    <div className="absolute left-[15%] right-[15%] top-[15%] h-[14%]">
+                        <Image
+                            src="/general/ya_terminaste.png"
+                            alt="¿Ya terminaste?"
+                            fill
+                            priority
+                            sizes="(max-width: 1200px) 70vw, 806px"
+                            className="object-contain"
+                        />
+                    </div>
+
+                    <div className="absolute inset-[31%_8%_14%] grid grid-cols-3 items-center">
+
+                        <div className="flex h-full items-center justify-center">
+                            <Image
+                                src="/general/hamburguesa_lista.png"
+                                alt="Hamburguesa lista"
+                                width={400}
+                                height={400}
+                                priority
+                                className="max-h-full w-auto object-contain"
+                            />
+                        </div>
+
+                        <Image
+                            src="/general/vs.png"
+                            alt="vs"
+                            width={400}
+                            height={400}
+                            priority
+                            className="max-h-full w-auto object-contain"
+                        />
+                        
+                        <div className="flex h-full flex-col-reverse items-center justify-center overflow-hidden">
+                            {ingredientesAgregadosVisibles.map((ingrediente, index) => (
+                                <div
+                                    key={`${ingrediente.id}-${index}`}
+                                    className="relative -mb-7 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                                >
+                                    <Image
+                                        src={ingrediente.ensamblaje}
+                                        alt={ingrediente.alt}
+                                        width={220}
+                                        height={110}
+                                        className="h-auto w-40 object-contain sm:w-48 md:w-56"
+                                    />
+                                </div>
+                            ))}
+
+                            {ingredientesAgregadosVisibles.length === 0 && (
+                                <p className="text-center font-semibold text-white">
+                                    No se agregaron ingredientes a la hamburguesa.
+                                </p>
+                            )}
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div className="relative z-10 flex flex-wrap items-center justify-center gap-4">
+                    <button
+                        type="button"
+                        onClick={onRegresar}
+                        className="transition-transform duration-200 ease-out hover:scale-110 active:scale-95"
+                    >
+                        <Image
+                            src="/general/btn_regresar.png"
+                            alt="Regresar al ensamblaje"
+                            width={220}
+                            height={100}
+                            priority
+                            className="object-contain"
+                        />
+                    </button>
+                    <button
+                        type="button"
+                        onClick={onTerminar}
+                        className="transition-transform duration-200 ease-out hover:scale-110 active:scale-95"
+                    >
+                        <Image
+                            src="/general/btn_terminar.png"
+                            alt="Terminar"
+                            width={220}
+                            height={100}
+                            priority
+                            className="object-contain"
+                        />
+                    </button>
+                </div>
+            </section>
+        );
+    }
 
     const agregarIngrediente = (ingrediente: IngredienteProps) => {
         setIngredientesAgregados((prev) => [...prev, ingrediente]);

@@ -16,7 +16,7 @@ export default function BtnListo ({ accion, disabled }: BtnListoProps) {
         >
             <Image
                 src="/general/btn_listo.png"
-                alt="Boton para detectar error"
+                alt="Botón Listo"
                 width={200}
                 height={100}
                 priority
