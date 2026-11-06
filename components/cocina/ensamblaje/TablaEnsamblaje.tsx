@@ -136,51 +136,85 @@ export default function TablaEnsamblaje({
                         />
                     </div>
 
-                    <div className="absolute inset-[31%_8%_14%] grid grid-cols-3 items-center">
+                    <div className="absolute inset-[30%_8%_12%] grid min-h-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-stretch gap-1 sm:gap-4">
+                        <div className="flex min-h-0 flex-col items-center rounded-xl bg-black/10 p-1 sm:rounded-2xl sm:p-3">
+                            <p className="shrink-0 text-center text-[clamp(0.55rem,1.5vw,1.125rem)] font-bold text-white [text-shadow:0_1px_3px_#333]">
+                                Ejemplo
+                            </p>
+                            <div className="grid min-h-0 flex-1 w-full grid-cols-2 items-center justify-items-center gap-1">
+                                <Image
+                                    src="/general/hamburguesa_lista.png"
+                                    alt="Hamburguesa de ejemplo"
+                                    width={150}
+                                    height={150}
+                                    priority
+                                    className="max-h-full max-w-full object-contain"
+                                />
+                                <Image
+                                    src="/ingredientes/papas_variantes/ensamblaje/papas_e_limpia_cortada_cocida.png"
+                                    alt="Papas de ejemplo"
+                                    width={200}
+                                    height={200}
+                                    priority
+                                    className="max-h-full max-w-full object-contain"
+                                />
+                            </div>
+                        </div>
 
-                        <div className="flex h-full items-center justify-center">
+                        <div className="flex items-center justify-center">
                             <Image
-                                src="/general/hamburguesa_lista.png"
-                                alt="Hamburguesa lista"
-                                width={400}
-                                height={400}
+                                src="/general/vs.png"
+                                alt="contra"
+                                width={120}
+                                height={120}
                                 priority
-                                className="max-h-full w-auto object-contain"
+                                className="h-auto w-[clamp(1.5rem,6vw,5rem)] object-contain"
                             />
                         </div>
 
-                        <Image
-                            src="/general/vs.png"
-                            alt="vs"
-                            width={400}
-                            height={400}
-                            priority
-                            className="max-h-full w-auto object-contain"
-                        />
-                        
-                        <div className="flex h-full flex-col-reverse items-center justify-center overflow-hidden">
-                            {ingredientesAgregadosVisibles.map((ingrediente, index) => (
-                                <div
-                                    key={`${ingrediente.id}-${index}`}
-                                    className="relative -mb-7 animate-in fade-in slide-in-from-bottom-2 duration-300"
-                                >
-                                    <Image
-                                        src={ingrediente.ensamblaje}
-                                        alt={ingrediente.alt}
-                                        width={220}
-                                        height={110}
-                                        className="h-auto w-40 object-contain sm:w-48 md:w-56"
-                                    />
+                        <div className="flex min-h-0 flex-col items-center rounded-xl bg-black/10 p-1 sm:rounded-2xl sm:p-3">
+                            <p className="shrink-0 text-center text-[clamp(0.55rem,1.5vw,1.125rem)] font-bold text-white [text-shadow:0_1px_3px_#333]">
+                                Tu ensamble
+                            </p>
+                            <div className="grid min-h-0 flex-1 w-full grid-cols-2 items-center justify-items-center gap-1">
+                                <div className="flex h-full min-h-0 w-full flex-col-reverse items-center justify-center overflow-hidden">
+                                    {ingredientesAgregadosVisibles.map((ingrediente, index) => (
+                                        <div
+                                            key={`${ingrediente.id}-${index}`}
+                                            className="relative -mb-3 w-full max-w-32 animate-in fade-in slide-in-from-bottom-2 duration-300 sm:-mb-5"
+                                        >
+                                            <Image
+                                                src={ingrediente.ensamblaje}
+                                                alt={ingrediente.alt}
+                                                width={400}
+                                                height={400}
+                                                className=" object-contain "
+                                            />
+                                        </div>
+                                    ))}
+                                    {ingredientesAgregadosVisibles.length === 0 && (
+                                        <p className="text-center text-[clamp(0.5rem,1.2vw,0.875rem)] font-semibold text-white [text-shadow:0_1px_3px_#333]">
+                                            Sin ingredientes
+                                        </p>
+                                    )}
                                 </div>
-                            ))}
 
-                            {ingredientesAgregadosVisibles.length === 0 && (
-                                <p className="text-center font-semibold text-white">
-                                    No se agregaron ingredientes a la hamburguesa.
-                                </p>
-                            )}
+                                {opcionPapas ? (
+                                    <Image
+                                        src={opcionPapas.ensamblaje}
+                                        alt={opcionPapas.alt}
+                                        width={200}
+                                        height={200}
+                                        priority
+                                        className="max-h-full max-w-full object-contain"
+                                    />
+                                ) : (
+                                    <p className="text-center text-[clamp(0.5rem,1.2vw,0.875rem)] font-semibold text-white [text-shadow:0_1px_3px_#333]">
+                                        Sin papas
+                                    </p>
+                                )}
+                            </div>
                         </div>
-                        
                     </div>
                 </div>
 

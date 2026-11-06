@@ -77,7 +77,7 @@ export const contenidoRecetas=[
                             className="object-contain drop-shadow-2xl"
                         />
                         <Image
-                            src="/ingredientes/papas_listas.png"
+                            src="/ingredientes/papas_variantes/ensamblaje/papas_e_limpia_cortada_cocida.png"
                             alt="Imagen de las papas listas"
                             width={350}
                             height={350}
