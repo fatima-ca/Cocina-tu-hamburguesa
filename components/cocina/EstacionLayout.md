@@ -43,7 +43,7 @@ sus reglas para habilitarlas y la receta que le corresponde.
 | Prop | Tipo | Descripción |
 |---|---|---|
 | `ingredienteSeleccionado` | `boolean` | Indica si el ingrediente de esta estación está seleccionado. Si es `false`, no se muestra su imagen, se deshabilitan las acciones y también el botón **Listo**. |
-| `estadoIngrediente` | `IngredienteEstatusProps` | Variante visual actual del ingrediente: `estatus`, `src` y `alt`. El layout aplica desenfoque automáticamente mientras el cronómetro está activo. |
+| `estadoIngrediente` | `IngredienteEstatusProps` | Variante visual actual del ingrediente: `estatus`, `src` y `alt`. La imagen conserva sus colores originales y se desenfoca mientras el cronómetro está activo. |
 | `cronometro` | `{ duracion: number; tiempoRestante: number; activo: boolean }` | Datos que muestra el cronómetro. `duracion` y `tiempoRestante` se expresan en segundos; `activo` determina si se muestra y si bloquea las acciones. |
 | `tituloCronometro` | `string` | Texto mostrado como título del cronómetro, por ejemplo `"Friendo"`, `"Cocinando"` o `"Tostando"`. |
 | `acciones` | `AccionEstacion[]` | Botones que aparecen en la estación, con su contenido, callback y estado de deshabilitado. |
@@ -80,7 +80,8 @@ Cada elemento de `acciones` tiene esta forma:
 - El botón **Listo** se deshabilita si el ingrediente no está seleccionado o el
   cronómetro está activo.
 - El ingrediente solo se renderiza si está seleccionado.
-- El ingrediente se desenfoca mientras el cronómetro está activo.
+- El ingrediente se desenfoca mientras el cronómetro está activo y recupera su nitidez cuando se detiene.
+- No aplica filtros de color al ingrediente, incluido cuando está quemado.
 - Todas las acciones se deshabilitan durante la cocción y cuando el ingrediente
   no está seleccionado, además del bloqueo recibido en `acciones`.
 - La receta inicia abierta y se puede cerrar desde `PantallaReceta`.
