@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import FondoEstacion from '@/components/general/FondoEstacion';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
@@ -31,6 +31,7 @@ export default function EstacionIngredientes() {
 }
 
 function ContenidoEstacionIngredientes() {
+    const router = useRouter();
     const [abierta, setAbierta] = useState<boolean>(true);
     const { ingredientesSeleccionados, guardarIngredientes } = useIngredientes();
     const [seleccionBorrador, setSeleccionBorrador] = useState<IngredienteId[]>(ingredientesSeleccionados);
@@ -76,7 +77,10 @@ function ContenidoEstacionIngredientes() {
                 </div>  
             </div>
 
-            <Btns accionListo={() => guardarIngredientes(seleccionBorrador)} />
+            <Btns accionListo={() => {
+                guardarIngredientes(seleccionBorrador);
+                router.push('/cocina');
+            }} />
 
             
     

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { ReactNode, useState } from 'react';
 import type { IngredienteEstatusProps } from '@/components/DATA/types';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
@@ -44,13 +45,19 @@ export default function EstacionLayout({
   onDetenerCoccion,
   onConfirmar,
 }: EstacionLayoutProps) {
+  const router = useRouter();
   const [recetaAbierta, setRecetaAbierta] = useState(true);
+
+  const confirmarEstacion = () => {
+    onConfirmar();
+    router.push('/cocina');
+  };
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden">
       <FondoEstacion />
       <Btns
-        accionListo={onConfirmar}
+        accionListo={confirmarEstacion}
         listoDeshabilitado={!ingredienteSeleccionado || cronometro.activo}
         mostrarDetectarError
       />

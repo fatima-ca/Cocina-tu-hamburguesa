@@ -49,7 +49,7 @@ sus reglas para habilitarlas y la receta que le corresponde.
 | `acciones` | `AccionEstacion[]` | Botones que aparecen en la estación, con su contenido, callback y estado de deshabilitado. |
 | `receta` | `ReactNode` | Contenido que se muestra dentro de la pantalla de receta. El diálogo se abre inicialmente y el propio layout gestiona su cierre. |
 | `onDetenerCoccion` | `() => void` | Callback ejecutado al pulsar el botón de detener del cronómetro. Debe resolver la regla de cocción específica de la estación. |
-| `onConfirmar` | `() => void` | Callback del botón **Listo**, normalmente usado para confirmar la estación en el contexto. |
+| `onConfirmar` | `() => void` | Callback del botón **Listo**, normalmente usado para confirmar la estación en el contexto. Después de ejecutarlo, el layout navega a `/cocina`. |
 
 ### Forma de cada acción
 
