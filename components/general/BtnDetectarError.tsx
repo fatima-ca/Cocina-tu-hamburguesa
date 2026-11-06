@@ -37,8 +37,8 @@ const estaciones = [
 export default function BtnDetectarError() {
     const [abierto, setAbierto] = useState(false);
     const router = useRouter();
-    const { reiniciarEstacion, reiniciarSeleccion } = useIngredientes();
-    const { reiniciar, reiniciarTodos } = useCronometros();
+    const { reiniciarEstacion } = useIngredientes();
+    const { reiniciar } = useCronometros();
 
     useEffect(() => {
         if (!abierto) return;
@@ -58,10 +58,7 @@ export default function BtnDetectarError() {
     }, [abierto]);
 
     const volverAEstacion = (estacion: (typeof estaciones)[number]) => {
-        if (estacion.destino === 'seleccion') {
-            reiniciarSeleccion();
-            reiniciarTodos();
-        } else {
+        if (estacion.destino !== 'seleccion') {
             reiniciarEstacion(estacion.destino);
             reiniciar(estacion.destino);
         }

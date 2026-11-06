@@ -273,9 +273,7 @@ export default function TablaEnsamblaje({
 
                             {opcionesEnsamblaje.length === 0 ? (
                                 <p className="max-w-56 text-center text-sm text-amber-900">
-                                    {ingredientesPendientes.length > 0
-                                        ? `Presiona Listo en la estación de ${ingredientesPendientes.join(', ')} para mostrar estos ingredientes.`
-                                        : 'Selecciona ingredientes en la estación de ingredientes.'}
+                                   Sin ingredientes.
                                 </p>
                             ) : (
                                 <div className="grid grid-cols-2 gap-2">
@@ -322,11 +320,7 @@ export default function TablaEnsamblaje({
                                 </div>
                             )}
 
-                            {opcionesEnsamblaje.length > 0 && ingredientesPendientes.length > 0 && (
-                                <p className="max-w-56 text-center text-sm text-amber-900">
-                                    Presiona Listo en la estación de {ingredientesPendientes.join(', ')} para mostrar esos ingredientes.
-                                </p>
-                            )}
+                            
 
                             
                             <button
@@ -382,9 +376,7 @@ export default function TablaEnsamblaje({
 
                             {!opcionPapas ? (
                                 <p className="max-w-56 text-center text-sm text-amber-900">
-                                    {ingredientesPendientes.includes('papas')
-                                        ? 'Presiona Listo en la estación de papas para mostrar este ingrediente.'
-                                        : 'Selecciona las papas en la estación de ingredientes.'}
+                                    Sin ingredientes.
                                 </p>
                             ) : (
                                 <div className="grid grid-cols-2 gap-3">
