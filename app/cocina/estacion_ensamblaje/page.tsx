@@ -16,7 +16,7 @@ export default function EstacionEnsamblaje() {
   const router = useRouter();
 
   return (
-    <main className={`relative min-h-screen w-full ${mostrarResultado ? '' : 'overflow-hidden'}`}>
+    <main className={`relative min-h-screen w-full ${mostrarResultado ? '' : 'overflow-x-hidden'}`}>
       <TablaEnsamblaje
         vistaResultado={mostrarResultado}
         onRegresar={() => setMostrarResultado(false)}

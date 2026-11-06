@@ -235,16 +235,16 @@ export default function TablaEnsamblaje({
     return (
         <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
             <div className="relative w-full max-w-6xl rounded-3xl bg-amber-800 p-8">
-                <div className="relative z-10 flex flex-row items-center gap-8">
+                <div className="relative z-10 grid grid-cols-1 items-start gap-6 xl:grid-cols-2">
 
 
                     {/* Ensamblaje de hamburguesa */}
-                    <div className="relative flex items-center gap-8">
-                        <div className="relative flex flex-col-reverse items-center justify-center min-h-125 w-100 rounded-2xl border-4 border-amber-900/30 bg-amber-200 p-6">
+                    <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
+                        <div className="relative flex h-125 min-w-0 flex-col-reverse items-center justify-center overflow-hidden rounded-2xl border-4 border-amber-900/30 bg-amber-200 p-6">
                             {ingredientesAgregadosVisibles.map((ingrediente, index) => (
                                 <div
                                     key={`${ingrediente.id}-${index}`}
-                                    className="relative -mb-7 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                                    className="relative -mb-7 w-full max-w-50 animate-in fade-in slide-in-from-bottom-2 duration-300"
                                 >
                                     <Image
                                         src={ingrediente.ensamblaje}
@@ -252,7 +252,7 @@ export default function TablaEnsamblaje({
                                         width={200}
                                         height={100}
                                         priority
-                                        
+                                        className="h-auto w-full object-contain"
                                     />
                                 </div>
                             ))}
@@ -266,7 +266,7 @@ export default function TablaEnsamblaje({
                             )}
                         </div>
 
-                        <div className="flex flex-col gap-4 rounded-2xl bg-white/90 p-6">
+                        <div className="flex min-w-0 flex-col gap-4 rounded-2xl bg-white/90 p-6">
                             <h3 className="text-xl font-bold text-amber-900 text-center">
                                 Ingredientes seleccionados
                             </h3>
@@ -334,15 +334,13 @@ export default function TablaEnsamblaje({
                         </div>
                     </div>
 
-
-
                     {/* Ensamblaje de las papas */}
-                    <div className="relative flex items-center gap-8">
-                        <div className="relative flex flex-col-reverse items-center justify-center min-h-125 w-100 rounded-2xl border-4 border-amber-900/30 bg-amber-200 p-6">
+                    <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
+                        <div className="relative flex h-125 min-w-0 flex-col-reverse items-center justify-center overflow-hidden rounded-2xl border-4 border-amber-900/30 bg-amber-200 p-6">
                             {papasAgregadas && opcionPapas && (
                                 <div
                                     key={opcionPapas.id}
-                                    className="relative -mb-6 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                                    className="relative -mb-6 w-full max-w-50 animate-in fade-in slide-in-from-bottom-2 duration-300"
                                 >
                                     <Image
                                         src={opcionPapas.ensamblaje}
@@ -350,7 +348,7 @@ export default function TablaEnsamblaje({
                                         width={200}
                                         height={100}
                                         priority
-                                        
+                                        className="h-auto w-full object-contain"
                                     />
                                 </div>
                             )}
@@ -363,13 +361,13 @@ export default function TablaEnsamblaje({
                                         width={200}
                                         height={100}
                                         priority
-                                        
+                                        className="max-w-full object-contain"
                                     />
                                 </div>
                             )}
                         </div>
 
-                        <div className="flex flex-col gap-4 rounded-2xl bg-white/90 p-6">
+                        <div className="flex min-w-0 flex-col gap-4 rounded-2xl bg-white/90 p-6">
                             <h3 className="text-xl font-bold text-amber-900 text-center">
                                 Papas seleccionadas
                             </h3>
