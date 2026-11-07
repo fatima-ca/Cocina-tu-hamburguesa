@@ -27,7 +27,7 @@ export const ingredientes = [
   { src: "/ingredientes/mostaza.png", nombre: "Mostaza" }, // 4 - mostaza
   { src: "/ingredientes/queso.png", nombre: "Queso" }, // 5 - queso
   { src: "/ingredientes/pan.png", nombre: "Pan" }, // 6 - pan
-  { src: "/ingredientes/papas_crudas.png", nombre: "Papas" }, // 7 - papas crudas
+  { src: "/ingredientes/papas_variantes/papas_sucia_entera_cruda.png", nombre: "Papas" }, // 7 - papas crudas
 ];
 
 export const pasosPapas = [
@@ -48,14 +48,14 @@ export const pasosPan = [
 ];
 
 export const pasosEnsamblaje = [
-    { src: "/ingredientes/pan_base_tostado.png", num:"1", instruccion: "Colocar la base de pan" },
-    { src: "/ingredientes/carne_lista.png", num:"2", instruccion: "Colocar la carne preparada" },
+    { src: "/ingredientes/pan_variantes/ensamblaje/pan_base_tostado.png", num:"1", instruccion: "Colocar la base de pan" },
+    { src: "/ingredientes/carne_variantes/carne_formada_a-cocido_b-cocido.png", num:"2", instruccion: "Colocar la carne preparada" },
     { src: "/ingredientes/queso.png", num:"3", instruccion: "Colocar el queso" },
     { src: "/ingredientes/tomate.png", num:"4", instruccion: "Colocar el tomato" },
     { src: "/ingredientes/lechuga.png", num:"5", instruccion: "Colocar la lechuga" },
     { src: "/ingredientes/mostaza.png", num:"6", instruccion: "Untar la mostaza" },
     { src: "/ingredientes/mayonesa.png", num:"7", instruccion: "Untar la mayonesa" },
-    { src: "/ingredientes/pan_tapa_tostado.png", num:"8", instruccion: "Colocar la tapa de pan" },
+    { src: "/ingredientes/pan_variantes/ensamblaje/pan_tapa_tostado.png", num:"8", instruccion: "Colocar la tapa de pan" },
 ];
 
 
