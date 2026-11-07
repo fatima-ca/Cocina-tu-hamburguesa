@@ -88,6 +88,7 @@ function ContenidoEstacionCarne() {
 
   return (
     <EstacionLayout
+      estacionId="carne"
       ingredienteSeleccionado={estacion.ingredienteSeleccionado}
       estadoIngrediente={estadoCarne}
       cronometro={cronometro}

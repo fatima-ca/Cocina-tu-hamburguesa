@@ -86,6 +86,7 @@ function ContenidoEstacionPapas() {
 
   return (
     <EstacionLayout
+      estacionId="papas"
       ingredienteSeleccionado={estacion.ingredienteSeleccionado}
       estadoIngrediente={estadoPapas}
       cronometro={cronometro}

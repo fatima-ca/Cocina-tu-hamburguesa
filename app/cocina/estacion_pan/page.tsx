@@ -84,6 +84,7 @@ function ContenidoEstacionPan() {
 
   return (
     <EstacionLayout
+      estacionId="pan"
       ingredienteSeleccionado={estacion.ingredienteSeleccionado}
       estadoIngrediente={estadoPan}
       cronometro={cronometro}

@@ -16,6 +16,7 @@ import EstacionLayout from '@/components/cocina/EstacionLayout';
 
 ```tsx
 <EstacionLayout
+  estacionId="papas"
   ingredienteSeleccionado={ingredienteSeleccionado}
   estadoIngrediente={estadoVisual}
   cronometro={{
@@ -47,7 +48,8 @@ sus reglas para habilitarlas y la receta que le corresponde.
 | `cronometro` | `{ duracion: number; tiempoRestante: number; activo: boolean }` | Datos que muestra el cronómetro. `duracion` y `tiempoRestante` se expresan en segundos; `activo` determina si se muestra y si bloquea las acciones. |
 | `tituloCronometro` | `string` | Texto mostrado como título del cronómetro, por ejemplo `"Friendo"`, `"Cocinando"` o `"Tostando"`. |
 | `acciones` | `AccionEstacion[]` | Botones que aparecen en la estación, con su contenido, callback y estado de deshabilitado. |
-| `receta` | `ReactNode` | Contenido que se muestra dentro de la pantalla de receta. El diálogo se abre inicialmente y el propio layout gestiona su cierre. |
+| `estacionId` | `EstacionRecetaId` | Identificador único de la estación, usado para recordar si la receta inicial ya se mostró durante la sesión de la pestaña. |
+| `receta` | `ReactNode` | Contenido que se muestra dentro de la pantalla de receta. Se abre automáticamente la primera vez que se visita esa estación durante la sesión; el botón de recetas permite volver a abrirla. |
 | `onDetenerCoccion` | `() => void` | Callback ejecutado al pulsar el botón de detener del cronómetro. Debe resolver la regla de cocción específica de la estación. |
 | `onConfirmar` | `() => void` | Callback del botón **Listo**, normalmente usado para confirmar la estación en el contexto. Después de ejecutarlo, el layout navega a `/cocina`. |
 
@@ -84,7 +86,7 @@ Cada elemento de `acciones` tiene esta forma:
 - No aplica filtros de color al ingrediente, incluido cuando está quemado.
 - Todas las acciones se deshabilitan durante la cocción y cuando el ingrediente
   no está seleccionado, además del bloqueo recibido en `acciones`.
-- La receta inicia abierta y se puede cerrar desde `PantallaReceta`.
+- La receta correspondiente a la estación se abre automáticamente una sola vez por sesión de pestaña, incluso si se reinicia la estación. Se puede volver a abrir desde el botón de recetas de la parte inferior y cerrar desde `PantallaReceta`.
 
 La lógica de transición de estados, el progreso de pasos, los umbrales de
 cocción y el inicio o detención del cronómetro pertenecen a la página o a los

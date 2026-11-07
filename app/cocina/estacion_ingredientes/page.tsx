@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import FondoEstacion from '@/components/general/FondoEstacion';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
+import useRecetaInicial from '@/components/cocina/useRecetaInicial';
 import Btns from '@/components/general/Btns';
 import { contenidoRecetas } from '@/components/DATA/ContenidoRecetas';
 import { useIngredientes, type IngredienteId } from '@/components/cocina/ingredientes/IngredientesContext';
@@ -32,7 +33,7 @@ export default function EstacionIngredientes() {
 
 function ContenidoEstacionIngredientes() {
     const router = useRouter();
-    const [abierta, setAbierta] = useState<boolean>(true);
+    const recetaInicial = useRecetaInicial('ingredientes');
     const { ingredientesSeleccionados, guardarIngredientes } = useIngredientes();
     const [seleccionBorrador, setSeleccionBorrador] = useState<IngredienteId[]>(ingredientesSeleccionados);
 
@@ -86,7 +87,7 @@ function ContenidoEstacionIngredientes() {
     
             <MostrarRecetas />
            
-            <PantallaReceta isOpen={abierta} onClose={() => setAbierta(false)}>
+            <PantallaReceta isOpen={recetaInicial.abierta} onClose={recetaInicial.cerrar}>
                 <div className="max-w-4/6 w-full">
                     {contenidoRecetas[0].contenido}
                 </div>

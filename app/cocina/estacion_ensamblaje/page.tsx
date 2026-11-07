@@ -5,13 +5,14 @@ import FondoEstacion from '@/components/general/FondoEstacion';
 import Btns from '@/components/general/Btns';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
+import useRecetaInicial from '@/components/cocina/useRecetaInicial';
 import { contenidoRecetas } from '@/components/DATA/ContenidoRecetas';
 import TablaEnsamblaje from '@/components/cocina/ensamblaje/TablaEnsamblaje';
 
 
 
 export default function EstacionEnsamblaje() {
-  const [abierta, setAbierta] = useState<boolean>(true);
+  const recetaInicial = useRecetaInicial('ensamblaje');
   const [mostrarResultado, setMostrarResultado] = useState(false);
   const router = useRouter();
 
@@ -35,7 +36,7 @@ export default function EstacionEnsamblaje() {
             <MostrarRecetas />
           </div>
 
-          <PantallaReceta isOpen={abierta} onClose={() => setAbierta(false)}>
+          <PantallaReceta isOpen={recetaInicial.abierta} onClose={recetaInicial.cerrar}>
             <div className="w-full max-w-3xl">
               {contenidoRecetas[4].contenido}
             </div>

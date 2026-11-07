@@ -1,13 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import type { IngredienteEstatusProps } from '@/components/DATA/types';
 import BtnAccionIngredientes from '@/components/cocina/cocinar/BtnAccionIngredientes';
 import Cronometro from '@/components/cocina/cocinar/Cronometro';
 import IngredienteEstatus from '@/components/cocina/cocinar/IngredienteEstatus';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
+import useRecetaInicial, { type EstacionRecetaId } from '@/components/cocina/useRecetaInicial';
 import Btns from '@/components/general/Btns';
 import FondoEstacion from '@/components/general/FondoEstacion';
 
@@ -21,6 +22,7 @@ type AccionEstacion = {
 };
 
 type EstacionLayoutProps = {
+  estacionId: EstacionRecetaId;
   ingredienteSeleccionado: boolean;
   estadoIngrediente: IngredienteEstatusProps;
   cronometro: {
@@ -36,6 +38,7 @@ type EstacionLayoutProps = {
 };
 
 export default function EstacionLayout({
+  estacionId,
   ingredienteSeleccionado,
   estadoIngrediente,
   cronometro,
@@ -46,7 +49,7 @@ export default function EstacionLayout({
   onConfirmar,
 }: EstacionLayoutProps) {
   const router = useRouter();
-  const [recetaAbierta, setRecetaAbierta] = useState(true);
+  const recetaInicial = useRecetaInicial(estacionId);
 
   const confirmarEstacion = () => {
     onConfirmar();
@@ -107,8 +110,8 @@ export default function EstacionLayout({
       </div>
 
       <PantallaReceta
-        isOpen={recetaAbierta}
-        onClose={() => setRecetaAbierta(false)}
+        isOpen={recetaInicial.abierta}
+        onClose={recetaInicial.cerrar}
       >
         <div className="w-full max-w-3xl">{receta}</div>
       </PantallaReceta>
