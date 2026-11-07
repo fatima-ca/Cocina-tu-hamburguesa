@@ -36,7 +36,14 @@ function obtenerOpcionesEnsamblaje(
     estadosPreparacion: { carne: string; pan: string; papas: string },
     estacionesListas: { carne: boolean; pan: boolean; papas: boolean },
 ): IngredienteProps[] {
-    return ingredientesSeleccionados.flatMap<IngredienteProps>((id) => {
+    const ingredientesDisponibles = [
+        ...new Set([
+            ...ingredientesSeleccionados,
+            ...(['carne', 'pan', 'papas'] as const).filter((tipo) => estacionesListas[tipo]),
+        ]),
+    ];
+
+    return ingredientesDisponibles.flatMap<IngredienteProps>((id) => {
         if (id === 'carne') {
             if (!estacionesListas.carne) return [];
             const variante = carneEnsamblaje.find(({ estatus }) => estatus === estadosPreparacion.carne);

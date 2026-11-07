@@ -1,25 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-
-export type EstacionRecetaId =
-  | 'ingredientes'
-  | 'papas'
-  | 'carne'
-  | 'pan'
-  | 'ensamblaje';
-
-const PREFIJO_RECETA_VISTA = 'cocina:receta-inicial-vista:';
+import {
+  useIngredientes,
+  type EstacionRecetaId,
+} from '@/components/cocina/ingredientes/IngredientesContext';
 
 export default function useRecetaInicial(estacion: EstacionRecetaId) {
-  const clave = `${PREFIJO_RECETA_VISTA}${estacion}`;
-  const [abierta, setAbierta] = useState(
-    () => typeof window !== 'undefined' && window.sessionStorage.getItem(clave) !== 'true',
-  );
+  const { recetasInicialesMostradas, marcarRecetaInicialMostrada } = useIngredientes();
+  const [abierta, setAbierta] = useState(() => !recetasInicialesMostradas[estacion]);
 
   useEffect(() => {
-    if (abierta) window.sessionStorage.setItem(clave, 'true');
-  }, [abierta, clave]);
+    if (!recetasInicialesMostradas[estacion]) {
+      marcarRecetaInicialMostrada(estacion);
+    }
+  }, [estacion, marcarRecetaInicialMostrada, recetasInicialesMostradas]);
 
   return {
     abierta,

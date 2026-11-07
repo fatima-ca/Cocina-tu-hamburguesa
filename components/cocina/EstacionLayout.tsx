@@ -8,7 +8,8 @@ import Cronometro from '@/components/cocina/cocinar/Cronometro';
 import IngredienteEstatus from '@/components/cocina/cocinar/IngredienteEstatus';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
-import useRecetaInicial, { type EstacionRecetaId } from '@/components/cocina/useRecetaInicial';
+import useRecetaInicial from '@/components/cocina/useRecetaInicial';
+import type { EstacionRecetaId } from '@/components/cocina/ingredientes/IngredientesContext';
 import Btns from '@/components/general/Btns';
 import FondoEstacion from '@/components/general/FondoEstacion';
 
