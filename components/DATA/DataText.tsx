@@ -37,9 +37,9 @@ export const pasosPapas = [
 ];
 
 export const pasosCarne = [
-    { src: "/ingredientes/carne_formada.png", num:"1", instruccion: "Formar la carne" },
-    { src: "/ingredientes/carne_formada_mitad_sarten.png", num:"2", instruccion: "Cocinar por lado 1", tiempo: "1:50 - 2:00 min"  },
-    { src: "/ingredientes/carne_lista_sarten.png", num:"3", instruccion: "Cocinar por lado 2", tiempo: "1:50 - 2:00 min" },
+    { src: "/ingredientes/carne_variantes/carne_formada_a-crudo_b-crudo.png", num:"1", instruccion: "Formar la carne" },
+    { src: "/ingredientes/carne_variantes/carne_formada_mitad_sarten.png", num:"2", instruccion: "Cocinar por lado 1", tiempo: "1:50 - 2:00 min"  },
+    { src: "/ingredientes/carne_variantes/carne_lista_sarten.png", num:"3", instruccion: "Cocinar por lado 2", tiempo: "1:50 - 2:00 min" },
 ];
 
 export const pasosPan = [

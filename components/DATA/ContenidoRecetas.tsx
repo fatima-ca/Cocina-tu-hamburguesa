@@ -154,7 +154,7 @@ export const contenidoRecetas=[
                             className="object-contain drop-shadow-2xl"
                         />
                         <Image
-                            src="/ingredientes/carne_preparada.png"
+                            src="/ingredientes/carne_variantes/carne_formada_a-cocido_b-cocido.png"
                             alt="Imagen de la carne preparada"
                             width={390}
                             height={390}
