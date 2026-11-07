@@ -56,6 +56,7 @@ export const pasosEnsamblaje = [
     { src: "/ingredientes/mostaza.png", num:"6", instruccion: "Untar la mostaza" },
     { src: "/ingredientes/mayonesa.png", num:"7", instruccion: "Untar la mayonesa" },
     { src: "/ingredientes/pan_variantes/ensamblaje/pan_tapa_tostado.png", num:"8", instruccion: "Colocar la tapa de pan" },
+    { src: "/ingredientes/papas_variantes/ensamblaje/papas_e_limpia_cortada_cocida.png", num:"9", instruccion: "Colocar las papas en su recipiente" },
 ];
 
 
