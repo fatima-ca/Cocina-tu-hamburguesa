@@ -146,16 +146,16 @@ export default function TablaEnsamblaje({
                     <div className="absolute inset-[30%_8%_12%] grid min-h-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-stretch gap-1 sm:gap-4">
                         <div className="flex min-h-0 flex-col items-center rounded-xl bg-black/10 p-1 sm:rounded-2xl sm:p-3">
                             <p className="shrink-0 text-center text-[clamp(0.55rem,1.5vw,1.125rem)] font-bold text-white [text-shadow:0_1px_3px_#333]">
-                                Ejemplo
+                                Orden solicitada
                             </p>
                             <div className="grid min-h-0 flex-1 w-full grid-cols-2 items-center justify-items-center gap-1">
                                 <Image
                                     src="/general/hamburguesa_lista.png"
                                     alt="Hamburguesa de ejemplo"
-                                    width={150}
-                                    height={150}
+                                    width={300}
+                                    height={300}
                                     priority
-                                    className="max-h-full max-w-full object-contain"
+                                    className="max-h-full w-full max-w-50 object-contain"
                                 />
                                 <Image
                                     src="/ingredientes/papas_variantes/ensamblaje/papas_e_limpia_cortada_cocida.png"
@@ -181,21 +181,21 @@ export default function TablaEnsamblaje({
 
                         <div className="flex min-h-0 flex-col items-center rounded-xl bg-black/10 p-1 sm:rounded-2xl sm:p-3">
                             <p className="shrink-0 text-center text-[clamp(0.55rem,1.5vw,1.125rem)] font-bold text-white [text-shadow:0_1px_3px_#333]">
-                                Tu ensamble
+                                Lo que preparaste
                             </p>
                             <div className="grid min-h-0 flex-1 w-full grid-cols-2 items-center justify-items-center gap-1">
                                 <div className="flex h-full min-h-0 w-full flex-col-reverse items-center justify-center overflow-hidden">
                                     {ingredientesAgregadosVisibles.map((ingrediente, index) => (
                                         <div
                                             key={`${ingrediente.id}-${index}`}
-                                            className="relative -mb-3 w-full max-w-32 animate-in fade-in slide-in-from-bottom-2 duration-300 sm:-mb-5"
+                                            className="relative -mb-7 w-full max-w-50 animate-in fade-in slide-in-from-bottom-2 duration-300"
                                         >
                                             <Image
                                                 src={ingrediente.ensamblaje}
                                                 alt={ingrediente.alt}
-                                                width={400}
-                                                height={400}
-                                                className=" object-contain "
+                                                width={200}
+                                                height={200}
+                                                className="h-auto w-full object-contain"
                                             />
                                         </div>
                                     ))}
@@ -381,7 +381,7 @@ export default function TablaEnsamblaje({
                             {papasAgregadas && opcionPapas && (
                                 <div
                                     key={opcionPapas.id}
-                                    className="relative -mb-6 w-full max-w-50 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                                    className="relative -mb-7 w-full max-w-50 animate-in fade-in slide-in-from-bottom-2 duration-300"
                                 >
                                     <Image
                                         src={opcionPapas.ensamblaje}
