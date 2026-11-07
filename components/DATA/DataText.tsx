@@ -26,7 +26,7 @@ export const ingredientes = [
   { src: "/ingredientes/mayonesa.png", nombre: "Mayonesa" }, // 3 - mayonesa
   { src: "/ingredientes/mostaza.png", nombre: "Mostaza" }, // 4 - mostaza
   { src: "/ingredientes/queso.png", nombre: "Queso" }, // 5 - queso
-  { src: "/ingredientes/pan.png", nombre: "Pan" }, // 6 - pan
+  { src: "/ingredientes/pan_variantes/pan.png", nombre: "Pan" }, // 6 - pan
   { src: "/ingredientes/papas_variantes/papas_sucia_entera_cruda.png", nombre: "Papas" }, // 7 - papas crudas
 ];
 
