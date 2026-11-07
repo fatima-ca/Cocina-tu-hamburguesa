@@ -6,12 +6,14 @@ interface BtnsProps {
     accionListo?: () => void;
     listoDeshabilitado?: boolean;
     mostrarDetectarError?: boolean;
+    esEnsamblaje?: boolean;
 }
 
 export default function Btns({
     accionListo = () => console.log("Se ha completado la tarea"),
     listoDeshabilitado = false,
     mostrarDetectarError = false,
+    esEnsamblaje = false,
 }: BtnsProps) {
     return (
         <>
@@ -20,7 +22,7 @@ export default function Btns({
             {mostrarDetectarError && <BtnDetectarError />}
         </div>
         <div className="fixed right-7 bottom-7 z-50 flex flex-col gap-13">
-            <BtnListo accion={accionListo} disabled={listoDeshabilitado} />
+            <BtnListo accion={accionListo} disabled={listoDeshabilitado} esEnsamblaje={esEnsamblaje} />
         </div>
         </>
     );

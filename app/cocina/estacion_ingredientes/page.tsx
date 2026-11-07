@@ -11,14 +11,14 @@ import { contenidoRecetas } from '@/components/DATA/ContenidoRecetas';
 import { useIngredientes, type IngredienteId } from '@/components/cocina/ingredientes/IngredientesContext';
 
 const ingredientesDisponibles: IngredienteCardProps[] = [
-    { id: 'papas', src: "/ingredientes/papas_crudas.png", nombre: "Papas", alt: "Seleccionar papas" },
+    { id: 'papas', src: "/ingredientes/papas_variantes/papas_sucia_entera_cruda.png", nombre: "Papas", alt: "Seleccionar papas" },
     { id: 'pina', src: "/ingredientes/piña.png", nombre: "Piña", alt: "Seleccionar piña" },
     { id: 'lechuga', src: "/ingredientes/lechuga.png", nombre: "Lechuga", alt: "Seleccionar lechuga" },
     { id: 'mostaza', src: "/ingredientes/mostaza.png", nombre: "Mostaza", alt: "Seleccionar mostaza" },
     { id: 'tomate', src: "/ingredientes/tomate.png", nombre: "Tomate", alt: "Seleccionar tomate" },
-    { id: 'carne', src: "/ingredientes/carne_cruda.png", nombre: "Carne", alt: "Seleccionar carne cruda" },
+    { id: 'carne', src: "/ingredientes/carne_variantes/carne_cruda.png", nombre: "Carne", alt: "Seleccionar carne cruda" },
     { id: 'tocino', src: "/ingredientes/tocino.png", nombre: "Tocino", alt: "Seleccionar tocino" },
-    { id: 'pan', src: "/ingredientes/pan.png", nombre: "Pan", alt: "Seleccionar pan" },
+    { id: 'pan', src: "/ingredientes/pan_variantes/pan.png", nombre: "Pan", alt: "Seleccionar pan" },
     { id: 'mayonesa', src: "/ingredientes/mayonesa.png", nombre: "Mayonesa", alt: "Seleccionar mayonesa" },
     { id: 'huevo', src: "/ingredientes/huevo.png", nombre: "Huevo", alt: "Seleccionar huevo" },
     { id: 'queso', src: "/ingredientes/queso.png", nombre: "Queso", alt: "Seleccionar queso" },

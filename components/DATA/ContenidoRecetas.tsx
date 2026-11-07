@@ -154,7 +154,7 @@ export const contenidoRecetas=[
                             className="object-contain drop-shadow-2xl"
                         />
                         <Image
-                            src="/ingredientes/carne_preparada.png"
+                            src="/ingredientes/carne_variantes/carne_formada_a-cocido_b-cocido.png"
                             alt="Imagen de la carne preparada"
                             width={390}
                             height={390}
@@ -231,7 +231,7 @@ export const contenidoRecetas=[
                             className="object-contain drop-shadow-2xl"
                         />
                         <Image
-                            src="/ingredientes/pan.png"
+                            src="/ingredientes/pan_variantes/pan_cortado_tostado.png"
                             alt="Imagen del pan cortado"
                             width={380}
                             height={380}
@@ -318,31 +318,31 @@ export const contenidoRecetas=[
                     </div>
 
 
-                    <div className="grid grid-cols-2 gap-4">
-                    {pasosEnsamblaje.map((paso, index) => (
-                        <div 
-                            key={index} 
-                            className="grid items-center justify-center p-4 bg-white circular rounded-4xl grid-cols-4"
-                        >
-                            <div className="col-start-1 col-end-2 flex justify-center">
-                                <p className="text-5xl font-bold text-amber-900">{paso.num}</p>
-                            </div>
+                    <div className="grid grid-cols-3 gap-4">
+                        {pasosEnsamblaje.map((paso, index) => (
+                            <div
+                                key={index}
+                                className="grid h-60 w-full grid-cols-4 items-center justify-center rounded-4xl bg-white p-4 circular gap-2"
+                            >
+                                <div className="col-start-1 col-end-2 flex justify-center">
+                                    <p className="text-5xl font-bold text-amber-900">{paso.num}</p>
+                                </div>
 
-                            <div className="col-start-2 col-end-5 flex flex-col items-center gap-2"> 
-                                <Image
-                                    src={paso.src}
-                                    alt={paso.instruccion}
-                                    width={120}
-                                    height={100}
-                                    priority
-                                    className="object-contain"
-                                />
-                                <span className="text-sm text-amber-900 font-semibold text-center">
-                                    {paso.instruccion}
-                                </span>
+                                <div className="col-start-2 col-end-5 flex flex-col items-center gap-2">
+                                    <Image
+                                        src={paso.src}
+                                        alt={paso.instruccion}
+                                        width={120}
+                                        height={100}
+                                        priority
+                                        className="object-contain"
+                                    />
+                                    <span className="text-sm text-amber-900 font-semibold text-center">
+                                        {paso.instruccion}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
                     </div>
 
                 </div>
