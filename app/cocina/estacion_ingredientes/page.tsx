@@ -16,7 +16,7 @@ const ingredientesDisponibles: IngredienteCardProps[] = [
     { id: 'lechuga', src: "/ingredientes/lechuga.png", nombre: "Lechuga", alt: "Seleccionar lechuga" },
     { id: 'mostaza', src: "/ingredientes/mostaza.png", nombre: "Mostaza", alt: "Seleccionar mostaza" },
     { id: 'tomate', src: "/ingredientes/tomate.png", nombre: "Tomate", alt: "Seleccionar tomate" },
-    { id: 'carne', src: "/ingredientes/carne_cruda.png", nombre: "Carne", alt: "Seleccionar carne cruda" },
+    { id: 'carne', src: "ingredientes/carne_variantes/carne_cruda.png", nombre: "Carne", alt: "Seleccionar carne cruda" },
     { id: 'tocino', src: "/ingredientes/tocino.png", nombre: "Tocino", alt: "Seleccionar tocino" },
     { id: 'pan', src: "/ingredientes/pan.png", nombre: "Pan", alt: "Seleccionar pan" },
     { id: 'mayonesa', src: "/ingredientes/mayonesa.png", nombre: "Mayonesa", alt: "Seleccionar mayonesa" },
