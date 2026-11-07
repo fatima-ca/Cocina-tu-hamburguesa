@@ -106,10 +106,12 @@ export default function (){
                     </div>
                 </div>
             </div>
-
-            <div className="absolute bottom-5 right-5 z-20">
-                <BtnEntendido />
-            </div>
+            
+            {pagina === 2 && (                
+                <div className="absolute bottom-5 right-5 z-20">
+                    <BtnEntendido />
+                </div>
+            )}
         </main>
     );
 };

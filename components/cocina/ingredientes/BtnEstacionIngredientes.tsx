@@ -9,7 +9,7 @@ export default function BtnEstacionIngredientes () {
         >
             <Image
                 src="/cocina/estacion_ingredientes.png"
-                alt="Botón para comenzar a cocinar"
+                alt="Botón para ir a la estación de ingredientes"
                 width={280}
                 height={100}
                 priority
