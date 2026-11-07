@@ -231,7 +231,7 @@ export const contenidoRecetas=[
                             className="object-contain drop-shadow-2xl"
                         />
                         <Image
-                            src="/ingredientes/pan.png"
+                            src="/ingredientes/pan_variantes/pan_cortado_tostado.png"
                             alt="Imagen del pan cortado"
                             width={380}
                             height={380}

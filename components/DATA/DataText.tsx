@@ -43,8 +43,8 @@ export const pasosCarne = [
 ];
 
 export const pasosPan = [
-    { src: "/ingredientes/pan_cortado.png", num:"1", instruccion: "Cortar el pan" },
-    { src: "/ingredientes/pan_cortado_tostado.png", num:"2", instruccion: "Tostar el pan", tiempo: "1:50 - 2:00 min" },
+    { src: "/ingredientes/pan_variantes/pan_cortado.png", num:"1", instruccion: "Cortar el pan" },
+    { src: "/ingredientes/pan_variantes/pan_cortado_tostado.png", num:"2", instruccion: "Tostar el pan", tiempo: "1:50 - 2:00 min" },
 ];
 
 export const pasosEnsamblaje = [
