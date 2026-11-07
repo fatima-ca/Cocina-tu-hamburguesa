@@ -122,6 +122,21 @@ export default function TablaEnsamblaje({
     if (vistaResultado) {
         return (
             <section className="relative flex min-h-screen w-full flex-col items-center justify-center gap-2 overflow-y-auto p-4">
+                <button
+                    type="button"
+                    onClick={onRegresar}
+                    className="absolute left-10 top-50 z-20 transition-transform duration-200 ease-out hover:scale-110 active:scale-95"
+                >
+                    <Image
+                        src="/general/btn_regresar.png"
+                        alt="Regresar al ensamblaje"
+                        width={220}
+                        height={100}
+                        priority
+                        className="object-contain"
+                    />
+                </button>
+
                 <div className="relative aspect-1392/912 w-full max-w-6xl">
                     <Image
                         src="/general/letrero.png"
@@ -199,14 +214,9 @@ export default function TablaEnsamblaje({
                                             />
                                         </div>
                                     ))}
-                                    {ingredientesAgregadosVisibles.length === 0 && (
-                                        <p className="text-center text-[clamp(0.5rem,1.2vw,0.875rem)] font-semibold text-white [text-shadow:0_1px_3px_#333]">
-                                            Sin ingredientes
-                                        </p>
-                                    )}
                                 </div>
 
-                                {opcionPapas ? (
+                                {papasAgregadas && opcionPapas && (
                                     <Image
                                         src={opcionPapas.ensamblaje}
                                         alt={opcionPapas.alt}
@@ -215,10 +225,6 @@ export default function TablaEnsamblaje({
                                         priority
                                         className="max-h-full max-w-full object-contain"
                                     />
-                                ) : (
-                                    <p className="text-center text-[clamp(0.5rem,1.2vw,0.875rem)] font-semibold text-white [text-shadow:0_1px_3px_#333]">
-                                        Sin papas
-                                    </p>
                                 )}
                             </div>
                         </div>
@@ -226,20 +232,6 @@ export default function TablaEnsamblaje({
                 </div>
 
                 <div className="relative z-10 flex flex-wrap items-center justify-center gap-4">
-                    <button
-                        type="button"
-                        onClick={onRegresar}
-                        className="transition-transform duration-200 ease-out hover:scale-110 active:scale-95"
-                    >
-                        <Image
-                            src="/general/btn_regresar.png"
-                            alt="Regresar al ensamblaje"
-                            width={220}
-                            height={100}
-                            priority
-                            className="object-contain"
-                        />
-                    </button>
                     <button
                         type="button"
                         onClick={onTerminar}

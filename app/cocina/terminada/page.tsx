@@ -9,7 +9,7 @@ export default function HamburguesaTerminada() {
             <section className="relative z-10 flex flex-col items-center gap-6 rounded-3xl bg-amber-100/90 p-8 text-center shadow-2xl sm:p-12">
                 
                 <h1 className="text-3xl font-extrabold text-amber-950 sm:text-5xl">
-                    ¡Hamburguesa terminada!
+                    ¡Pedido enviado!
                 </h1>
             </section>
         </main>
