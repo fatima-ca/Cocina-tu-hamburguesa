@@ -11,7 +11,7 @@ import type {
 export const INGREDIENTES_DISPONIBLES: IngredienteProps[] = [
     { id: 'lechuga', nombre: 'Lechuga', imagen: '/ingredientes/lechuga.png', ensamblaje: '/ingredientes/lechuga_e.png', alt: 'Lechuga' },
     { id: 'pan_base', nombre: 'Pan Base', imagen: '/ingredientes/pan_base_tostado.png', ensamblaje: '/ingredientes/pan_base_tostado.png', alt: 'Pan base de hamburguesa' },  
-    { id: 'carne', nombre: 'Carne', imagen: '/ingredientes/carne_preparada.png', ensamblaje: '/ingredientes/carne_e.png', alt: 'Carne de hamburguesa' },
+    { id: 'carne', nombre: 'Carne', imagen: 'ingredientes/carne_variantes/carne_cruda.png', ensamblaje: '/ingredientes/carne_e.png', alt: 'Carne de hamburguesa' },
     { id: 'tomate', nombre: 'Tomate', imagen: '/ingredientes/tomate.png', ensamblaje: '/ingredientes/tomate_e.png', alt: 'Tomate' },
     { id: 'mayonesa', nombre: 'Mayonesa', imagen: '/ingredientes/mayonesa.png' ,ensamblaje: '/ingredientes/mayonesa_e.png', alt: 'Tomate' },
     { id: 'mostaza', nombre: 'Mostaza', imagen: '/ingredientes/mostaza.png', ensamblaje: '/ingredientes/mostaza_e.png', alt: 'Tomate' },
@@ -21,7 +21,7 @@ export const INGREDIENTES_DISPONIBLES: IngredienteProps[] = [
 
 export const ingredientes = [
   { src: "/ingredientes/lechuga.png", nombre: "Lechuga" }, // 0 - lechuga
-  { src: "/ingredientes/carne_cruda.png", nombre: "Carne" }, // 1 - carne cruda
+  { src: "/ingredientes/carne_variantes/carne_cruda.png", nombre: "Carne" }, // 1 - carne cruda
   { src: "/ingredientes/tomate.png", nombre: "Tomate" }, // 2 - tomate
   { src: "/ingredientes/mayonesa.png", nombre: "Mayonesa" }, // 3 - mayonesa
   { src: "/ingredientes/mostaza.png", nombre: "Mostaza" }, // 4 - mostaza
@@ -156,38 +156,6 @@ export const panEstatusData = [
     { estatus: "pan_cortado_tostado",  src: "/ingredientes/pan_variantes/pan_cortado_tostado.png",   alt: "Estado actual del pan: cortado y tostado" },
     { estatus: "pan_cortado_quemado",  src: "/ingredientes/pan_variantes/pan_cortado_quemado.png",   alt: "Estado actual del pan: cortado y quemado" },
 ] satisfies { estatus: EstatusPan; src: string; alt: string }[];
-
-
-
-// carne no-formada, lado-a-crudo
-    // carne no-formada, lado-a-crudo, lado-b-crudo
-    // carne no-formada, lado-a-crudo, lado-b-cocido
-    // carne no-formada, lado-a-crudo, lado-b-quemado
-
-    // carne no-formada, lado-a-cocido
-    // carne no-formada, lado-a-cocido, lado-b-crudo
-    // carne no-formada, lado-a-cocido, lado-b-cocido
-    // carne no-formada, lado-a-cocido, lado-b-quemado
-
-    // carne no-formada, lado-a-quemado
-    // carne no-formada, lado-a-quemado, lado-b-crudo
-    // carne no-formada, lado-a-quemado, lado-b-cocido
-    // carne no-formada, lado-a-quemado, lado-b-quemado
-
-    // carne formada, lado-a-crudo
-    // carne formada, lado-a-crudo, lado-b-crudo
-    // carne formada, lado-a-crudo, lado-b-cocido
-    // carne formada, lado-a-crudo, lado-b-quemado
-
-    // carne formada, lado-a-cocido
-    // carne formada, lado-a-cocido, lado-b-crudo
-    // carne formada, lado-a-cocido, lado-b-cocido
-    // carne formada, lado-a-cocido, lado-b-quemado
-
-    // carne formada, lado-a-quemado
-    // carne formada, lado-a-quemado, lado-b-crudo
-    // carne formada, lado-a-quemado, lado-b-cocido
-    // carne formada, lado-a-quemado, lado-b-quemado
 
 
 
