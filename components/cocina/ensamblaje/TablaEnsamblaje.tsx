@@ -36,7 +36,14 @@ function obtenerOpcionesEnsamblaje(
     estadosPreparacion: { carne: string; pan: string; papas: string },
     estacionesListas: { carne: boolean; pan: boolean; papas: boolean },
 ): IngredienteProps[] {
-    return ingredientesSeleccionados.flatMap<IngredienteProps>((id) => {
+    const ingredientesDisponibles = [
+        ...new Set([
+            ...ingredientesSeleccionados,
+            ...(['carne', 'pan', 'papas'] as const).filter((tipo) => estacionesListas[tipo]),
+        ]),
+    ];
+
+    return ingredientesDisponibles.flatMap<IngredienteProps>((id) => {
         if (id === 'carne') {
             if (!estacionesListas.carne) return [];
             const variante = carneEnsamblaje.find(({ estatus }) => estatus === estadosPreparacion.carne);
@@ -115,6 +122,21 @@ export default function TablaEnsamblaje({
     if (vistaResultado) {
         return (
             <section className="relative flex min-h-screen w-full flex-col items-center justify-center gap-2 overflow-y-auto p-4">
+                <button
+                    type="button"
+                    onClick={onRegresar}
+                    className="absolute left-10 top-50 z-20 transition-transform duration-200 ease-out hover:scale-110 active:scale-95"
+                >
+                    <Image
+                        src="/general/btn_regresar.png"
+                        alt="Regresar al ensamblaje"
+                        width={220}
+                        height={100}
+                        priority
+                        className="object-contain"
+                    />
+                </button>
+
                 <div className="relative aspect-1392/912 w-full max-w-6xl">
                     <Image
                         src="/general/letrero.png"
@@ -136,69 +158,80 @@ export default function TablaEnsamblaje({
                         />
                     </div>
 
-                    <div className="absolute inset-[31%_8%_14%] grid grid-cols-3 items-center">
+                    <div className="absolute inset-[30%_8%_12%] grid min-h-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-stretch gap-1 sm:gap-4">
+                        <div className="flex min-h-0 flex-col items-center rounded-xl bg-black/10 p-1 sm:rounded-2xl sm:p-3">
+                            <p className="shrink-0 text-center text-[clamp(0.55rem,1.5vw,1.125rem)] font-bold text-white [text-shadow:0_1px_3px_#333]">
+                                Orden solicitada
+                            </p>
+                            <div className="grid min-h-0 flex-1 w-full grid-cols-2 items-center justify-items-center gap-1">
+                                <Image
+                                    src="/general/hamburguesa_lista.png"
+                                    alt="Hamburguesa de ejemplo"
+                                    width={300}
+                                    height={300}
+                                    priority
+                                    className="max-h-full w-full max-w-50 object-contain"
+                                />
+                                <Image
+                                    src="/ingredientes/papas_variantes/ensamblaje/papas_e_limpia_cortada_cocida.png"
+                                    alt="Papas de ejemplo"
+                                    width={200}
+                                    height={200}
+                                    priority
+                                    className="max-h-full max-w-full object-contain"
+                                />
+                            </div>
+                        </div>
 
-                        <div className="flex h-full items-center justify-center">
+                        <div className="flex items-center justify-center">
                             <Image
-                                src="/general/hamburguesa_lista.png"
-                                alt="Hamburguesa lista"
-                                width={400}
-                                height={400}
+                                src="/general/vs.png"
+                                alt="contra"
+                                width={120}
+                                height={120}
                                 priority
-                                className="max-h-full w-auto object-contain"
+                                className="h-auto w-[clamp(1.5rem,6vw,5rem)] object-contain"
                             />
                         </div>
 
-                        <Image
-                            src="/general/vs.png"
-                            alt="vs"
-                            width={400}
-                            height={400}
-                            priority
-                            className="max-h-full w-auto object-contain"
-                        />
-                        
-                        <div className="flex h-full flex-col-reverse items-center justify-center overflow-hidden">
-                            {ingredientesAgregadosVisibles.map((ingrediente, index) => (
-                                <div
-                                    key={`${ingrediente.id}-${index}`}
-                                    className="relative -mb-7 animate-in fade-in slide-in-from-bottom-2 duration-300"
-                                >
-                                    <Image
-                                        src={ingrediente.ensamblaje}
-                                        alt={ingrediente.alt}
-                                        width={220}
-                                        height={110}
-                                        className="h-auto w-40 object-contain sm:w-48 md:w-56"
-                                    />
+                        <div className="flex min-h-0 flex-col items-center rounded-xl bg-black/10 p-1 sm:rounded-2xl sm:p-3">
+                            <p className="shrink-0 text-center text-[clamp(0.55rem,1.5vw,1.125rem)] font-bold text-white [text-shadow:0_1px_3px_#333]">
+                                Lo que preparaste
+                            </p>
+                            <div className="grid min-h-0 flex-1 w-full grid-cols-2 items-center justify-items-center gap-1">
+                                <div className="flex h-full min-h-0 w-full flex-col-reverse items-center justify-center overflow-hidden">
+                                    {ingredientesAgregadosVisibles.map((ingrediente, index) => (
+                                        <div
+                                            key={`${ingrediente.id}-${index}`}
+                                            className="relative -mb-7 w-full max-w-50 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                                        >
+                                            <Image
+                                                src={ingrediente.ensamblaje}
+                                                alt={ingrediente.alt}
+                                                width={200}
+                                                height={200}
+                                                className="h-auto w-full object-contain"
+                                            />
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
 
-                            {ingredientesAgregadosVisibles.length === 0 && (
-                                <p className="text-center font-semibold text-white">
-                                    No se agregaron ingredientes a la hamburguesa.
-                                </p>
-                            )}
+                                {papasAgregadas && opcionPapas && (
+                                    <Image
+                                        src={opcionPapas.ensamblaje}
+                                        alt={opcionPapas.alt}
+                                        width={200}
+                                        height={200}
+                                        priority
+                                        className="max-h-full max-w-full object-contain"
+                                    />
+                                )}
+                            </div>
                         </div>
-                        
                     </div>
                 </div>
 
                 <div className="relative z-10 flex flex-wrap items-center justify-center gap-4">
-                    <button
-                        type="button"
-                        onClick={onRegresar}
-                        className="transition-transform duration-200 ease-out hover:scale-110 active:scale-95"
-                    >
-                        <Image
-                            src="/general/btn_regresar.png"
-                            alt="Regresar al ensamblaje"
-                            width={220}
-                            height={100}
-                            priority
-                            className="object-contain"
-                        />
-                    </button>
                     <button
                         type="button"
                         onClick={onTerminar}
@@ -235,16 +268,16 @@ export default function TablaEnsamblaje({
     return (
         <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
             <div className="relative w-full max-w-6xl rounded-3xl bg-amber-800 p-8">
-                <div className="relative z-10 flex flex-row items-center gap-8">
+                <div className="relative z-10 grid grid-cols-1 items-start gap-6 xl:grid-cols-2">
 
 
                     {/* Ensamblaje de hamburguesa */}
-                    <div className="relative flex items-center gap-8">
-                        <div className="relative flex flex-col-reverse items-center justify-center min-h-125 w-100 rounded-2xl border-4 border-amber-900/30 bg-amber-200 p-6">
+                    <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
+                        <div className="relative flex h-125 min-w-0 flex-col-reverse items-center justify-center overflow-hidden rounded-2xl border-4 border-amber-900/30 bg-amber-200 p-6">
                             {ingredientesAgregadosVisibles.map((ingrediente, index) => (
                                 <div
                                     key={`${ingrediente.id}-${index}`}
-                                    className="relative -mb-7 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                                    className="relative -mb-7 w-full max-w-50 animate-in fade-in slide-in-from-bottom-2 duration-300"
                                 >
                                     <Image
                                         src={ingrediente.ensamblaje}
@@ -252,7 +285,7 @@ export default function TablaEnsamblaje({
                                         width={200}
                                         height={100}
                                         priority
-                                        
+                                        className="h-auto w-full object-contain"
                                     />
                                 </div>
                             ))}
@@ -266,16 +299,14 @@ export default function TablaEnsamblaje({
                             )}
                         </div>
 
-                        <div className="flex flex-col gap-4 rounded-2xl bg-white/90 p-6">
+                        <div className="flex min-w-0 flex-col gap-4 rounded-2xl bg-white/90 p-6">
                             <h3 className="text-xl font-bold text-amber-900 text-center">
                                 Ingredientes seleccionados
                             </h3>
 
                             {opcionesEnsamblaje.length === 0 ? (
                                 <p className="max-w-56 text-center text-sm text-amber-900">
-                                    {ingredientesPendientes.length > 0
-                                        ? `Presiona Listo en la estación de ${ingredientesPendientes.join(', ')} para mostrar estos ingredientes.`
-                                        : 'Selecciona ingredientes en la estación de ingredientes.'}
+                                   Sin ingredientes.
                                 </p>
                             ) : (
                                 <div className="grid grid-cols-2 gap-2">
@@ -322,11 +353,7 @@ export default function TablaEnsamblaje({
                                 </div>
                             )}
 
-                            {opcionesEnsamblaje.length > 0 && ingredientesPendientes.length > 0 && (
-                                <p className="max-w-56 text-center text-sm text-amber-900">
-                                    Presiona Listo en la estación de {ingredientesPendientes.join(', ')} para mostrar esos ingredientes.
-                                </p>
-                            )}
+                            
 
                             
                             <button
@@ -340,15 +367,13 @@ export default function TablaEnsamblaje({
                         </div>
                     </div>
 
-
-
                     {/* Ensamblaje de las papas */}
-                    <div className="relative flex items-center gap-8">
-                        <div className="relative flex flex-col-reverse items-center justify-center min-h-125 w-100 rounded-2xl border-4 border-amber-900/30 bg-amber-200 p-6">
+                    <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
+                        <div className="relative flex h-125 min-w-0 flex-col-reverse items-center justify-center overflow-hidden rounded-2xl border-4 border-amber-900/30 bg-amber-200 p-6">
                             {papasAgregadas && opcionPapas && (
                                 <div
                                     key={opcionPapas.id}
-                                    className="relative -mb-6 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                                    className="relative -mb-7 w-full max-w-50 animate-in fade-in slide-in-from-bottom-2 duration-300"
                                 >
                                     <Image
                                         src={opcionPapas.ensamblaje}
@@ -356,7 +381,7 @@ export default function TablaEnsamblaje({
                                         width={200}
                                         height={100}
                                         priority
-                                        
+                                        className="h-auto w-full object-contain"
                                     />
                                 </div>
                             )}
@@ -369,22 +394,20 @@ export default function TablaEnsamblaje({
                                         width={200}
                                         height={100}
                                         priority
-                                        
+                                        className="max-w-full object-contain"
                                     />
                                 </div>
                             )}
                         </div>
 
-                        <div className="flex flex-col gap-4 rounded-2xl bg-white/90 p-6">
+                        <div className="flex min-w-0 flex-col gap-4 rounded-2xl bg-white/90 p-6">
                             <h3 className="text-xl font-bold text-amber-900 text-center">
                                 Papas seleccionadas
                             </h3>
 
                             {!opcionPapas ? (
                                 <p className="max-w-56 text-center text-sm text-amber-900">
-                                    {ingredientesPendientes.includes('papas')
-                                        ? 'Presiona Listo en la estación de papas para mostrar este ingrediente.'
-                                        : 'Selecciona las papas en la estación de ingredientes.'}
+                                    Sin ingredientes.
                                 </p>
                             ) : (
                                 <div className="grid grid-cols-2 gap-3">

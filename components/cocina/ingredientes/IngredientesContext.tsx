@@ -17,9 +17,18 @@ export type IngredienteId =
   | 'frijoles';
 
 export type TipoPreparacion = 'carne' | 'pan' | 'papas';
+export type EstacionRecetaId = 'ingredientes' | TipoPreparacion | 'ensamblaje';
 
 type EstadosPreparacion = Record<TipoPreparacion, string>;
 type VersionesReinicio = Record<TipoPreparacion, number>;
+type ProgresoPreparacion = Record<TipoPreparacion, number>;
+type RecetasInicialesMostradas = Record<EstacionRecetaId, boolean>;
+
+const PASOS_MAXIMOS: ProgresoPreparacion = {
+  carne: 3,
+  pan: 2,
+  papas: 3,
+};
 
 export const ESTADOS_PREPARACION_INICIALES: EstadosPreparacion = {
   carne: 'carne_noformada_a-crudo_b-crudo',
@@ -34,6 +43,10 @@ interface IngredientesContextValue {
   guardarEstadoPreparacion: (tipo: TipoPreparacion, estatus: string) => void;
   estacionesListas: Record<TipoPreparacion, boolean>;
   confirmarEstacion: (tipo: TipoPreparacion) => void;
+  recetasInicialesMostradas: RecetasInicialesMostradas;
+  marcarRecetaInicialMostrada: (estacion: EstacionRecetaId) => void;
+  progresoPreparacion: ProgresoPreparacion;
+  avanzarProgreso: (tipo: TipoPreparacion, paso: number) => void;
   versionesReinicio: VersionesReinicio;
   reiniciarEstacion: (tipo: TipoPreparacion) => void;
   reiniciarSeleccion: () => void;
@@ -51,6 +64,19 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
     pan: false,
     papas: false,
   });
+  const [recetasInicialesMostradas, setRecetasInicialesMostradas] =
+    useState<RecetasInicialesMostradas>({
+      ingredientes: false,
+      papas: false,
+      carne: false,
+      pan: false,
+      ensamblaje: false,
+    });
+  const [progresoPreparacion, setProgresoPreparacion] = useState<ProgresoPreparacion>({
+    carne: 0,
+    pan: 0,
+    papas: 0,
+  });
   const [versionesReinicio, setVersionesReinicio] = useState<VersionesReinicio>({
     carne: 0,
     pan: 0,
@@ -59,15 +85,8 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
 
   const guardarIngredientes = useCallback((seleccionados: IngredienteId[]) => {
     const ingredientesUnicos = [...new Set(seleccionados)];
-    const cambiaronIngredientes = ingredientesSeleccionados.length !== ingredientesUnicos.length
-      || ingredientesSeleccionados.some((ingrediente) => !ingredientesUnicos.includes(ingrediente));
-
-    if (cambiaronIngredientes) {
-      setEstacionesListas({ carne: false, pan: false, papas: false });
-    }
-
     setIngredientesSeleccionados(ingredientesUnicos);
-  }, [ingredientesSeleccionados]);
+  }, []);
 
   const guardarEstadoPreparacion = useCallback((tipo: TipoPreparacion, estatus: string) => {
     setEstadosPreparacion((estadosActuales) => ({
@@ -87,6 +106,23 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const marcarRecetaInicialMostrada = useCallback((estacion: EstacionRecetaId) => {
+    setRecetasInicialesMostradas((mostradas) => (
+      mostradas[estacion] ? mostradas : { ...mostradas, [estacion]: true }
+    ));
+  }, []);
+
+  const avanzarProgreso = useCallback((tipo: TipoPreparacion, paso: number) => {
+    if (!Number.isInteger(paso) || paso < 1 || paso > PASOS_MAXIMOS[tipo]) {
+      throw new Error(`Paso inválido "${paso}" para la estación "${tipo}"`);
+    }
+
+    setProgresoPreparacion((progresoActual) => ({
+      ...progresoActual,
+      [tipo]: Math.max(progresoActual[tipo], paso),
+    }));
+  }, []);
+
   const reiniciarEstacion = useCallback((tipo: TipoPreparacion) => {
     setEstadosPreparacion((estadosActuales) => ({
       ...estadosActuales,
@@ -95,6 +131,10 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
     setEstacionesListas((estacionesActuales) => ({
       ...estacionesActuales,
       [tipo]: false,
+    }));
+    setProgresoPreparacion((progresoActual) => ({
+      ...progresoActual,
+      [tipo]: 0,
     }));
     setVersionesReinicio((versionesActuales) => ({
       ...versionesActuales,
@@ -106,6 +146,7 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
     setIngredientesSeleccionados([]);
     setEstadosPreparacion(ESTADOS_PREPARACION_INICIALES);
     setEstacionesListas({ carne: false, pan: false, papas: false });
+    setProgresoPreparacion({ carne: 0, pan: 0, papas: 0 });
     setVersionesReinicio((versionesActuales) => ({
       carne: versionesActuales.carne + 1,
       pan: versionesActuales.pan + 1,
@@ -121,6 +162,10 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
       guardarEstadoPreparacion,
       estacionesListas,
       confirmarEstacion,
+      recetasInicialesMostradas,
+      marcarRecetaInicialMostrada,
+      progresoPreparacion,
+      avanzarProgreso,
       versionesReinicio,
       reiniciarEstacion,
       reiniciarSeleccion,
@@ -132,6 +177,10 @@ export function IngredientesProvider({ children }: { children: ReactNode }) {
       guardarEstadoPreparacion,
       estacionesListas,
       confirmarEstacion,
+      recetasInicialesMostradas,
+      marcarRecetaInicialMostrada,
+      progresoPreparacion,
+      avanzarProgreso,
       versionesReinicio,
       reiniciarEstacion,
       reiniciarSeleccion,

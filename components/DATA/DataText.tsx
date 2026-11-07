@@ -1,4 +1,12 @@
-import { IngredienteProps } from "./types";
+import type {
+    AccionCarne,
+    AccionPan,
+    AccionPapas,
+    EstatusCarne,
+    EstatusPan,
+    EstatusPapas,
+    IngredienteProps,
+} from "./types";
 
 export const INGREDIENTES_DISPONIBLES: IngredienteProps[] = [
     { id: 'lechuga', nombre: 'Lechuga', imagen: '/ingredientes/lechuga.png', ensamblaje: '/ingredientes/lechuga_e.png', alt: 'Lechuga' },
@@ -59,21 +67,21 @@ export const pasosEnsamblaje = [
 export const DataAccionPapas = [
     { id: "lavar",  label: "Lavar",   src: "/ingredientes/icono_lavar_papas.png",   alt: "Boton para lavar las papas" },
     { id: "cortar", label: "Cortar",  src: "/ingredientes/icono_cuchillo.png",      alt: "Boton para cortar las papas" },
-    { id: "freir",  label: "Cocción", src: "/ingredientes/icono_coccion_papas.png", alt: "Boton para freir las papas" },
-];
+    { id: "freir",  label: "Freír", src: "/ingredientes/icono_coccion_papas.png", alt: "Boton para freir las papas" },
+] as const satisfies readonly { id: AccionPapas; label: string; src: string; alt: string }[];
 
 {/* Datos de las acciones disponibles para la carne */}
 export const DataAccionCarne = [
   { id: "formar",    label: "Formar",         src: "/ingredientes/icono_formar_carne.png",   alt: "Boton para formar la carne" },
   { id: "coccion_1", label: "Cocción lado 1", src: "/ingredientes/icono_coccion_1.png",      alt: "Boton de coccion por un lado" },
   { id: "coccion_2", label: "Cocción lado 2", src: "/ingredientes/icono_coccion_2.png",      alt: "Boton de coccion por el otro lado" },
-];
+] as const satisfies readonly { id: AccionCarne; label: string; src: string; alt: string }[];
 
 {/* Datos de las acciones disponibles para el pan */}
 export const DataAccionPan = [
   { id: "cortar",  label: "Cortar",   src: "/ingredientes/icono_cuchillo.png",   alt: "Boton para cortar el pan" },
   { id: "tostar", label: "Tostar",  src: "/ingredientes/icono_tostadora.png",      alt: "Boton para tostar el pan" },
-];
+] as const satisfies readonly { id: AccionPan; label: string; src: string; alt: string }[];
 
 
 
@@ -101,7 +109,7 @@ export const papasEstatusData = [
     { estatus: "papas_limpia_cortada_cruda",    src: "/ingredientes/papas_variantes/papas_limpia_cortada_cruda.png",    alt: "Estado actual de las papas: limpia, cortada, cruda" },
     { estatus: "papas_limpia_cortada_cocida",   src: "/ingredientes/papas_variantes/papas_limpia_cortada_cocida.png",   alt: "Estado actual de las papas: limpia, cortada, cocida" },
     { estatus: "papas_limpia_cortada_quemada",  src: "/ingredientes/papas_variantes/papas_limpia_cortada_quemada.png",  alt: "Estado actual de las papas: limpia, cortada, quemada" },
-]
+] satisfies { estatus: EstatusPapas; src: string; alt: string }[];
 
 {/* Estatus carne */}
 export const carneEstatusData = [
@@ -113,7 +121,7 @@ export const carneEstatusData = [
     // carne no-formada, lado-a-cocido
     { estatus: "carne_noformada_a-cocido_b-crudo",      src: "/ingredientes/carne_variantes/carne_noformada_a-cocido_b-crudo.png",    alt: "Estado actual de la carne: no formada, un lado cocido, un lado crudo" },
     { estatus: "carne_noformada_a-cocido_b-cocido",     src: "/ingredientes/carne_variantes/carne_noformada_a-cocido_b-cocido.png",   alt: "Estado actual de la carne: no formada, un lado cocido, un lado crudo" },
-    { estatus: "carne_noformada_a-cocido_b-quemada",    src: "/ingredientes/carne_variantes/carne_noformada_a-cocido_b-quemado.png",  alt: "Estado actual de la carne: no formada, un lado cocido, un lado crudo" },
+    { estatus: "carne_noformada_a-cocido_b-quemado",    src: "/ingredientes/carne_variantes/carne_noformada_a-cocido_b-quemado.png",  alt: "Estado actual de la carne: no formada, un lado cocido, un lado quemado" },
 
     // carne no-formada, lado-a-quemado
     { estatus: "carne_noformada_a-quemado_b-crudo",     src: "/ingredientes/carne_variantes/carne_noformada_a-quemado_b-crudo.png",   alt: "Estado actual de la carne: no formada, un lado quemado, un lado crudo" },
@@ -134,7 +142,7 @@ export const carneEstatusData = [
     { estatus: "carne_formada_a-quemado_b-crudo",      src: "/ingredientes/carne_variantes/carne_formada_a-quemado_b-crudo.png",      alt: "Estado actual de la carne: formada, un lado quemado, un lado crudo" },
     { estatus: "carne_formada_a-quemado_b-cocido",     src: "/ingredientes/carne_variantes/carne_formada_a-quemado_b-cocido.png",     alt: "Estado actual de la carne: formada, un lado quemado, un lado cocido" },
     { estatus: "carne_formada_a-quemado_b-quemado",    src: "/ingredientes/carne_variantes/carne_formada_a-quemado_b-quemado.png",    alt: "Estado actual de la carne: formada, dos lados quemados" },
-];
+] satisfies { estatus: EstatusCarne; src: string; alt: string }[];
 
 {/* Estatus pan */}
 export const panEstatusData = [
@@ -147,7 +155,7 @@ export const panEstatusData = [
     { estatus: "pan_cortado",          src: "/ingredientes/pan_variantes/pan_cortado.png",           alt: "Estado actual del pan: cortado" },
     { estatus: "pan_cortado_tostado",  src: "/ingredientes/pan_variantes/pan_cortado_tostado.png",   alt: "Estado actual del pan: cortado y tostado" },
     { estatus: "pan_cortado_quemado",  src: "/ingredientes/pan_variantes/pan_cortado_quemado.png",   alt: "Estado actual del pan: cortado y quemado" },
-]
+] satisfies { estatus: EstatusPan; src: string; alt: string }[];
 
 
 
@@ -217,7 +225,7 @@ export const carneEnsamblaje = [
     // carne no-formada, lado-a-cocido
     { estatus: "carne_noformada_a-cocido_b-crudo",      src: "/ingredientes/carne_variantes/ensamblaje/carne_e_noformada_a-cocido_b-crudo.png",    alt: "Carne: no formada, un lado cocido, un lado crudo" },
     { estatus: "carne_noformada_a-cocido_b-cocido",     src: "/ingredientes/carne_variantes/ensamblaje/carne_e_noformada_a-cocido_b-cocido.png",   alt: "Carne: no formada, un lado cocido, un lado crudo" },
-    { estatus: "carne_noformada_a-cocido_b-quemada",    src: "/ingredientes/carne_variantes/ensamblaje/carne_e_noformada_a-cocido_b-quemado.png",  alt: "Carne: no formada, un lado cocido, un lado crudo" },
+    { estatus: "carne_noformada_a-cocido_b-quemado",    src: "/ingredientes/carne_variantes/ensamblaje/carne_e_noformada_a-cocido_b-quemado.png",  alt: "Carne: no formada, un lado cocido, un lado quemado" },
 
     // carne no-formada, lado-a-quemado
     { estatus: "carne_noformada_a-quemado_b-crudo",     src: "/ingredientes/carne_variantes/ensamblaje/carne_e_noformada_a-quemado_b-crudo.png",   alt: "Carne: no formada, un lado quemado, un lado crudo" },

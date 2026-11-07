@@ -1,10 +1,11 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import FondoEstacion from '@/components/general/FondoEstacion';
 import MostrarRecetas from '@/components/cocina/MostrarRecetas';
 import PantallaReceta from '@/components/cocina/PantallaReceta';
+import useRecetaInicial from '@/components/cocina/useRecetaInicial';
 import Btns from '@/components/general/Btns';
 import { contenidoRecetas } from '@/components/DATA/ContenidoRecetas';
 import { useIngredientes, type IngredienteId } from '@/components/cocina/ingredientes/IngredientesContext';
@@ -31,7 +32,8 @@ export default function EstacionIngredientes() {
 }
 
 function ContenidoEstacionIngredientes() {
-    const [abierta, setAbierta] = useState<boolean>(true);
+    const router = useRouter();
+    const recetaInicial = useRecetaInicial('ingredientes');
     const { ingredientesSeleccionados, guardarIngredientes } = useIngredientes();
     const [seleccionBorrador, setSeleccionBorrador] = useState<IngredienteId[]>(ingredientesSeleccionados);
 
@@ -76,13 +78,16 @@ function ContenidoEstacionIngredientes() {
                 </div>  
             </div>
 
-            <Btns accionListo={() => guardarIngredientes(seleccionBorrador)} />
+            <Btns accionListo={() => {
+                guardarIngredientes(seleccionBorrador);
+                router.push('/cocina');
+            }} />
 
             
     
             <MostrarRecetas />
            
-            <PantallaReceta isOpen={abierta} onClose={() => setAbierta(false)}>
+            <PantallaReceta isOpen={recetaInicial.abierta} onClose={recetaInicial.cerrar}>
                 <div className="max-w-4/6 w-full">
                     {contenidoRecetas[0].contenido}
                 </div>
