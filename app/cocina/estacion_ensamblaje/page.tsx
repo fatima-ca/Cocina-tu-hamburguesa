@@ -30,6 +30,7 @@ export default function EstacionEnsamblaje() {
           <Btns
             accionListo={() => setMostrarResultado(true)}
             mostrarDetectarError
+            esEnsamblaje
           />
 
           <div className="absolute right-4 top-4 z-20">
